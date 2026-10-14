@@ -1,29 +1,18 @@
-# Source snapshot and build prerequisites
+# Source and environment scope
 
-This repository starts with selected prototype sources. Original operational
-history, raw test reports, device inventories and binary/source archives are
-kept separately. The initial commit identifies the local source basis; it
-does not import that repository's original Git history.
+This repository contains shared agreements, architecture, bootstrap design,
+feature templates and source-checkout tooling for general Sailfish development.
+See [getting started](development/getting-started.md) for the portable entry point
+and [Spec Kit provenance](development/spec-kit.md) for the original bootstrap.
 
-Source identities are pinned in sources.lock.json where present. Obtain and
-authenticate the upstream archives, public release keys and signatures before
-building. A private key is not a build input.
+Original private Git histories, raw test reports, machine/device inventories,
+generated assistant skills, Spec Kit active state and binary/source caches are
+not imported. They are not prerequisites for documentation and source work.
 
-Some tools expect sources and dated verification records under sources/,
-artifacts/, build/ or evidence/. These inputs are not copied wholesale into
-this source snapshot. SDK/device harnesses also require an explicitly approved
-test environment. A clean-checkout build has not been established.
+SDK helpers describe a historical environment. They do not provision an arbitrary
+new machine. Component clean-checkout builds still require authenticated sources,
+source-verification records and a suitable SDK; follow component export scopes
+and open issues. Source setup does not establish package or device acceptance.
 
-pass source staging requires authenticated archives, a public release key,
-pass-tag-verification and tree-source records. Native pinentry packaging
-requires the pinned Sailfish Secrets archive and matching Assuan sources.
-Complete source and relink delivery remains a package distribution gate.
-
-Production agent lifecycle, provider/upgrade behavior and exact Sailfish 5.2
-vendor provenance remain open. Historical 5.2.0.18 results do not establish
-acceptance on 5.2.0.20. Follow repository issues for the remaining work.
-
-Original work is GPL-3.0-or-later, copyright (c) 2026 Misja Hoebe. See
-[LICENSING](../LICENSING.md) and [upstream exceptions](../THIRD_PARTY.md).
-Source publication is separate from package releases, device changes and
-upstream submissions.
+Original work is GPL-3.0-or-later; see [LICENSING](../LICENSING.md) and
+[upstream exceptions](../THIRD_PARTY.md).

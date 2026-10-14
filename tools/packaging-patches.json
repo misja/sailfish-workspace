@@ -1,0 +1,28 @@
+[
+  {
+    "fork": "sailfish-secrets",
+    "package": "sailfish-gnupg-runtime",
+    "patches": [
+      "packaging/native-pinentry/0001-option-error-codes.patch",
+      "packaging/native-pinentry/0002-assuan-api-compatibility.patch",
+      "packaging/native-pinentry/0003-cache-hit-provenance.patch",
+      "packaging/native-pinentry/0004-external-cache-permission.patch",
+      "packaging/native-pinentry/0005-keyinfo-precedence.patch"
+    ]
+  },
+  {
+    "fork": "sailfish-pass",
+    "package": "sailfish-password-store",
+    "patches": [
+      "rpm/private-gpg.patch"
+    ]
+  },
+  {
+    "fork": "pass-otp",
+    "package": "sailfish-password-store",
+    "patches": [
+      "patches/pass-otp-stdin.patch",
+      "patches/pass-otp-private-backend.patch"
+    ]
+  }
+]

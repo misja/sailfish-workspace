@@ -1,6 +1,6 @@
 # Staged roles and handoffs
 
-Date: 2026-10-10. Baseline: 1.0.0. Scope: every real project; synthetic trial uses the same rules.
+Adopted: 2026-10-10. Updated: 2026-10-14. Baseline: 1.1.0. Scope: every real project; synthetic trial uses the same rules.
 
 ## Role activation
 
@@ -50,8 +50,10 @@ Next action:
 ## Verification and authorization
 
 Builder self-tests are sufficient for routine low-risk integration checks. Crypto behavior,
-runtime/package isolation and release-critical changes require a distinct reviewer/person/session.
-Changing a role label on the builder does not create independence. No independent review was
+runtime/package isolation and release-critical changes require verification separate from implementation.
+Changing a role label on the builder does not create independence. Distinguish
+automated checks, assistant review and human review. Assistant agreement is not
+a human audit; the maintainer reviews changes and judges the evidence. No independent review was
 performed during the Spec Kit trial; a separate security verification remains due for real packaging.
 
 Existing scoped approval persists. Proceed autonomously with reversible work inside that scope;
