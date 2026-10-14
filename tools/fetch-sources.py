@@ -65,8 +65,9 @@ def password_store(root, offline):
     record(safe_path(project, "evidence/pass-tag-verification.json"),
            dict(tag=source["tag"], tag_object=tag, commit=source["commit"],
                 allowed_primary_fingerprint=source["primary_fingerprint"],
-                verify_tag_exit=0, status=status, verified_archive_sha256=digest(archive),
-                signatures=signatures, verification="signed-tag-and-git-archive"))
+                gpg_verify_exit=0, status=status, verified_archive_sha256=digest(archive),
+                signatures=signatures, verification="signed-tag-and-git-archive",
+                signature_command="gpg --verify detached-tag-signature tag-payload"))
     print("Authenticated signed pass tag and reproduced locked archive", flush=True)
     for component in ("tree", "pass_otp"):
         entry = lock[component]
