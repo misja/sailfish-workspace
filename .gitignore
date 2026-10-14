@@ -1,0 +1,16 @@
+# Generated build outputs; synthetic fixtures still require deliberate review
+/build/
+/artifacts/
+/experiments/
+*.rpm
+*.log
+.env
+.env.*
+__pycache__/
+private-keys-v1.d/
+*.key
+*.kbx
+secring.gpg
+trustdb.gpg
+S.gpg-agent*
+/planning/public-export-20261014/
