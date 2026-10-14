@@ -11,7 +11,12 @@ specifications and plans remain design references, not a second backlog.
 The Sailfish project board provides one view across the repositories.
 Shared work belongs in sailfish-workspace; choose the runtime
 or password-store repository when creating an issue about that component.
-The initial status options are Todo, In Progress and Done. Keep work In Progress
+The status options are Todo, In Progress and Done. Select work from the board
+and set its issue In Progress before implementation. Record current findings,
+linked PRs and the next action in that issue; keep dependencies current.
+Closing an issue after its acceptance criteria pass moves the board item to Done.
+Do not close an umbrella issue merely because one preparation PR is merged.
+Keep work In Progress
 during review; label unresolved dependencies blocked and state the next action.
 
 ## Review and decisions
@@ -41,7 +46,8 @@ Use only synthetic or published test data in project automation.
 
 Keep design and evidence with the responsible component, linking related issues
 and PRs across repositories. Record an enduring decision once and link back to
-its discussion. STATUS.md is a short handoff for ongoing work.
+its discussion. STATUS.md is a short session handoff, not a task/status database. Local task lists
+and historical Markdown records do not override live issue or board state.
 
 Essential assistant/contribution instructions and templates are kept in each
 repository. Shared templates are maintained in workspace and copied after

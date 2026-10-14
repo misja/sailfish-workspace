@@ -15,18 +15,6 @@ python3 sailfish-workspace/tools/workspace.py status
 python3 sailfish-workspace/tools/packaging-patches.py
 ~~~
 
-During review, the new workspace tools are on PR #3, not main. To try them
-before merge, clone with --branch chore/upstream-forks. The helper still
-clones the other own repositories on main; use their migration branches to
-review runtime PR #6 and password-store PR #3 before running patch verification:
-
-~~~sh
-git -C sailfish-gnupg-runtime switch chore/upstream-forks
-git -C sailfish-password-store switch chore/upstream-forks
-~~~
-
-These review instructions can be removed once all three migration PRs are merged.
-
 [manifest.yml](../../manifest.yml) is JSON-formatted YAML so the helper needs
 no third-party Python modules. It declares six sibling directories matching
 their GitHub names. New own repositories start on main. New fork checkouts
@@ -67,6 +55,6 @@ separate unfinished work. Do not copy private evidence or real stores to fill
 missing inputs. [Release targets](release-targets.md) distinguish historical
 results from current target acceptance.
 
-Track the remaining SDK/public source setup in
+See the [SDK/source preflight](sdk-bootstrap.md). Track the remaining setup in
 [workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5).
 Bootstrap validation is recorded [separately](bootstrap-validation-20261014.md).
