@@ -2,7 +2,8 @@
 
 Work owner and current status: [workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5).
 The source workspace is portable. SDK provisioning and complete public source
-staging are still being prepared. This is the first implementation slice.
+staging are being completed in separate reviewed slices. See
+[source bootstrap](source-bootstrap.md) for the reproducible source preparation.
 
 ## Inspect before changing the environment
 
@@ -40,8 +41,20 @@ Use the [official SDK installation guide](https://docs.sailfishos.org/Tools/Sail
 and [local package workflow](https://docs.sailfishos.org/Tools/Sailfish_SDK/Building_packages/)
 as primary references, checked 2026-10-14. Select a host and virtualization route
 supported by that documentation before provisioning. The documented SDK routes
-use Docker or VirtualBox for the build engine. Our outer LXD container and image
-adaptation are a local experiment, not a required public-workspace layout.
+use Docker or VirtualBox for the build engine. For Linux, document Docker
+directly on the development host as the normal route; follow the official
+requirements rather than reproducing the maintainer's machine.
+
+### Optional LXC/LXD variant
+
+Misja's setup is an outer LXC container, an Ubuntu image and Docker running the
+SDK inside it. The outer container is optional. It needs extra nesting, storage,
+permissions and SDK image/device-node adaptation; it is not the baseline and
+must not become a prerequisite for contributors or reproducible package builds.
+The dated scripts in infrastructure/sdk/ describe that local variant.
+Record any additional adaptations separately from the ordinary SDK instructions.
+Check SDK paths from the environment where the SDK actually runs; a host-side
+preflight cannot see an SDK inside a container.
 
 The recorded SDK is 3.13.5. The existing build scripts use
 SailfishOS-5.1.0.11-aarch64. That is historical build evidence, not verification
@@ -51,8 +64,9 @@ and a reviewed SDK-to-release mapping before changing targets.
 
 Host checkouts keep their GitHub names. Existing prototype scripts still expect
 /home/ubuntu/gnupg-runtime and /home/ubuntu/password-store inside the SDK. Do not
-rename the host directories back to satisfy those guards. Parameterizing SDK
-project paths and removing dated record dependencies is follow-up implementation.
+rename the host directories back to satisfy those guards. The proposed source-bootstrap changes parameterize those build entry points
+and replace dated staging records. Other historical device/SDK test harnesses
+remain separately scoped.
 
 SDK downloads, virtualization/system configuration and installations require
 their own concrete approval. No install command is run by the preflight.
@@ -61,9 +75,9 @@ their own concrete approval. No install command is run by the preflight.
 
 | Component | Existing public implementation | Remaining reproducibility work |
 | --- | --- | --- |
-| GnuPG runtime | Locked digests and signer allowlist; fetch-sources.py fetches public sources/signatures into a dedicated verification home | Remove fixed SDK path guard safely; reproduce public signature evidence and test the complete build |
-| pass/tree | Locked archive identities; prepare-package.py checks selected authentication fields and stages inputs | Recreate signed-tag/archive and tree provenance records without dated private evidence; export authenticated base archives consistently |
-| pass-otp/OATH | Version/digest pins and recipes | Provide public fetch/authentication/staging for archives, OATH notices and patches |
+| GnuPG runtime | Shared portable fetcher verifies pinned digests/signatures in temporary public-only keyrings | Test the full source-to-package build in the selected SDK |
+| pass/tree | Signed pass tag and exact archive regeneration; tree HTTPS/digest record; stable evidence names | Test clean package builds and source/binary notice delivery |
+| pass-otp/OATH | Pinned HTTPS/digest OTP input; signed OATH input and LGPL notice; complete recipe staging | Test the selected SDK build and affected synthetic behavior |
 | Native pinentry | Pinned fork commits, materializer and full-tree patch equality | Establish exact vendor-source identity and prepare all provenance/relink inputs separately |
 
 Do not fabricate a successful verification JSON to satisfy an old script.

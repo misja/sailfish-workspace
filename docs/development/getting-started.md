@@ -40,15 +40,19 @@ explains the initial organization.
 
 ## SDK and package work
 
+Follow the [ordinary Sailfish SDK route](sdk-bootstrap.md) for package builds,
+normally Docker directly on the Linux development host. The maintainer's outer
+LXC container is an optional variant needing additional configuration.
+
 This checkout setup is not SDK provisioning. The existing helpers in
 infrastructure/sdk/ describe a particular LXD/Docker-based experiment, not a
 portable automatic installer. They require host-specific review before use;
 inspect-host.sh includes sudo inventory queries. Do not run those scripts as
 a general workstation setup.
 
-Package tools still include fixed /home/ubuntu SDK paths and historical source
-verification/evidence prerequisites. Those paths are inside the SDK environment,
-not the host checkout layout. See each package's docs/EXPORT_SCOPE.md.
+[Public source preparation](source-bootstrap.md) regenerates the locked inputs
+and evidence. Build entry points use configurable SDK paths; some historical
+device/test harnesses still contain their original SDK paths and prerequisites. See each package's docs/EXPORT_SCOPE.md.
 A fresh public clone is sufficient for ordinary source/planning work, but a
 clean-checkout package build, SDK installation and device acceptance remain
 separate unfinished work. Do not copy private evidence or real stores to fill
