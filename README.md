@@ -1,6 +1,7 @@
 # Sailfish workspace
 
-Shared documentation and development tools for GnuPG and pass/OTP packaging on Sailfish OS.
+Shared working agreements and development infrastructure for Sailfish OS projects.
+The first components are GnuPG and pass/OTP packaging.
 
 | Repository | Purpose |
 | --- | --- |
@@ -8,7 +9,8 @@ Shared documentation and development tools for GnuPG and pass/OTP packaging on S
 | [sailfish-gnupg-runtime](https://github.com/misja/sailfish-gnupg-runtime) | Isolated GnuPG runtime and native pinentry integration |
 | [sailfish-password-store](https://github.com/misja/sailfish-password-store) | pass, pass-otp and supporting package integration |
 
-Start with the [documentation index](docs/index.md) or [working agreements](docs/development/workflow.md). Issues belong to the repository responsible for the work; the shared [Sailfish project board](https://github.com/users/misja/projects/2) provides an overview. SDK helpers are in infrastructure/sdk/.
+Start with [setup on another machine](docs/development/getting-started.md),
+[Spec Kit and the bootstrap](docs/development/spec-kit.md), the [documentation index](docs/index.md) or [working agreements](docs/development/workflow.md). Issues belong to the repository responsible for the work; the shared [Sailfish project board](https://github.com/users/misja/projects/2) provides an overview. SDK helpers are in infrastructure/sdk/.
 
 [Upstream adaptations](docs/development/upstream-forks.md) use forks with pinned
 commit bases; these repositories contain our packaging and integration work.

@@ -33,7 +33,26 @@ The native packaging repository materializes prototype source inputs from the
 pinned fork commits instead of tracking copied C++ trees. Source locks preserve
 the same input and output bytes.
 
-For local work, clone the repositories into sibling directories named workspace,
-gnupg-runtime, password-store and sailfish-secrets. Set upstream to the original
+For local work, use the [checkout helper](getting-started.md) to clone sibling directories named
+exactly like their GitHub repositories. Set upstream to the original
 project in each fork; origin points to the fork. The pinentry materializer also
 accepts an explicit checkout path.
+
+Packaging patches are generated snapshots of the fork commits, not separately
+edited source. Run python3 tools/packaging-patches.py to verify that all three
+complete patched upstream trees equal their fork heads. --export regenerates the
+eight snapshots, validating the complete result before writing any snapshot.
+See component docs/FORK_WORKFLOW.md for the update procedure.
+
+## Upstream review, 2026-10-14
+
+Compared the adaptation branches with the parent default branches: Sailfish
+Secrets is 5 ahead/0 behind, pass is 1 ahead/14 behind, pass-otp is 2 ahead/39
+behind. These counts are dated observations, not moving version pins.
+Upstream pass includes extension-directory filtering and tree compatibility
+fixes. Upstream pass-otp includes stdin secret handling, argument arrays and a
+fix preserving a last password line without a newline. The stdin work overlaps
+part of our delta; diagnostic redaction and packaged backend selection must
+still be compared individually. No dependency version was changed by this audit.
+Review updates separately with affected regression checks; do not blindly sync
+the protected adaptation branch.
