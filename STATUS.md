@@ -17,3 +17,5 @@ The existing SDK reports 3.13.5 and 5.1.0.11 targets. No package build, SDK/targ
 installation, device change or upstream submission has been performed in this slice.
 
 See [public source bootstrap](docs/development/source-bootstrap.md).
+
+Fresh-public-clone evidence: [source validation](docs/development/source-bootstrap-validation-20261014.md).
