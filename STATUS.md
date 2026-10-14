@@ -1,27 +1,22 @@
-# Current workspace handoff
+# Session handoff
 
 Updated: 2026-10-14. Maintainer: Misja Hoebe (@misja).
-Current work: portable workspace bootstrap and upstream-fork migration.
-Review: https://github.com/misja/sailfish-workspace/issues/4.
 
-Draft PRs: workspace #3, runtime #6, password-store #3. No merge or upstream
-submission is implied. The migration branch includes the six-repository checkout
-helper, public architecture/Spec Kit record, feature templates and complete-tree
-packaging patch verification. Runtime materialization includes assuancompat.h.
+The [Sailfish project board](https://github.com/users/misja/projects/2) and linked
+issues are authoritative for open work, dependencies and review state. This file
+records session context only.
 
-Local public checkouts now use their GitHub names under code/sailfish. Original
-repositories and local evidence are preserved in .local-history/20261014 outside
-the public repositories. These paths describe the maintainer's machine only.
+Public repository setup and the three upstream-fork migration PRs are merged.
+Host checkouts match GitHub repository names. Earlier local histories/evidence
+remain in .local-history/20261014 outside the public repositories.
 
-Open product gates include clean-checkout package/bootstrap support, SDK setup,
-exact vendor provenance, production lifecycle, provider/upgrade and distribution.
-General source/planning work needs Git and Python; package/device readiness is
-not established by the workspace setup. See docs/development/getting-started.md.
+This session is implementing the first SDK/source bootstrap slice for
+[workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5):
+read-only source/SDK preflight and a reproducibility contract. A runtime RPM
+component-notice staging bug has a separate fix and synthetic fragment test.
+The issue records current PRs and remaining acceptance checks.
 
-Fresh public-clone and negative checks passed; see
-[validation record](docs/development/bootstrap-validation-20261014.md).
-No package build, SDK installation or device acceptance was performed.
-
-Follow-ups:
-- SDK/public source bootstrap: https://github.com/misja/sailfish-workspace/issues/5
-- Upstream pass/OTP review: https://github.com/misja/sailfish-password-store/issues/4
+General source/planning checkout and fork-tree checks passed. No SDK installation,
+package rebuild, device acceptance or upstream submission occurred in this slice.
+[Upstream pass/OTP review](https://github.com/misja/sailfish-password-store/issues/4)
+remains separate. See [SDK bootstrap](docs/development/sdk-bootstrap.md).

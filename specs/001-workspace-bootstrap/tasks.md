@@ -8,5 +8,5 @@ Review state is authoritative in workspace issue #4 and the migration PRs.
 - [x] Add complete-tree patch verification and export.
 - [x] Include assuancompat.h and reject omitted quoted local headers.
 - [x] Record [fresh-checkout and negative-check results](../../docs/development/bootstrap-validation-20261014.md).
-- [ ] Maintainer reviews and merges workspace/runtime/password-store PRs.
-- [ ] Establish clean-checkout package source/bootstrap and SDK setup separately.
+- [x] Maintainer reviewed and merged workspace/runtime/password-store PRs.
+Follow-up ownership: [workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5).
