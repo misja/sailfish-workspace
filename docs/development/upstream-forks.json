@@ -1,0 +1,28 @@
+{
+  "source_forks": [
+    {
+      "upstream": "https://github.com/sailfishos/sailfish-secrets",
+      "fork": "https://github.com/misja/sailfish-secrets",
+      "upstream_commit": "5a8d33e2eda2fe10a64acc42912dd3bedc736495",
+      "branch": "sailfish/native-pinentry-compat",
+      "commit": "3e79aaec2092ecc1ddd449d36b9ebc2bd724713b",
+      "compare": "https://github.com/misja/sailfish-secrets/compare/5a8d33e2eda2fe10a64acc42912dd3bedc736495...sailfish/native-pinentry-compat"
+    },
+    {
+      "upstream": "https://github.com/zx2c4/password-store",
+      "fork": "https://github.com/misja/sailfish-pass",
+      "upstream_commit": "1078f2514d579178d5df7042c6a790e9c9b731ad",
+      "branch": "sailfish/private-gpg",
+      "commit": "84e426cad45f4933661489c17b0c27c1b3d5915a",
+      "compare": "https://github.com/misja/sailfish-pass/compare/1078f2514d579178d5df7042c6a790e9c9b731ad...sailfish/private-gpg"
+    },
+    {
+      "upstream": "https://github.com/pass-extension/pass-otp",
+      "fork": "https://github.com/misja/pass-otp",
+      "upstream_commit": "1e9d10ca75ae1a8672a7f192809713463657778e",
+      "branch": "sailfish/stdin-private-backend",
+      "commit": "57e4c34dba31a3b01eed09b3d4222f9130a6282e",
+      "compare": "https://github.com/misja/pass-otp/compare/1e9d10ca75ae1a8672a7f192809713463657778e...sailfish/stdin-private-backend"
+    }
+  ]
+}

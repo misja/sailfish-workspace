@@ -7,3 +7,5 @@
 - [release-targets](development/release-targets.md)
 - [workflow](development/workflow.md)
 - [Original-work license](../LICENSING.md)
+
+[Upstream forks and source map](development/upstream-forks.md).

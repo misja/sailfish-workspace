@@ -10,18 +10,18 @@ projects:
   - name: workspace
     path: workspace
     kind: infrastructure
-    remote: null
-    reviewed_revision: null
+    remote: https://github.com/misja/sailfish-workspace.git
+    reviewed_revision: df5500722346c16cb692c5eb309e8dee7c7eb339
   - name: gnupg-runtime
     path: gnupg-runtime
     kind: packaging
-    remote: null
-    reviewed_revision: null
+    remote: https://github.com/misja/sailfish-gnupg-runtime.git
+    reviewed_revision: b18ddee8803c94b9a329b0bfad5744aa76759158
   - name: password-store
     path: password-store
     kind: packaging
-    remote: null
-    reviewed_revision: null
+    remote: https://github.com/misja/sailfish-password-store.git
+    reviewed_revision: 9821ff20acee813471f07ec8befd472e6c0b237c
 # Add only existing repositories. Pin reviewed releases before builds.
 environment:
   container: sailfish-sdk
