@@ -66,3 +66,7 @@ clean-checkout package build, SDK installation and device acceptance remain
 separate unfinished work. Do not copy private evidence or real stores to fill
 missing inputs. [Release targets](release-targets.md) distinguish historical
 results from current target acceptance.
+
+Track the remaining SDK/public source setup in
+[workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5).
+Bootstrap validation is recorded [separately](bootstrap-validation-20261014.md).

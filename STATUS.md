@@ -17,3 +17,11 @@ Open product gates include clean-checkout package/bootstrap support, SDK setup,
 exact vendor provenance, production lifecycle, provider/upgrade and distribution.
 General source/planning work needs Git and Python; package/device readiness is
 not established by the workspace setup. See docs/development/getting-started.md.
+
+Fresh public-clone and negative checks passed; see
+[validation record](docs/development/bootstrap-validation-20261014.md).
+No package build, SDK installation or device acceptance was performed.
+
+Follow-ups:
+- SDK/public source bootstrap: https://github.com/misja/sailfish-workspace/issues/5
+- Upstream pass/OTP review: https://github.com/misja/sailfish-password-store/issues/4

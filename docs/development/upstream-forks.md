@@ -56,3 +56,5 @@ part of our delta; diagnostic redaction and packaged backend selection must
 still be compared individually. No dependency version was changed by this audit.
 Review updates separately with affected regression checks; do not blindly sync
 the protected adaptation branch.
+
+Follow-up: [review newer pass/OTP upstream changes](https://github.com/misja/sailfish-password-store/issues/4).

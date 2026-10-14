@@ -14,3 +14,4 @@
 - [Architecture](adr/0001-workspace.md)
 - [Spec Kit and bootstrap provenance](development/spec-kit.md)
 - [Workspace bootstrap specification](../specs/001-workspace-bootstrap/spec.md)
+- [Bootstrap validation, 2026-10-14](development/bootstrap-validation-20261014.md)
