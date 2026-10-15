@@ -1,21 +1,20 @@
 # Session handoff
 
-Updated: 2026-10-14. Maintainer: Misja Hoebe (@misja).
-Live task: [workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5).
-The [project board](https://github.com/users/misja/projects/2) owns current work state.
+Updated: 2026-10-15. Maintainer: Misja Hoebe (@misja).
+Live task/status: [workspace issue #5](https://github.com/misja/sailfish-workspace/issues/5)
+and the [project board](https://github.com/users/misja/projects/2).
 
-The preflight and runtime notice-staging fix are merged. This session prepares
-portable public source authentication/staging and configurable SDK build paths
-in separate workspace/runtime/password-store review branches. Eleven existing
-archive identities are preserved. Online preparation and offline reverification
-passed; generated inputs stay outside Git. The issue records review revisions
-and remaining acceptance work.
+The three public source-bootstrap PRs were approved and merged. A fresh public
+checkout in the existing SDK reproduced source preparation and package builds.
+It exposed missing pass build-init and an incomplete runtime source-RPM recipe;
+their tested fixes and strengthened inspections are being prepared for review.
 
-SDK baseline follows official guidance, normally Docker directly on Linux.
-Misja's LXC -> Ubuntu -> Docker setup is an optional variant requiring extra work.
-The existing SDK reports 3.13.5 and 5.1.0.11 targets. No package build, SDK/target
-installation, device change or upstream submission has been performed in this slice.
+[Build record](docs/development/clean-sdk-build-20261015.md): six main binaries,
+five source RPMs, private payload/dependency/notice checks, and runtime SRPM-only
+prep passed. OATH tests: 10 passed, one skipped. Debugsource collection warned
+about a libksba parser path; auxiliary debug packages are not release-validated.
 
-See [public source bootstrap](docs/development/source-bootstrap.md).
-
-Fresh-public-clone evidence: [source validation](docs/development/source-bootstrap-validation-20261014.md).
+No binary/dependency/target installation, device change, OBS publication or
+upstream submission occurred. SDK 3.13.5/5.1.0.11-aarch64 evidence does not establish
+5.2 acceptance. Raw test data remains in the separate SDK clean-build directory.
+GitHub issues own current review decisions and next actions.

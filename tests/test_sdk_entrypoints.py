@@ -48,10 +48,13 @@ class SDKEntrypointTests(unittest.TestCase):
             subprocess.run(["bash", str(project / "tools/sdk-build.sh")],
                            env=env, check=True, capture_output=True)
             calls = [json.loads(line) for line in trace.read_text().splitlines()]
-            self.assertEqual(len(calls), 1)
-            self.assertIn("target=Synthetic-aarch64", calls[0])
-            self.assertIn("no-pull-build-requires", calls[0])
-            self.assertEqual(calls[0][-2:], ["build", "--prepare"])
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[0][-1], "build-init")
+            self.assertIn("target=Synthetic-aarch64", calls[1])
+            self.assertIn("no-pull-build-requires", calls[1])
+            self.assertIn("rpmbuild", calls[1])
+            self.assertIn("-ba", calls[1])
+            self.assertIn("_sourcedir " + str(project / "sources"), calls[1])
 
     @unittest.skipUnless((ROOT / "sailfish-password-store/tools/sdk-build.sh").is_file(),
                          "Requires sibling password-store checkout")
@@ -62,8 +65,10 @@ class SDKEntrypointTests(unittest.TestCase):
                            env=env, check=True, capture_output=True)
             calls = [json.loads(line) for line in trace.read_text().splitlines()]
             expected = ["sailfish-pass-tree", "oath-toolkit", "sailfish-pass", "sailfish-pass-otp"]
-            self.assertEqual(len(calls), len(expected))
-            for call, recipe in zip(calls, expected):
+            self.assertEqual(len(calls), len(expected) + 1)
+            self.assertEqual(calls[0][-1], "build-init")
+            self.assertIn("target=Synthetic-aarch64", calls[0])
+            for call, recipe in zip(calls[1:], expected):
                 self.assertIn("target=Synthetic-aarch64", call)
                 self.assertIn("no-pull-build-requires", call)
                 self.assertIn("_sourcedir " + str(project / "sources"), call)
