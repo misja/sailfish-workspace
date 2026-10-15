@@ -1,0 +1,515 @@
+{
+  "date": "2026-10-15",
+  "scope": "Clean public-source build and static package inspection; no installation, release or target/runtime acceptance",
+  "environment": {
+    "sdk": "3.13.5",
+    "build_target": "SailfishOS-5.1.0.11-aarch64",
+    "observed_variant": "Existing LXC Ubuntu outer container with Docker SDK; optional, not required by build scripts"
+  },
+  "initial_public_checkouts": {
+    "sailfish-workspace": "c7927ad295fc39fc981a0394540a85f8437b6229",
+    "sailfish-password-store": "3a2707cbcc04bde5a28304f75dd7d1b5d96ac3ad",
+    "sailfish-gnupg-runtime": "6c0b8c6ad89fa60f82cf95ac0ed875833c9c382b",
+    "pass-otp": "57e4c34dba31a3b01eed09b3d4222f9130a6282e",
+    "sailfish-pass": "84e426cad45f4933661489c17b0c27c1b3d5915a",
+    "sailfish-secrets": "3e79aaec2092ecc1ddd449d36b9ebc2bd724713b"
+  },
+  "tested_fix_file_sha256": {
+    "sailfish-gnupg-runtime": {
+      "rpm/sailfish-gnupg-private.spec": "49e3556bc0878bd4774b92e0bd744189dcc010e4c418e32ce1cfdf2fff6dd259",
+      "tools/prepare-package.py": "61f234c121cf024a59c3e1fed356756bd5e45cf7c1d3d38b4d8e34b626b6db2b",
+      "tools/sdk-build.sh": "48f218db8e0fc90215ea871603dadbc93d717bd8f571651364cf9a7f20c7be19",
+      "tools/inspect-rpm.py": "aa4bf22ca66a5081069eaf383e8717be7d830affa73a5db1ea9c30c2f9269007",
+      "tests/test_source_package.py": "a083457c9c4dda99678734f53d4656b1fd8e611d053d102e39d6152f688ad295"
+    },
+    "sailfish-password-store": {
+      "tools/sdk-build.sh": "9d1ce592df6fd5cdf307302926bc839a2c3a5fc9604eb22b58f36aef75109edc",
+      "tools/inspect-package.py": "8c282960993ef53d54c2ad3638b0941cd79f28b63cc747783e988710b1c1d223"
+    }
+  },
+  "build_results": {
+    "runtime_original_binary": 0,
+    "password_original_missing_build_init": 1,
+    "password_after_build_init": 0,
+    "runtime_complete_source_and_binary": 0,
+    "runtime_original_source_rpm_attempt": {
+      "exit": 1,
+      "summary": "Source0 lookup failed for rpm/build-runtime.sh; the old recipe was not a complete source package."
+    }
+  },
+  "runtime_inspection": {
+    "provides": "sailfish-gnupg-private = 2.5.24-0.3\nsailfish-gnupg-private(aarch-64) = 2.5.24-0.3\n",
+    "requires": "(/bin/stat or /usr/bin/stat)\n/bin/sh\n/usr/bin/busybox\n/usr/bin/busybox\n/usr/bin/env\n/usr/bin/getent\n/usr/bin/id\nld-linux-aarch64.so.1()(64bit)\nld-linux-aarch64.so.1(GLIBC_2.17)(64bit)\nlibc.so.6()(64bit)\nlibc.so.6(GLIBC_2.17)(64bit)\nlibc.so.6(GLIBC_2.25)(64bit)\nlibc.so.6(GLIBC_2.32)(64bit)\nlibc.so.6(GLIBC_2.33)(64bit)\nlibc.so.6(GLIBC_2.34)(64bit)\nlibc.so.6(GLIBC_2.38)(64bit)\nlibz.so.1()(64bit)\nrpmlib(CompressedFileNames) <= 3.0.4-1\nrpmlib(FileDigests) <= 4.6.0-1\nrpmlib(PayloadFilesHavePrefix) <= 4.0-1\nrpmlib(PayloadIsZstd) <= 5.4.18-1\nrpmlib(RichDependencies) <= 4.12.0-1\n",
+    "payload": "/usr/bin/sailfish-gpg\n/usr/bin/sailfish-gpg-agent\n/usr/libexec/sailfish-gnupg\n/usr/libexec/sailfish-gnupg/bin\n/usr/libexec/sailfish-gnupg/bin/gpg\n/usr/libexec/sailfish-gnupg/bin/gpg-agent\n/usr/libexec/sailfish-gnupg/bin/gpg-connect-agent\n/usr/libexec/sailfish-gnupg/bin/gpgconf\n/usr/libexec/sailfish-gnupg/bin/gpgsplit\n/usr/libexec/sailfish-gnupg/bin/gpgtar\n/usr/libexec/sailfish-gnupg/bin/gpgv\n/usr/libexec/sailfish-gnupg/bin/pinentry\n/usr/libexec/sailfish-gnupg/bin/pinentry-tty\n/usr/libexec/sailfish-gnupg/lib\n/usr/libexec/sailfish-gnupg/lib/libassuan.so\n/usr/libexec/sailfish-gnupg/lib/libassuan.so.9\n/usr/libexec/sailfish-gnupg/lib/libassuan.so.9.0.2\n/usr/libexec/sailfish-gnupg/lib/libgcrypt.so\n/usr/libexec/sailfish-gnupg/lib/libgcrypt.so.20\n/usr/libexec/sailfish-gnupg/lib/libgcrypt.so.20.8.9\n/usr/libexec/sailfish-gnupg/lib/libgpg-error.so\n/usr/libexec/sailfish-gnupg/lib/libgpg-error.so.0\n/usr/libexec/sailfish-gnupg/lib/libgpg-error.so.0.42.1\n/usr/libexec/sailfish-gnupg/lib/libksba.so\n/usr/libexec/sailfish-gnupg/lib/libksba.so.8\n/usr/libexec/sailfish-gnupg/lib/libksba.so.8.16.1\n/usr/libexec/sailfish-gnupg/lib/libnpth.so\n/usr/libexec/sailfish-gnupg/lib/libnpth.so.0\n/usr/libexec/sailfish-gnupg/lib/libnpth.so.0.3.0\n/usr/libexec/sailfish-gnupg/libexec\n/usr/libexec/sailfish-gnupg/libexec/gpg-protect-tool\n/usr/libexec/sailfish-gnupg/libexec/runtime-policy.sh\n/usr/libexec/sailfish-gnupg/licenses\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/COPYING\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/COPYING.CC0\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/COPYING.GPL2\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/COPYING.LGPL21\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/COPYING.LGPL3\n/usr/libexec/sailfish-gnupg/licenses/gnupg-2.5.24/COPYING.other\n/usr/libexec/sailfish-gnupg/licenses/libassuan-3.0.2\n/usr/libexec/sailfish-gnupg/licenses/libassuan-3.0.2/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/libassuan-3.0.2/COPYING\n/usr/libexec/sailfish-gnupg/licenses/libassuan-3.0.2/COPYING.LIB\n/usr/libexec/sailfish-gnupg/licenses/libgcrypt-1.12.4\n/usr/libexec/sailfish-gnupg/licenses/libgcrypt-1.12.4/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/libgcrypt-1.12.4/COPYING\n/usr/libexec/sailfish-gnupg/licenses/libgcrypt-1.12.4/COPYING.LIB\n/usr/libexec/sailfish-gnupg/licenses/libgcrypt-1.12.4/LICENSES\n/usr/libexec/sailfish-gnupg/licenses/libgpg-error-1.61\n/usr/libexec/sailfish-gnupg/licenses/libgpg-error-1.61/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/libgpg-error-1.61/COPYING\n/usr/libexec/sailfish-gnupg/licenses/libgpg-error-1.61/COPYING.LIB\n/usr/libexec/sailfish-gnupg/licenses/libksba-1.8.1\n/usr/libexec/sailfish-gnupg/licenses/libksba-1.8.1/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/libksba-1.8.1/COPYING\n/usr/libexec/sailfish-gnupg/licenses/libksba-1.8.1/COPYING.GPLv2\n/usr/libexec/sailfish-gnupg/licenses/libksba-1.8.1/COPYING.GPLv3\n/usr/libexec/sailfish-gnupg/licenses/libksba-1.8.1/COPYING.LGPLv3\n/usr/libexec/sailfish-gnupg/licenses/npth-1.8\n/usr/libexec/sailfish-gnupg/licenses/npth-1.8/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/npth-1.8/COPYING.LIB\n/usr/libexec/sailfish-gnupg/licenses/pinentry-1.3.3\n/usr/libexec/sailfish-gnupg/licenses/pinentry-1.3.3/AUTHORS\n/usr/libexec/sailfish-gnupg/licenses/pinentry-1.3.3/COPYING\n/usr/libexec/sailfish-gnupg/licenses/project\n/usr/libexec/sailfish-gnupg/licenses/project/LICENSE\n/usr/libexec/sailfish-gnupg/licenses/project/LICENSING.md\n/usr/libexec/sailfish-gnupg/sbin\n/usr/libexec/sailfish-gnupg/sbin/addgnupghome\n/usr/libexec/sailfish-gnupg/sbin/applygnupgdefaults\n/usr/libexec/sailfish-gnupg/share\n/usr/libexec/sailfish-gnupg/share/aclocal\n/usr/libexec/sailfish-gnupg/share/aclocal/gpg-error.m4\n/usr/libexec/sailfish-gnupg/share/aclocal/gpgrt.m4\n/usr/libexec/sailfish-gnupg/share/aclocal/ksba.m4\n/usr/libexec/sailfish-gnupg/share/aclocal/libassuan.m4\n/usr/libexec/sailfish-gnupg/share/aclocal/libgcrypt.m4\n/usr/libexec/sailfish-gnupg/share/aclocal/npth.m4\n/usr/libexec/sailfish-gnupg/share/common-lisp\n/usr/libexec/sailfish-gnupg/share/common-lisp/source\n/usr/libexec/sailfish-gnupg/share/common-lisp/source/gpg-error\n/usr/libexec/sailfish-gnupg/share/common-lisp/source/gpg-error/gpg-error-codes.lisp\n/usr/libexec/sailfish-gnupg/share/common-lisp/source/gpg-error/gpg-error-package.lisp\n/usr/libexec/sailfish-gnupg/share/common-lisp/source/gpg-error/gpg-error.asd\n/usr/libexec/sailfish-gnupg/share/common-lisp/source/gpg-error/gpg-error.lisp\n/usr/libexec/sailfish-gnupg/share/doc\n/usr/libexec/sailfish-gnupg/share/doc/gnupg\n/usr/libexec/sailfish-gnupg/share/doc/gnupg/README\n/usr/libexec/sailfish-gnupg/share/gnupg\n/usr/libexec/sailfish-gnupg/share/gnupg/distsigkey.gpg\n/usr/libexec/sailfish-gnupg/share/locale\n/usr/libexec/sailfish-gnupg/share/locale/ca\n/usr/libexec/sailfish-gnupg/share/locale/ca/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/ca/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/cs\n/usr/libexec/sailfish-gnupg/share/locale/cs/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/cs/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/cs/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/da\n/usr/libexec/sailfish-gnupg/share/locale/da/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/da/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/da/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/de\n/usr/libexec/sailfish-gnupg/share/locale/de/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/de/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/de/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/el\n/usr/libexec/sailfish-gnupg/share/locale/el/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/el/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/en@boldquot\n/usr/libexec/sailfish-gnupg/share/locale/en@boldquot/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/en@boldquot/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/en@quot\n/usr/libexec/sailfish-gnupg/share/locale/en@quot/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/en@quot/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/eo\n/usr/libexec/sailfish-gnupg/share/locale/eo/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/eo/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/eo/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/es\n/usr/libexec/sailfish-gnupg/share/locale/es/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/es/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/es/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/et\n/usr/libexec/sailfish-gnupg/share/locale/et/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/et/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/fi\n/usr/libexec/sailfish-gnupg/share/locale/fi/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/fi/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/fr\n/usr/libexec/sailfish-gnupg/share/locale/fr/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/fr/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/fr/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/gl\n/usr/libexec/sailfish-gnupg/share/locale/gl/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/gl/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/hu\n/usr/libexec/sailfish-gnupg/share/locale/hu/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/hu/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/hu/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/id\n/usr/libexec/sailfish-gnupg/share/locale/id/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/id/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/it\n/usr/libexec/sailfish-gnupg/share/locale/it/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/it/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/it/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/ja\n/usr/libexec/sailfish-gnupg/share/locale/ja/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/ja/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/ja/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/ka\n/usr/libexec/sailfish-gnupg/share/locale/ka/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/ka/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/nb\n/usr/libexec/sailfish-gnupg/share/locale/nb/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/nb/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/nl\n/usr/libexec/sailfish-gnupg/share/locale/nl/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/nl/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/nl/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/pl\n/usr/libexec/sailfish-gnupg/share/locale/pl/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/pl/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/pl/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/pt\n/usr/libexec/sailfish-gnupg/share/locale/pt/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/pt/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/pt/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/ro\n/usr/libexec/sailfish-gnupg/share/locale/ro/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/ro/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/ro/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/ru\n/usr/libexec/sailfish-gnupg/share/locale/ru/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/ru/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/ru/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/sk\n/usr/libexec/sailfish-gnupg/share/locale/sk/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/sk/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/sr\n/usr/libexec/sailfish-gnupg/share/locale/sr/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/sr/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/sv\n/usr/libexec/sailfish-gnupg/share/locale/sv/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/sv/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/sv/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/tr\n/usr/libexec/sailfish-gnupg/share/locale/tr/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/tr/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/tr/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/uk\n/usr/libexec/sailfish-gnupg/share/locale/uk/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/uk/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/uk/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/vi\n/usr/libexec/sailfish-gnupg/share/locale/vi/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/vi/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/zh_CN\n/usr/libexec/sailfish-gnupg/share/locale/zh_CN/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/zh_CN/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/zh_CN/LC_MESSAGES/libgpg-error.mo\n/usr/libexec/sailfish-gnupg/share/locale/zh_TW\n/usr/libexec/sailfish-gnupg/share/locale/zh_TW/LC_MESSAGES\n/usr/libexec/sailfish-gnupg/share/locale/zh_TW/LC_MESSAGES/gnupg2.mo\n/usr/libexec/sailfish-gnupg/share/locale/zh_TW/LC_MESSAGES/libgpg-error.mo\n",
+    "scripts": "",
+    "elf_static": [
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpg",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libz.so.1",
+          "libgcrypt.so.20",
+          "libassuan.so.9",
+          "libnpth.so.0",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpg-agent",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgcrypt.so.20",
+          "libassuan.so.9",
+          "libnpth.so.0",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpg-connect-agent",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libassuan.so.9",
+          "libgcrypt.so.20",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpgconf",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgcrypt.so.20",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpgsplit",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgcrypt.so.20",
+          "libgpg-error.so.0",
+          "libz.so.1",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpgtar",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgcrypt.so.20",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/gpgv",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libz.so.1",
+          "libgcrypt.so.20",
+          "libassuan.so.9",
+          "libnpth.so.0",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/bin/pinentry-tty",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libassuan.so.9",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/lib/libassuan.so.9.0.2",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/lib/libgcrypt.so.20.8.9",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/lib/libgpg-error.so.0.42.1",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/lib/libksba.so.8.16.1",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/lib/libnpth.so.0.3.0",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libc.so.6"
+        ]
+      },
+      {
+        "path": "usr/libexec/sailfish-gnupg/libexec/gpg-protect-tool",
+        "runpath": [
+          "/usr/libexec/sailfish-gnupg/lib"
+        ],
+        "needed": [
+          "libgcrypt.so.20",
+          "libassuan.so.9",
+          "libgpg-error.so.0",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ]
+      }
+    ],
+    "source_package": {
+      "sha256": "3172b7c3799d642f80c5cf3cc3a0f938a5c92ec5d808d1eefc4833dd666b45ba",
+      "capsule_sha256": "32c05161678e0acd46ee634176ef1c06fb5b69ab80f3b7057d5515cfc1c2debe",
+      "source_file_count": 106,
+      "project_provenance": {
+        "git_base_commit": "6c0b8c6ad89fa60f82cf95ac0ed875833c9c382b",
+        "scope": "Tracked project worktree plus exact locked archives and regenerated public verification material",
+        "tracked_worktree_differs_from_head": true
+      },
+      "checks": [
+        "matching binary SOURCERPM",
+        "exact spec and capsule bytes",
+        "all source-provenance hashes",
+        "seven upstream archives",
+        "build scripts, wrappers, notices and public verification material"
+      ]
+    },
+    "artifact_sha256": "a1f13056563a5c7c57ee8525ee819ce271b73769d2b1d59b365520d26035e9ae",
+    "identity": "2.5.24-0.3",
+    "scope": "RPM metadata and exact policy payload only; no native acceptance"
+  },
+  "password_inspection": {
+    "date": "2026-10-15",
+    "binary_sha256": "f1bb3a0d4f9c96f9e8937f9f47cfb7cda027663980e50e8fa1dc539046691d04",
+    "source_sha256": "3711210b9cb1ddac73cfa355341b88909d906211fe222deae46db24066146af1",
+    "requires": "(/bin/stat or /usr/bin/stat)\n/bin/sed\n/usr/bin/base64\n/usr/bin/bash\n/usr/bin/busybox\n/usr/bin/busybox\n/usr/bin/env\n/usr/bin/env\n/usr/bin/find\n/usr/bin/getopt\n/usr/bin/grep\n/usr/bin/id\n/usr/bin/tr\n/usr/libexec/sailfish-pass-tools/bin/tree\ngnu-bash >= 5.0.18\nrpmlib(CompressedFileNames) <= 3.0.4-1\nrpmlib(FileDigests) <= 4.6.0-1\nrpmlib(PayloadFilesHavePrefix) <= 4.0-1\nrpmlib(PayloadIsZstd) <= 5.4.18-1\nrpmlib(RichDependencies) <= 4.12.0-1\nsailfish-gnupg-private = 2.5.24-0.3\nsailfish-pass-tree = 2.3.2\n",
+    "provides": "sailfish-pass = 1.7.4-0.4\n",
+    "payload": "/usr/bin/pass\n/usr/libexec/sailfish-pass\n/usr/libexec/sailfish-pass/bin\n/usr/libexec/sailfish-pass/bin/pass\n/usr/libexec/sailfish-pass/password-store\n/usr/libexec/sailfish-pass/password-store/extensions\n/usr/libexec/sailfish-pass/share\n/usr/libexec/sailfish-pass/share/man\n/usr/libexec/sailfish-pass/share/man/man1\n/usr/libexec/sailfish-pass/share/man/man1/pass.1\n/usr/share/doc/sailfish-pass\n/usr/share/doc/sailfish-pass/source-verification.json\n/usr/share/doc/sailfish-pass/sources.lock.json\n/usr/share/licenses/sailfish-pass\n/usr/share/licenses/sailfish-pass/COPYING\n/usr/share/licenses/sailfish-pass/GPL-3.0.txt\n/usr/share/licenses/sailfish-pass/LICENSING.md\n",
+    "source_files": [
+      "LICENSE",
+      "LICENSING.md",
+      "pass-release-key.asc",
+      "pass-tag-verification.json",
+      "password-store-1.7.4-verified.tar",
+      "private-gpg.patch",
+      "sailfish-pass",
+      "sailfish-pass.spec",
+      "sources.lock.json"
+    ],
+    "checks": [
+      "private engine binding",
+      "no stock gpg2 selection",
+      "wrapper identity",
+      "private extension path",
+      "private-only payload",
+      "no ELF",
+      "private RPM dependency",
+      "no scriptlets",
+      "complete matching SRPM inputs"
+    ],
+    "tree": {
+      "binary_sha256": "4d83ceffd0326545e5e7c30d988ebed39ea5fd084138f037b50931dd16a88a12",
+      "source_sha256": "0b4ac811ed36dd08567f48f7b79ea595d20466f50ee93a1d34897586abb8074e",
+      "requires": "ld-linux-aarch64.so.1()(64bit)\nld-linux-aarch64.so.1(GLIBC_2.17)(64bit)\nlibc.so.6()(64bit)\nlibc.so.6(GLIBC_2.17)(64bit)\nlibc.so.6(GLIBC_2.28)(64bit)\nlibc.so.6(GLIBC_2.33)(64bit)\nlibc.so.6(GLIBC_2.34)(64bit)\nlibc.so.6(GLIBC_2.38)(64bit)\nrpmlib(CompressedFileNames) <= 3.0.4-1\nrpmlib(FileDigests) <= 4.6.0-1\nrpmlib(PayloadFilesHavePrefix) <= 4.0-1\nrpmlib(PayloadIsZstd) <= 5.4.18-1\n",
+      "provides": "sailfish-pass-tree = 2.3.2-0.1\nsailfish-pass-tree(aarch-64) = 2.3.2-0.1\n",
+      "payload": "/usr/libexec/sailfish-pass-tools\n/usr/libexec/sailfish-pass-tools/bin\n/usr/libexec/sailfish-pass-tools/bin/tree\n/usr/libexec/sailfish-pass-tools/share\n/usr/libexec/sailfish-pass-tools/share/man\n/usr/libexec/sailfish-pass-tools/share/man/man1\n/usr/libexec/sailfish-pass-tools/share/man/man1/tree.1\n/usr/share/doc/sailfish-pass-tree\n/usr/share/doc/sailfish-pass-tree/source-provenance.json\n/usr/share/licenses/sailfish-pass-tree\n/usr/share/licenses/sailfish-pass-tree/LICENSE\n",
+      "version_from_built_binary": "tree v2.3.2 \u00a9 1996 - 2026 by Steve Baker, Thomas Moore, Francesc Rocher, Florian Sesser, Kyosuke Tokoro\n",
+      "checks": [
+        "AArch64",
+        "no build RPATH/RUNPATH",
+        "private paths only",
+        "no scriptlets",
+        "SRPM inputs match",
+        "built binary version executes"
+      ]
+    },
+    "oath": {
+      "source_sha256": "b045a50ff766c897b0d89162747bb1fc918742169b5f2f7d486022f78c1d983c",
+      "source_inputs": [
+        "oath-COPYING.LESSER",
+        "oath-source.json",
+        "oath-toolkit-2.6.14.tar.gz",
+        "oath-toolkit.spec"
+      ],
+      "packages": {
+        "sailfish-liboath": {
+          "sha256": "c0a3f951ae22e23e343579f8a91e187160accf1c9df75222d4ca0b8034cbb1e5",
+          "requires": "ld-linux-aarch64.so.1()(64bit)\nld-linux-aarch64.so.1(GLIBC_2.17)(64bit)\nlibc.so.6()(64bit)\nlibc.so.6(GLIBC_2.17)(64bit)\nlibc.so.6(GLIBC_2.33)(64bit)\nlibc.so.6(GLIBC_2.38)(64bit)\nrpmlib(CompressedFileNames) <= 3.0.4-1\nrpmlib(FileDigests) <= 4.6.0-1\nrpmlib(PayloadFilesHavePrefix) <= 4.0-1\nrpmlib(PayloadIsZstd) <= 5.4.18-1\n",
+          "provides": "bundled(gnulib)\nsailfish-liboath = 2.6.14-0.3\nsailfish-liboath(aarch-64) = 2.6.14-0.3\n",
+          "elf": [
+            {
+              "path": "usr/libexec/sailfish-oath/lib/liboath.so.0.1.3",
+              "runpath": []
+            }
+          ]
+        },
+        "sailfish-oathtool": {
+          "sha256": "cf70fe585b6feb35329bb8434b0c7e20999a467a10e5c6175e16240d42dedfbe",
+          "requires": "ld-linux-aarch64.so.1()(64bit)\nld-linux-aarch64.so.1(GLIBC_2.17)(64bit)\nlibc.so.6()(64bit)\nlibc.so.6(GLIBC_2.17)(64bit)\nlibc.so.6(GLIBC_2.34)(64bit)\nlibc.so.6(GLIBC_2.38)(64bit)\nrpmlib(CompressedFileNames) <= 3.0.4-1\nrpmlib(FileDigests) <= 4.6.0-1\nrpmlib(PayloadFilesHavePrefix) <= 4.0-1\nrpmlib(PayloadIsZstd) <= 5.4.18-1\nsailfish-liboath = 2.6.14-0.3\n",
+          "provides": "bundled(gnulib)\nsailfish-oathtool = 2.6.14-0.3\nsailfish-oathtool(aarch-64) = 2.6.14-0.3\n",
+          "elf": [
+            {
+              "path": "usr/libexec/sailfish-oath/bin/oathtool",
+              "runpath": [
+                "/usr/libexec/sailfish-oath/lib"
+              ]
+            }
+          ]
+        }
+      },
+      "checks": [
+        "matching SRPM inputs",
+        "private payload and library resolution",
+        "AArch64 ELF",
+        "no scriptlets",
+        "exact GPL/LGPL notices"
+      ]
+    },
+    "otp": {
+      "binary_sha256": "d35225780cb4c7530997d8db2f07137ca33f961b515a3c2d1f653059c94c4434",
+      "source_sha256": "e6d4297845c2bd60b41dab211b1a3e7901234aa54736d7ec4a1aab86c3424f95",
+      "source_inputs": [
+        "pass-otp-1.2.0.tar.gz",
+        "pass-otp-private-backend.patch",
+        "pass-otp-stdin.patch",
+        "sailfish-pass-otp.spec"
+      ],
+      "requires": [
+        "/usr/bin/env",
+        "/usr/libexec/sailfish-oath/bin/oathtool",
+        "rpmlib(CompressedFileNames) <= 3.0.4-1",
+        "rpmlib(FileDigests) <= 4.6.0-1",
+        "rpmlib(PayloadFilesHavePrefix) <= 4.0-1",
+        "rpmlib(PayloadIsZstd) <= 5.4.18-1",
+        "sailfish-oathtool = 2.6.14-0.3",
+        "sailfish-pass = 1.7.4-0.4"
+      ],
+      "checks": [
+        "matching SRPM inputs",
+        "exact upstream-plus-two-patches payload",
+        "private backend dependency",
+        "exact upstream license",
+        "no scriptlets"
+      ]
+    }
+  },
+  "artifacts": {
+    "sailfish-gnupg-runtime/build/rpmbuild/RPMS/aarch64/sailfish-gnupg-private-2.5.24-0.3.aarch64.rpm": {
+      "sha256": "a1f13056563a5c7c57ee8525ee819ce271b73769d2b1d59b365520d26035e9ae",
+      "bytes": 2507451,
+      "role": "binary"
+    },
+    "sailfish-gnupg-runtime/build/rpmbuild/RPMS/aarch64/sailfish-gnupg-private-debuginfo-2.5.24-0.3.aarch64.rpm": {
+      "sha256": "60183a95d6fac8d8b9cc39471f0ecc9e68576c761ee911d7632590b6b93866c9",
+      "bytes": 4698622,
+      "role": "auxiliary-debug-not-release-validated"
+    },
+    "sailfish-gnupg-runtime/build/rpmbuild/RPMS/aarch64/sailfish-gnupg-private-debugsource-2.5.24-0.3.aarch64.rpm": {
+      "sha256": "1970fe744a1347786771391e99a5ed4fdba18f5a68c9b911474a993e69aaadc0",
+      "bytes": 1931859,
+      "role": "auxiliary-debug-not-release-validated"
+    },
+    "sailfish-gnupg-runtime/build/rpmbuild/SRPMS/sailfish-gnupg-private-2.5.24-0.3.src.rpm": {
+      "sha256": "3172b7c3799d642f80c5cf3cc3a0f938a5c92ec5d808d1eefc4833dd666b45ba",
+      "bytes": 16404493,
+      "role": "source"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/oath-toolkit-debuginfo-2.6.14-0.3.aarch64.rpm": {
+      "sha256": "ee0740dd139c16123a57da3841f49cfbea6d967d7e4eb1c60c7db95fe22da1e4",
+      "bytes": 182033,
+      "role": "auxiliary-debug-not-release-validated"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/oath-toolkit-debugsource-2.6.14-0.3.aarch64.rpm": {
+      "sha256": "a80448c7340062e1113e93d3d858e445e597d5a37e8bfc5d474a3d868dd92a57",
+      "bytes": 262109,
+      "role": "auxiliary-debug-not-release-validated"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/sailfish-liboath-2.6.14-0.3.aarch64.rpm": {
+      "sha256": "c0a3f951ae22e23e343579f8a91e187160accf1c9df75222d4ca0b8034cbb1e5",
+      "bytes": 70969,
+      "role": "binary"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/sailfish-oathtool-2.6.14-0.3.aarch64.rpm": {
+      "sha256": "cf70fe585b6feb35329bb8434b0c7e20999a467a10e5c6175e16240d42dedfbe",
+      "bytes": 39936,
+      "role": "binary"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/sailfish-pass-tree-2.3.2-0.1.aarch64.rpm": {
+      "sha256": "4d83ceffd0326545e5e7c30d988ebed39ea5fd084138f037b50931dd16a88a12",
+      "bytes": 54878,
+      "role": "binary"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/sailfish-pass-tree-debuginfo-2.3.2-0.1.aarch64.rpm": {
+      "sha256": "5dc276042324d0752038d65fdeaab8d796803c35c693eee82f5d0438ce7e8a04",
+      "bytes": 91683,
+      "role": "auxiliary-debug-not-release-validated"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/aarch64/sailfish-pass-tree-debugsource-2.3.2-0.1.aarch64.rpm": {
+      "sha256": "c5b2abdd1901c64f009cb058596a343add9580d3b3bebe003fb01e0443449b33",
+      "bytes": 40725,
+      "role": "auxiliary-debug-not-release-validated"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/noarch/sailfish-pass-1.7.4-0.4.noarch.rpm": {
+      "sha256": "f1bb3a0d4f9c96f9e8937f9f47cfb7cda027663980e50e8fa1dc539046691d04",
+      "bytes": 39145,
+      "role": "binary"
+    },
+    "sailfish-password-store/build/rpmbuild/RPMS/noarch/sailfish-pass-otp-1.2.0-0.4.noarch.rpm": {
+      "sha256": "d35225780cb4c7530997d8db2f07137ca33f961b515a3c2d1f653059c94c4434",
+      "bytes": 24116,
+      "role": "binary"
+    },
+    "sailfish-password-store/build/rpmbuild/SRPMS/oath-toolkit-2.6.14-0.3.src.rpm": {
+      "sha256": "b045a50ff766c897b0d89162747bb1fc918742169b5f2f7d486022f78c1d983c",
+      "bytes": 3049550,
+      "role": "source"
+    },
+    "sailfish-password-store/build/rpmbuild/SRPMS/sailfish-pass-1.7.4-0.4.src.rpm": {
+      "sha256": "3711210b9cb1ddac73cfa355341b88909d906211fe222deae46db24066146af1",
+      "bytes": 88917,
+      "role": "source"
+    },
+    "sailfish-password-store/build/rpmbuild/SRPMS/sailfish-pass-otp-1.2.0-0.4.src.rpm": {
+      "sha256": "e6d4297845c2bd60b41dab211b1a3e7901234aa54736d7ec4a1aab86c3424f95",
+      "bytes": 55539,
+      "role": "source"
+    },
+    "sailfish-password-store/build/rpmbuild/SRPMS/sailfish-pass-tree-2.3.2-0.1.src.rpm": {
+      "sha256": "0b4ac811ed36dd08567f48f7b79ea595d20466f50ee93a1d34897586abb8074e",
+      "bytes": 78513,
+      "role": "source"
+    }
+  },
+  "oath_upstream_test_summaries": [
+    "SKIP: tst_usersfile.sh",
+    "# TOTAL: 9",
+    "# PASS:  8",
+    "# SKIP:  1",
+    "# XFAIL: 0",
+    "# FAIL:  0",
+    "# XPASS: 0",
+    "# ERROR: 0",
+    "# TOTAL: 0",
+    "# PASS:  0",
+    "# SKIP:  0",
+    "# XFAIL: 0",
+    "# FAIL:  0",
+    "# XPASS: 0",
+    "# ERROR: 0",
+    "# TOTAL: 2",
+    "# PASS:  2",
+    "# SKIP:  0",
+    "# XFAIL: 0",
+    "# FAIL:  0",
+    "# XPASS: 0",
+    "# ERROR: 0"
+  ],
+  "runtime_capsule_worktree_differences_after_build": [
+    "tools/inspect-rpm.py"
+  ],
+  "warnings": [
+    {
+      "scope": "SDK auxiliary debugsource collection",
+      "message": "cpio could not stat build/libksba-1.8.1-build/src/asn1-parse.c",
+      "upstream_parser_sources_in_locked_archive": [
+        "libksba-1.8.1/src/asn1-parse.y",
+        "libksba-1.8.1/src/asn1-parse.c"
+      ],
+      "disposition": "Recorded; auxiliary debug packages not release-validated. Main source capsule retains locked upstream archive."
+    }
+  ],
+  "limits": [
+    "Builds reused the existing declared SDK toolchain/dependencies; SDK provisioning was not repeated.",
+    "No binary RPM was installed; no real keys/stores/OTP material were used.",
+    "No independent human security audit or Sailfish 5.2/device/provider/lifecycle acceptance.",
+    "Source capsule records its exact input hashes; the inspector helper was extended after compilation if listed above."
+  ],
+  "srpm_only_prepare": {
+    "exit": 0,
+    "scope": "SRPM-only unpack and prep; no Git/workspace/cache supplied and no binary installation",
+    "git_directory_present": false,
+    "prepared_upstream_components": [
+      "gnupg-2.5.24",
+      "libassuan-3.0.2",
+      "libgcrypt-1.12.4",
+      "libgpg-error-1.61",
+      "libksba-1.8.1",
+      "npth-1.8",
+      "pinentry-1.3.3"
+    ]
+  },
+  "oath_upstream_test_totals": {
+    "passed": 10,
+    "skipped": [
+      "tst_usersfile.sh"
+    ],
+    "failed": 0,
+    "errors": 0
+  },
+  "repository_test_results": {
+    "workspace": 23,
+    "runtime": 5,
+    "password_store": 4,
+    "total_passed": 32,
+    "failures": 0,
+    "scope": "Automated implementation checks; no independent human audit"
+  }
+}

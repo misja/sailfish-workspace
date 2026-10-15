@@ -18,3 +18,4 @@
 - [SDK and public-source bootstrap](development/sdk-bootstrap.md)
 - [Recreate public package sources](development/source-bootstrap.md)
 - [Source bootstrap validation, 2026-10-14](development/source-bootstrap-validation-20261014.md)
+- [Clean SDK build, 2026-10-15](development/clean-sdk-build-20261015.md)

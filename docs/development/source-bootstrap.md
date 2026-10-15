@@ -85,7 +85,17 @@ These build commands require an installed, reviewed target and the approved
 build scope. The shown target is the historically available target, not proof
 of Sailfish 5.2 support. Build entry points use the current checkout paths,
 disable automatic build-dependency pulling and do not install generated RPMs.
-The pass entry point builds tree, OATH, pass and OTP recipes in its own project.
+Both entry points initialize a fresh SDK build tree and use rpmbuild -ba to
+produce binary and source packages. The pass entry point builds tree, OATH, pass
+and OTP recipes in its own project.
+
+Runtime source packaging creates a self-contained capsule from Git-tracked
+worktree files, locked archives/signatures and regenerated verification material.
+Add new intended source files to Git before packaging them; untracked files are
+not swept into the capsule. Its SOURCE-PROVENANCE.json records exact hashes,
+base commit and any tracked-worktree changes. The source RPM contains those build inputs; its prep phase was also tested
+without a sibling workspace or Git history.
+This source-capsule stability does not claim byte-reproducible binary RPMs.
 
 The optional LXC -> Ubuntu -> Docker route has additional setup needs; it is
 not required for these source commands or the SDK interface. Exact vendor-source/

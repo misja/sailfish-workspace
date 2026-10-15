@@ -62,11 +62,10 @@ for the intended Sailfish OS 5.2 release or the maintainer's current device.
 Keep [target selection](release-targets.md) explicit. Record installed tooling
 and a reviewed SDK-to-release mapping before changing targets.
 
-Host checkouts keep their GitHub names. Existing prototype scripts still expect
-/home/ubuntu/gnupg-runtime and /home/ubuntu/password-store inside the SDK. Do not
-rename the host directories back to satisfy those guards. The proposed source-bootstrap changes parameterize those build entry points
-and replace dated staging records. Other historical device/SDK test harnesses
-remain separately scoped.
+Host checkouts keep their GitHub names. Source and build entrypoints derive
+their project directories, accept an explicit SDK path and require a selected
+installed target. Historical device/test harnesses remain separately scoped.
+See the [actual clean build](clean-sdk-build-20261015.md) and its pending fixes.
 
 SDK downloads, virtualization/system configuration and installations require
 their own concrete approval. No install command is run by the preflight.
@@ -87,7 +86,8 @@ archive. The preflight intentionally does not label native pinentry ready.
 
 A source audit found the runtime RPM's component-license directory staging was
 broken; its separate fix has a synthetic test of the actual install fragment.
-A full SDK build and resulting binary/source-RPM notice inspection remain due.
+The [clean build record](clean-sdk-build-20261015.md) now contains the actual
+main binary/source-RPM notice inspections and the remaining debug-package limit.
 
 ## Completion evidence
 
