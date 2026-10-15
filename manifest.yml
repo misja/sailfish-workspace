@@ -58,8 +58,9 @@
   "environment": {
     "sdk_release": "3.13.5",
     "smoke_test_build_target": "SailfishOS-5.1.0.11-aarch64",
-    "sdk_bootstrap_adaptation": "infrastructure/sdk/sdk-docker-wrapper.py",
-    "scope": "Historical tested environment; SDK provisioning and target validation are separate."
+    "scope": "Historical tested environment; SDK provisioning and target validation are separate.",
+    "build_engine_route": "Official Sailfish SDK guidance; Docker directly on the Linux development host is the documented default route.",
+    "optional_lxc_adaptation": "infrastructure/sdk/sdk-docker-wrapper.py"
   },
   "target_policy": {
     "default_release_targets": [

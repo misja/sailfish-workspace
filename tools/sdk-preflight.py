@@ -56,10 +56,16 @@ def inspect_component(root, component):
             filename = entry.get("archive") or f"pass-otp-{entry['version']}.tar.gz"
             files.append(inspect_file(project, "sources/" + filename, entry["sha256"]))
         for path in ("sources/pass-release-key.asc",
-                     "evidence/pass-tag-verification-20261011.json",
-                     "evidence/tree-source-20261011.json",
-                     "evidence/oath-source-20261012.json"):
+                     "evidence/pass-tag-verification.json",
+                     "evidence/tree-source.json",
+                     "evidence/oath-source.json",
+                     "evidence/pass-otp-source.json",
+                     "sources/oath-toolkit-" + lock["oath_toolkit"]["version"] + ".tar.gz.sig",
+                     "sources/oath-release-key.asc"):
             files.append(inspect_file(project, path))
+        notice = lock.get("bootstrap", {}).get("oath_lgpl_notice")
+        if notice:
+            files.append(inspect_file(project, "sources/oath-COPYING.LESSER", notice["sha256"]))
     return {"repository": name, "files": files}
 
 def main():
