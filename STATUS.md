@@ -1,7 +1,7 @@
 # Session handoff
 
 Updated: 2026-10-16. Decision owner: Misja Hoebe (@misja).
-Live work: [pass/OTP upstream backports #4](https://github.com/misja/sailfish-password-store/issues/4)
+Live work: [release delivery #2](https://github.com/misja/sailfish-workspace/issues/2)
 and the [project board](https://github.com/users/misja/projects/2).
 
 ## Recorded state
@@ -28,23 +28,39 @@ workspace #9, runtime #16 and password-store #7 (AGENTS baseline 1.2.0).
 The separate assistant cleanup and handoff/scope reviews are not a human security
 audit or independent release acceptance.
 
-## Next role handoff
+## Release handoff
 
-Current owner: primary Builder for the two accepted release backports.
-Required reviewer: separate assistant checks source, regressions and artifacts;
-Misja decides merges. Pass 1.7.4 and OTP 1.2.0 release bases are retained.
-Scope: tree FD3 and unterminated OTP append-line fixes only, with synchronized
-fork commits, source map, locks, snapshots and recipes. Live issue #4 owns the
-acceptance criteria, linked PRs and results; no new lifecycle design is underway.
+Pass/OTP upstream review #4 is complete and Done. Both source PRs, package PR #8
+and workspace PR #11 are merged. Release bases stay pass 1.7.4 / OTP 1.2.0;
+only the two attributed upstream backports were adopted. Source pins and patch
+snapshots match complete fork trees. Pinned backport branches are intentionally
+retained because protected branch squash merges create different commit IDs.
 
-Runtime 0.6 SDK packaging evidence is now merged in runtime PR #18. The archived
-bounded development trial was already completed and is not to be repeated merely
-because general release/lifecycle gates remain. No current-candidate device
-acceptance follows from the SDK build. Runtime #3 stays open for its actual scope.
+Current owner: primary assistant, Release Manager responsibility; a separate
+reviewer assesses scope and delivery evidence. Misja decides release/publication.
+Objective: assemble and verify existing candidate/source artifacts and identify
+actual remaining release blockers using existing issues, not a new framework.
+No package installation, device/OBS change or publication is authorized here.
+
+Runtime 0.6 SDK packaging evidence is merged in runtime PR #18. Pass/OTP 0.5
+build, focused regression and separate artifact review are merged in package #8.
+The archived development trial was already completed; do not repeat it merely
+because general release gates remain. SDK builds do not prove current-device
+or live package-manager upgrade acceptance. Runtime #3 remains open for that scope.
 Exact vendor provenance (runtime #1), target/provider verification (#4),
 source/notice/relink delivery (workspace #2) and distribution/trust (runtime #5)
-remain open. Pass/OTP provider/onboarding work has related gates; newer upstream
-pass/OTP revisions remain a separate review (password-store #4).
+remain open. Pass/OTP provider/onboarding work has related gates; the selected upstream
+backports are complete (password-store #4).
 
 No new SDK/dependency/target installation, deployment, real-secret inspection,
 device/OBS action or upstream submission occurred or was authorized by this audit.
+
+Local release review delivery: six binary/five matching source RPMs assembled
+with exact hashes; all unsigned. See [release handoff](docs/development/release.md).
+No publication or release acceptance is implied; maintainer scope/target and
+existing provider, lifecycle and trust gates remain.
+
+Checksum signing: SHA256SUMS is signed by the selected Ed25519 fingerprint;
+separate public-key-only verification and all11hash checks passed. RPMs remain
+unsigned; see the release record for SDK compatibility limits. No key copy or
+local package installation occurred.
