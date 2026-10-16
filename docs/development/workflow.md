@@ -36,6 +36,15 @@ Installation, device/system changes, package publication and upstream submission
 need explicit approval of their concrete scope. A source merge does not grant it.
 Use only synthetic or published test data in project automation.
 
+## Release preparation
+
+Follow the [release handoff](agent-governance.md#release-handoff): builder,
+separate technical reviewer, distinct Release Manager agent, then maintainer.
+The Release Manager owns the user-facing proposal, not just an artifact checklist.
+Use existing evidence; justify additional testing by a specific changed risk.
+Record the handoff in the existing release issue. Spec Kit is not required for
+adjusting these working agreements or preparing a release.
+
 ## Repository responsibilities
 
 | Repository | Work |

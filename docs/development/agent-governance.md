@@ -27,7 +27,23 @@ Spec Kit hooks and parallel markers do not supply it.
 | Architect | Accepted ADRs, spec, evidence | Plan, isolation contract, justified decisions | Ordinary design within accepted architecture |
 | Builder/Packager | Reviewed plan/tasks, pinned inputs | Patch, package metadata, build/self-test evidence | Implementation within authorized scope |
 | Tester/Security Reviewer | Artifacts, criteria, threat/isolation claims | Independent findings and specific release blockers | Verification; cannot waive failed criteria |
-| Release Manager | Reviewed evidence and target support | Provenance, checklist and submission draft | Preparation; maintainer authorizes publication |
+| Release Manager (separate agent) | Reviewed artifacts, changes and existing test evidence | User-facing release proposal: purpose, changes, sources and relevant limitations | Owns release presentation; maintainer authorizes publication |
+
+## Release handoff
+
+Builder/Packager supplies artifacts, changes and test evidence. A separate
+technical reviewer assesses claims and remaining risks. A distinct Release
+Manager agent then owns the outward-facing release proposal, reading it from
+the perspective of someone unfamiliar with the project. The builder must not
+also fill that role for the same release. Misja reviews and authorizes publication.
+
+Reuse prior device tests with their recorded scope. A new package revision does
+not automatically require another complete device test: any additional check
+must address a named changed behavior or uncovered risk. An alternative that changes the requested outcome needs maintainer agreement;
+reviewers must flag that mismatch rather than accept it as completion.
+The Release Manager
+cannot waive technical findings or create new test requirements without such a
+reason. Keep review/approval history in the existing release issue.
 
 ## One shared artifact set
 

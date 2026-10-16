@@ -36,8 +36,9 @@ only the two attributed upstream backports were adopted. Source pins and patch
 snapshots match complete fork trees. Pinned backport branches are intentionally
 retained because protected branch squash merges create different commit IDs.
 
-Current owner: primary assistant, Release Manager responsibility; a separate
-reviewer assesses scope and delivery evidence. Misja decides release/publication.
+Current owner: primary assistant for integration; separate Release Manager agent
+owns outward release presentation, and a separate technical reviewer assesses
+evidence. Misja decides release/publication.
 Objective: assemble and verify existing candidate/source artifacts and identify
 actual remaining release blockers using existing issues, not a new framework.
 No package installation, device/OBS change or publication is authorized here.
@@ -55,12 +56,19 @@ backports are complete (password-store #4).
 No new SDK/dependency/target installation, deployment, real-secret inspection,
 device/OBS action or upstream submission occurred or was authorized by this audit.
 
-Local release review delivery: six binary/five matching source RPMs assembled
-with exact hashes; all unsigned. See [release handoff](docs/development/release.md).
-No publication or release acceptance is implied; maintainer scope/target and
-existing provider, lifecycle and trust gates remain.
+Current release delivery: six binary and five matching source RPMs now have
+V4 EdDSA/SHA256 signatures from the selected Ed25519 key. All main headers and
+payloads match the reviewed unsigned builds. SDK RPM verified all eleven
+signatures and digests; the missing-key control returned NOKEY. Separate review
+recomputed hashes, compared payload bytes and verified both checksum signatures.
 
-Checksum signing: SHA256SUMS is signed by the selected Ed25519 fingerprint;
-separate public-key-only verification and all11hash checks passed. RPMs remain
-unsigned; see the release record for SDK compatibility limits. No key copy or
-local package installation occurred.
+Distinct Release Manager owns the user-facing notes. Existing Xperia checks
+remain valid within scope; package revisions alone do not require full retesting.
+Both GitHub drafts are updated with signed assets and checksums; publication
+and existing target/provider/lifecycle decisions remain with Misja.
+
+Temporary signer downloads, extracted tools and local/SDK signing probes are
+removed after upload verification. No system package was installed. Evidence
+and unsigned/signed hash mapping remain in the release manifest and issue #2.
+Workflow, signing and fallback-agreement changes extend existing PR #13;
+no Spec Kit artifacts or permanent signing/test infrastructure were added.
