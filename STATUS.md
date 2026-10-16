@@ -1,7 +1,7 @@
 # Session handoff
 
 Updated: 2026-10-16. Decision owner: Misja Hoebe (@misja).
-Live work: [runtime #3](https://github.com/misja/sailfish-gnupg-runtime/issues/3)
+Live work: [pass/OTP upstream backports #4](https://github.com/misja/sailfish-password-store/issues/4)
 and the [project board](https://github.com/users/misja/projects/2).
 
 ## Recorded state
@@ -30,19 +30,18 @@ audit or independent release acceptance.
 
 ## Next role handoff
 
-Current owner: primary assistant (status/research handoff).
-Next owner: Architect responsibility for runtime #3, with a separate reviewer.
-Decision owner: Misja. Objective: define the smallest supported manual maintenance
-scenario and acceptance plan; do not implement a transaction framework.
+Current owner: primary Builder for the two accepted release backports.
+Required reviewer: separate assistant checks source, regressions and artifacts;
+Misja decides merges. Pass 1.7.4 and OTP 1.2.0 release bases are retained.
+Scope: tree FD3 and unterminated OTP append-line fixes only, with synchronized
+fork commits, source map, locks, snapshots and recipes. Live issue #4 owns the
+acceptance criteria, linked PRs and results; no new lifecycle design is underway.
 
-Acceptance: identify exclusion of new starts during actual replacement/removal,
-private-agent ownership/stop boundaries, interrupted-change behavior, preservation
-of stock software/user data, simpler alternatives/maintenance cost and bounded
-synthetic checks. A separate reviewer assesses the proposal before implementation.
-The live issue owns detailed criteria and progress; this is not a second backlog.
-
-A fresh 0.6 SDK build remains due as packaging evidence; it cannot prove upgrade
-safety. Exact vendor provenance (runtime #1), target/provider verification (#4),
+Runtime 0.6 SDK packaging evidence is now merged in runtime PR #18. The archived
+bounded development trial was already completed and is not to be repeated merely
+because general release/lifecycle gates remain. No current-candidate device
+acceptance follows from the SDK build. Runtime #3 stays open for its actual scope.
+Exact vendor provenance (runtime #1), target/provider verification (#4),
 source/notice/relink delivery (workspace #2) and distribution/trust (runtime #5)
 remain open. Pass/OTP provider/onboarding work has related gates; newer upstream
 pass/OTP revisions remain a separate review (password-store #4).

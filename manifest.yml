@@ -44,7 +44,7 @@
       "remote": "https://github.com/misja/sailfish-pass.git",
       "upstream": "https://github.com/zx2c4/password-store.git",
       "branch": "sailfish/private-gpg",
-      "commit": "84e426cad45f4933661489c17b0c27c1b3d5915a"
+      "commit": "24d4ab48afcc66dcccc14591c41c6fd2c750a4a3"
     },
     {
       "name": "pass-otp",
@@ -52,7 +52,7 @@
       "remote": "https://github.com/misja/pass-otp.git",
       "upstream": "https://github.com/pass-extension/pass-otp.git",
       "branch": "sailfish/stdin-private-backend",
-      "commit": "57e4c34dba31a3b01eed09b3d4222f9130a6282e"
+      "commit": "e5dc12c98c3b134eb8e65f00afabee9b525fac93"
     }
   ],
   "environment": {

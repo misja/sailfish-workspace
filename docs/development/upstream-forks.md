@@ -41,7 +41,7 @@ accepts an explicit checkout path.
 Packaging patches are generated snapshots of the fork commits, not separately
 edited source. Run python3 tools/packaging-patches.py to verify that all three
 complete patched upstream trees equal their fork heads. --export regenerates the
-eight snapshots, validating the complete result before writing any snapshot.
+ten snapshots, validating the complete result before writing any snapshot.
 See component docs/FORK_WORKFLOW.md for the update procedure.
 
 ## Upstream review, 2026-10-14
@@ -58,3 +58,16 @@ Review updates separately with affected regression checks; do not blindly sync
 the protected adaptation branch.
 
 Follow-up: [review newer pass/OTP upstream changes](https://github.com/misja/sailfish-password-store/issues/4).
+
+## Selected release backports, 2026-10-16
+
+Keep the latest release bases: pass 1.7.4 and pass-otp 1.2.0. Adopt only pass
+`eea24967a002a2a81ae9b97a1fe972b5287f3a09` (close tree FD3) and OTP
+`42307e4ec3f226547e4742f25cd92aa39db53627` (retain an unterminated last line).
+The fork commits preserve upstream attribution; the source map and manifest pin
+the complete adapted trees. Development snapshots are not required for these fixes.
+OTP development-branch stdin handling does not replace our policy: its version
+sorting can treat OATH 2.6.14 as older than 2.6.5 and expose a seed in argv.
+Private backend selection, unconditional stdin and redacted diagnostics remain.
+Release archive identities and their existing authentication scope are unchanged;
+these backports do not acquire an upstream signature by being cherry-picked.
