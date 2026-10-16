@@ -36,8 +36,9 @@ only the two attributed upstream backports were adopted. Source pins and patch
 snapshots match complete fork trees. Pinned backport branches are intentionally
 retained because protected branch squash merges create different commit IDs.
 
-Current owner: primary assistant, Release Manager responsibility; a separate
-reviewer assesses scope and delivery evidence. Misja decides release/publication.
+Current owner: primary assistant for integration; separate Release Manager agent
+owns outward release presentation, and a separate technical reviewer assesses
+evidence. Misja decides release/publication.
 Objective: assemble and verify existing candidate/source artifacts and identify
 actual remaining release blockers using existing issues, not a new framework.
 No package installation, device/OBS change or publication is authorized here.
@@ -64,3 +65,10 @@ Checksum signing: SHA256SUMS is signed by the selected Ed25519 fingerprint;
 separate public-key-only verification and all11hash checks passed. RPMs remain
 unsigned; see the release record for SDK compatibility limits. No key copy or
 local package installation occurred.
+
+Release-flow update: distinct Release Manager owns user-facing notes; prior Xperia
+checks remain valid within scope and revision changes alone do not trigger full
+retesting. Both GitHub drafts are being updated with that agent's wording.
+Signed checksums are a fallback, not embedded RPM signing; target Ed25519 verifier
+compatibility must be established before selecting a replacement signing route.
+Workflow/docs changes extend existing PR #13; no Spec Kit artifacts added.

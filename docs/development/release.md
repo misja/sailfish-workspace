@@ -1,6 +1,6 @@
 # Release delivery preparation
 
-Updated: 2026-10-16. Owner: Release Manager responsibility (primary assistant).
+Updated: 2026-10-16. Owner: separate Release Manager agent; primary assistant integrates artifacts.
 Misja decides scope, target and publication. Live work is tracked by
 [workspace #2](https://github.com/misja/sailfish-workspace/issues/2),
 [pass #1](https://github.com/misja/sailfish-password-store/issues/1) and the linked
@@ -41,15 +41,16 @@ Auxiliary debug RPMs are not part of this candidate and remain unvalidated.
 The native Jolla compatibility plugin is not in this CLI artifact set. Its exact
 vendor-source mapping, static-Assuan source/relink delivery, provider/OS-upgrade
 selection and same-name distribution route remain separate unresolved work.
-Choosing CLI-first versus one combined release is still a maintainer decision;
-the local assembly does not silently select a smaller product scope.
+Misja selected CLI-first draft preparation. Native integration remains separate work.
 
 ## Before publication
 
-- Select the release target and check the current candidate's GNU Bash/provider,
-  public command ownership and affected synthetic behavior on that target.
-  SDK 5.1 build evidence does not establish Sailfish 5.2 support. Reuse unchanged
-  historical checks; run only affected acceptance with separately approved scope.
+- Reuse the earlier synthetic Xperia tests on Sailfish OS 5.2.0.18 and the
+  recorded package-preservation check after updating to 5.2.0.20. Current runtime
+  0.6 and pass/OTP 0.5 revisions have SDK build/regression evidence. Assess changes
+  against that evidence; require an additional target check only for a named
+  uncovered risk, including unresolved provider/command ownership. Do not require
+  a complete new device test merely because package revisions changed.
 - Resolve the claimed upgrade/removal policy under runtime #3; current source
   has no enforced live update exclusion. Do not turn withdrawn PR #17 into work.
 - Select signing/trust and delivery. Chum builds from source through OBS and
@@ -68,3 +69,18 @@ exact inputs/paths and authorization; no general installer is proposed here.
 A separate reviewer recomputed all eleven local RPM hashes and checked the
 source mapping, handoff and explicit open gates. No blocker was found for
 maintainer review of this candidate; this is not release authorization.
+
+## Signing decision
+
+Signed checksums authenticate downloaded RPM bytes against the trusted signing
+key; they do not supply RPM signatures checked by the package manager. This is
+a fallback, not completion of package signing. Existing SDK signing cannot use
+the selected Ed25519 key. Before choosing another signer, establish whether the
+target RPM verifier supports that algorithm. If supported, a modern host signer
+could sign copies of the reviewed RPMs using the local agent, without rebuilding
+or copying private keys. Tool installation and replacement release assets need
+scoped authorization and review. No signing bridge or new key is proposed.
+
+Current CLI drafts are on GitHub with eleven RPMs, per-release signed checksums
+and the public certificate. They remain drafts; signing and publication decisions
+are tracked in workspace #2.
