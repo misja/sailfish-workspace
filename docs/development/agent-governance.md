@@ -1,14 +1,24 @@
 # Staged roles and handoffs
 
-Adopted: 2026-10-10. Updated: 2026-10-14. Baseline: 1.1.0. Scope: every real project; synthetic trial uses the same rules.
+Adopted: 2026-10-10. Updated: 2026-10-16. Baseline: 1.2.0. Scope: every real project; synthetic trial uses the same rules.
 
 ## Role activation
 
-Start each task by recording the accountable owner, objective and acceptance criteria in STATUS.md.
-Activate the next role only when its output is needed. A role is a responsibility, not a requirement
-to start another agent. One session can perform ordinary product/research/design/build work in
-stages. Distinct agent sessions require explicit delegation authorization. Do not treat Spec Kit
-skill handoffs, automatic hook wording or parallel task markers as such authorization.
+Start each task with a bounded objective, acceptance criteria, accountable owner
+and required reviewer in the existing issue; STATUS.md carries a concise session
+handoff. Activate a role when its output is needed. Ordinary work within reviewed
+scope remains autonomous; roles do not require a standing team.
+
+Substantial architecture/scope decisions require a separate agent review before
+implementation, checking simpler alternatives and maintenance cost. Crypto,
+runtime/package isolation and release-critical changes also require separate
+review of the resulting artifacts before maintainer review. The maintainer
+explicitly authorizes delegation for these required reviews (AGENTS baseline 1.2.0).
+Do not replace a reviewer with the builder under another role label. Resolve
+findings first; report an unavailable required reviewer rather than proceeding
+with dependent work. Do not add speculative infrastructure or duplicate process
+artifacts. Other distinct-agent work still requires explicit delegation;
+Spec Kit hooks and parallel markers do not supply it.
 
 | Role | Required input | Output / completion | Decision authority |
 |---|---|---|---|

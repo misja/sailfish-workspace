@@ -1,7 +1,9 @@
 # Clean public-checkout SDK build, 2026-10-15
 
 The merged public source-bootstrap PRs were reviewed by Misja. This build exposed
-two additional packaging/bootstrap fixes, which await their own maintainer review.
+two additional packaging/bootstrap fixes, subsequently approved and merged in
+workspace PR #8, runtime PR #9 and password-store PR #6. This dated record
+preserves its tested inputs; it is not a build of runtime candidate 0.6.
 The implementing assistant ran the builds and checks below; this is not an
 independent human security audit.
 
