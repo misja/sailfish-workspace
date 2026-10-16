@@ -59,3 +59,8 @@ Local release review delivery: six binary/five matching source RPMs assembled
 with exact hashes; all unsigned. See [release handoff](docs/development/release.md).
 No publication or release acceptance is implied; maintainer scope/target and
 existing provider, lifecycle and trust gates remain.
+
+Checksum signing: SHA256SUMS is signed by the selected Ed25519 fingerprint;
+separate public-key-only verification and all11hash checks passed. RPMs remain
+unsigned; see the release record for SDK compatibility limits. No key copy or
+local package installation occurred.

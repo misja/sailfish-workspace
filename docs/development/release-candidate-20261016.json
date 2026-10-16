@@ -67,6 +67,20 @@
       "sha256": "0b4ac811ed36dd08567f48f7b79ea595d20466f50ee93a1d34897586abb8074e"
     }
   ],
+  "checksum_signing": {
+    "algorithm": "EdDSA/Ed25519 with SHA256 digest",
+    "checksum_file": "SHA256SUMS",
+    "checksum_sha256": "b2e80c5017de0dad53c99824563e1edd3790c7939e3d6b7f22ee435539c6db78",
+    "fingerprint": "F48588CC6061DAC0C4C09F8734370471919C29A5",
+    "limits": "RPMs remain unsigned; README and JSON metadata not covered by the signature; trust in public certificate must come from independently known fingerprint; no release/publication approval",
+    "public_certificate_file": "release-signing-key.asc",
+    "public_certificate_sha256": "921ad9371a6fc6c4ef7d190c97e0a8766e3b7f9ccd92c59e9820ab11b1eddd4b",
+    "sdk_limit": "Existing SDKgpg2.0.4 cannot use selected Ed25519 key; upstreamRPM4.16.1.3 signer accepts RSA/DSA only; no offline bridge, keycopy, package install or key change attempted",
+    "signature_file": "SHA256SUMS.asc",
+    "signature_sha256": "6d21c91f18588ef027cb1d7494afd886007192f8d892bade1e11e21bd8fec40e",
+    "type": "detached OpenPGP signature over SHA256SUMS; not embedded RPM signing",
+    "verification": "Builder GPG verification and separate reviewer gpgv verification using only exported public certificate in memory; exact VALIDSIG fingerprint and all11RPM hashes match"
+  },
   "date": "2026-10-16",
   "evidence": [
     "sailfish-gnupg-runtime/docs/build-records/runtime-06-20261016.json",

@@ -13,7 +13,14 @@ RPMs and five matching source RPMs, copied locally with SHA256SUMS. Runtime
 2.5.24-0.6, pass 1.7.4-0.5 and OTP 1.2.0-0.5 use their reviewed build outputs;
 tree 2.3.2-0.1 and OATH 2.6.14-0.3 are unchanged. All eleven hashes match the
 existing records; RPM digest checks pass and binary SOURCERPM links match the
-included source packages. All are unsigned. Digests do not authenticate a publisher.
+included source packages. The RPM files are unsigned. SHA256SUMS has since been signed locally with
+Misja's Ed25519 key `F48588CC6061DAC0C4C09F8734370471919C29A5`; a separate
+reviewer verified it using only the public certificate and rechecked all eleven
+hashes. This authenticates the checksum file against that key, not the separately
+mutable README/JSON or an independently established publisher identity. It does
+not add signatures inside the RPMs. The existing SDK signing route cannot use
+this key (GnuPG 2.0.4; upstream RPM 4.16 signer accepts RSA/DSA only). No key was
+copied and no package/tool was installed. Digests alone do not authenticate a publisher.
 
 Existing static inspections cover private payload/library paths, source inputs,
 patches and bundled notices. Their scope and separate assistant review remain
