@@ -72,3 +72,10 @@ retesting. Both GitHub drafts are being updated with that agent's wording.
 Signed checksums are a fallback, not embedded RPM signing; target Ed25519 verifier
 compatibility must be established before selecting a replacement signing route.
 Workflow/docs changes extend existing PR #13; no Spec Kit artifacts added.
+
+RPM signing probe succeeded: a copied pass RPM signed by locally extracted host
+RPM 6.1.0 was verified by SDK RPM as V4 EdDSA/SHA256 OK, with NOKEY negative
+control. Main header/payload unchanged; originals and drafts untouched. No system
+package installation occurred. Evidence is in release issue #2 and the local
+.local-artifacts/signing-probe/result.json. Applying signing to the release set
+remains the next maintainer decision.

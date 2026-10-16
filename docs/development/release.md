@@ -84,3 +84,17 @@ scoped authorization and review. No signing bridge or new key is proposed.
 Current CLI drafts are on GitHub with eleven RPMs, per-release signed checksums
 and the public certificate. They remain drafts; signing and publication decisions
 are tracked in workspace #2.
+
+### SDK RPM signing proof
+
+A copy of pass 1.7.4-0.5 was signed with the selected Ed25519 key using Ubuntu
+RPM 6.1.0, downloaded and extracted locally without system installation. SDK
+RPM 4.16.1.3+git20-1.13.2.jolla verified its V4 EdDSA/SHA256 signature and all
+header/payload digests (exit 0). An isolated database without the public key
+reported NOKEY (exit 1). The main header and payload remained byte-identical to
+the reviewed unsigned RPM; only the signature area changed.
+
+This proves the signing route against the existing 5.1 SDK verifier; it does not
+check the 5.2 device verifier. Original artifacts and GitHub draft assets remain
+unchanged. Next step is the maintainer's decision on applying this route to the
+release set and replacing draft assets/checksums, not rebuilding the packages.
