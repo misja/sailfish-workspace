@@ -14,7 +14,8 @@
     "fork": "sailfish-pass",
     "package": "sailfish-password-store",
     "patches": [
-      "rpm/private-gpg.patch"
+      "rpm/private-gpg.patch",
+      "rpm/pass-tree-fd3.patch"
     ]
   },
   {
@@ -22,7 +23,8 @@
     "package": "sailfish-password-store",
     "patches": [
       "patches/pass-otp-stdin.patch",
-      "patches/pass-otp-private-backend.patch"
+      "patches/pass-otp-private-backend.patch",
+      "patches/pass-otp-final-line.patch"
     ]
   }
 ]

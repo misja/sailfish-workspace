@@ -13,7 +13,7 @@
       "fork": "https://github.com/misja/sailfish-pass",
       "upstream_commit": "1078f2514d579178d5df7042c6a790e9c9b731ad",
       "branch": "sailfish/private-gpg",
-      "commit": "84e426cad45f4933661489c17b0c27c1b3d5915a",
+      "commit": "24d4ab48afcc66dcccc14591c41c6fd2c750a4a3",
       "compare": "https://github.com/misja/sailfish-pass/compare/1078f2514d579178d5df7042c6a790e9c9b731ad...sailfish/private-gpg"
     },
     {
@@ -21,7 +21,7 @@
       "fork": "https://github.com/misja/pass-otp",
       "upstream_commit": "1e9d10ca75ae1a8672a7f192809713463657778e",
       "branch": "sailfish/stdin-private-backend",
-      "commit": "57e4c34dba31a3b01eed09b3d4222f9130a6282e",
+      "commit": "e5dc12c98c3b134eb8e65f00afabee9b525fac93",
       "compare": "https://github.com/misja/pass-otp/compare/1e9d10ca75ae1a8672a7f192809713463657778e...sailfish/stdin-private-backend"
     }
   ]
