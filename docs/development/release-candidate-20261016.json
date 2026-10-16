@@ -1,0 +1,278 @@
+{
+  "artifacts": [
+    {
+      "component": "gnupg",
+      "filename": "sailfish-gnupg-private-2.5.24-0.6.aarch64.rpm",
+      "role": "binary",
+      "sha256": "332dadb7d8fd4a9202a29f45ec2af98620db1830382d2f48b5b4a040de588c00"
+    },
+    {
+      "component": "gnupg",
+      "filename": "sailfish-gnupg-private-2.5.24-0.6.src.rpm",
+      "role": "source",
+      "sha256": "d97765748b006d0f42dc30dfcc4737df4110493f480d209e15a9cb7165ba1329"
+    },
+    {
+      "component": "pass",
+      "filename": "sailfish-pass-1.7.4-0.5.noarch.rpm",
+      "role": "binary",
+      "sha256": "ecc2fe06c94b9bada934eccf994293e7c502895837a0fad513b87ca2bf9cf2ec"
+    },
+    {
+      "component": "pass",
+      "filename": "sailfish-pass-1.7.4-0.5.src.rpm",
+      "role": "source",
+      "sha256": "0df7a3f3f8671544cb11b044e317438ab6f71703e157ec61b84806a99f562e94"
+    },
+    {
+      "component": "otp",
+      "filename": "sailfish-pass-otp-1.2.0-0.5.noarch.rpm",
+      "role": "binary",
+      "sha256": "51abc1fdbbae3b53eddeb043b29f488d3e17e25811dc11405395d911598eaca4"
+    },
+    {
+      "component": "otp",
+      "filename": "sailfish-pass-otp-1.2.0-0.5.src.rpm",
+      "role": "source",
+      "sha256": "8a9dac6a306c84bf5c451178676d987de18c7fd585d122ce7070f1313f9f547f"
+    },
+    {
+      "component": "oath",
+      "filename": "sailfish-liboath-2.6.14-0.3.aarch64.rpm",
+      "role": "binary",
+      "sha256": "c0a3f951ae22e23e343579f8a91e187160accf1c9df75222d4ca0b8034cbb1e5"
+    },
+    {
+      "component": "oath",
+      "filename": "sailfish-oathtool-2.6.14-0.3.aarch64.rpm",
+      "role": "binary",
+      "sha256": "cf70fe585b6feb35329bb8434b0c7e20999a467a10e5c6175e16240d42dedfbe"
+    },
+    {
+      "component": "tree",
+      "filename": "sailfish-pass-tree-2.3.2-0.1.aarch64.rpm",
+      "role": "binary",
+      "sha256": "4d83ceffd0326545e5e7c30d988ebed39ea5fd084138f037b50931dd16a88a12"
+    },
+    {
+      "component": "oath",
+      "filename": "oath-toolkit-2.6.14-0.3.src.rpm",
+      "role": "source",
+      "sha256": "b045a50ff766c897b0d89162747bb1fc918742169b5f2f7d486022f78c1d983c"
+    },
+    {
+      "component": "tree",
+      "filename": "sailfish-pass-tree-2.3.2-0.1.src.rpm",
+      "role": "source",
+      "sha256": "0b4ac811ed36dd08567f48f7b79ea595d20466f50ee93a1d34897586abb8074e"
+    }
+  ],
+  "date": "2026-10-16",
+  "evidence": [
+    "sailfish-gnupg-runtime/docs/build-records/runtime-06-20261016.json",
+    "sailfish-password-store/docs/upstream-backports-20261016.json",
+    "sailfish-workspace/docs/development/build-records/clean-sdk-20261015.json"
+  ],
+  "excluded": [
+    "native vendor compatibility plugin (separate release gates)",
+    "auxiliary debug RPMs (not release-validated)"
+  ],
+  "limits": [
+    "No device/native acceptance inferred from SDK builds",
+    "Current-target provider/dependency and live-upgrade gates open",
+    "Signing/trust/distribution and actual publication require maintainer approval",
+    "Existing source/notice inspections are reused; source RPM assembly is not blanket legal clearance"
+  ],
+  "local_bundle": ".local-artifacts/release-20261016-cli (relative to workspace parent; local only)",
+  "release_scope": "Pending maintainer choice: CLI first or combined native-plugin release. Artifact assembly does not choose or approve either.",
+  "rpm_metadata": [
+    {
+      "filename": "sailfish-gnupg-private-2.5.24-0.6.aarch64.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "GPL-3.0-or-later AND LGPL-2.1-or-later AND LGPL-3.0-or-later",
+        "name": "sailfish-gnupg-private",
+        "pgp_signature": "(none)",
+        "release": "0.6",
+        "source_rpm": "sailfish-gnupg-private-2.5.24-0.6.src.rpm",
+        "version": "2.5.24"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-gnupg-private-2.5.24-0.6.src.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "GPL-3.0-or-later AND LGPL-2.1-or-later AND LGPL-3.0-or-later",
+        "name": "sailfish-gnupg-private",
+        "pgp_signature": "(none)",
+        "release": "0.6",
+        "source_rpm": "(none)",
+        "version": "2.5.24"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-pass-1.7.4-0.5.noarch.rpm",
+      "metadata": {
+        "arch": "noarch",
+        "gpg_signature": "(none)",
+        "license": "GPL-2.0-or-later AND GPL-3.0-or-later",
+        "name": "sailfish-pass",
+        "pgp_signature": "(none)",
+        "release": "0.5",
+        "source_rpm": "sailfish-pass-1.7.4-0.5.src.rpm",
+        "version": "1.7.4"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-pass-1.7.4-0.5.src.rpm",
+      "metadata": {
+        "arch": "noarch",
+        "gpg_signature": "(none)",
+        "license": "GPL-2.0-or-later AND GPL-3.0-or-later",
+        "name": "sailfish-pass",
+        "pgp_signature": "(none)",
+        "release": "0.5",
+        "source_rpm": "(none)",
+        "version": "1.7.4"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-pass-otp-1.2.0-0.5.noarch.rpm",
+      "metadata": {
+        "arch": "noarch",
+        "gpg_signature": "(none)",
+        "license": "GPL-3.0-or-later",
+        "name": "sailfish-pass-otp",
+        "pgp_signature": "(none)",
+        "release": "0.5",
+        "source_rpm": "sailfish-pass-otp-1.2.0-0.5.src.rpm",
+        "version": "1.2.0"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-pass-otp-1.2.0-0.5.src.rpm",
+      "metadata": {
+        "arch": "noarch",
+        "gpg_signature": "(none)",
+        "license": "GPL-3.0-or-later",
+        "name": "sailfish-pass-otp",
+        "pgp_signature": "(none)",
+        "release": "0.5",
+        "source_rpm": "(none)",
+        "version": "1.2.0"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-liboath-2.6.14-0.3.aarch64.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "LGPL-2.1-or-later",
+        "name": "sailfish-liboath",
+        "pgp_signature": "(none)",
+        "release": "0.3",
+        "source_rpm": "oath-toolkit-2.6.14-0.3.src.rpm",
+        "version": "2.6.14"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-oathtool-2.6.14-0.3.aarch64.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "GPL-3.0-or-later",
+        "name": "sailfish-oathtool",
+        "pgp_signature": "(none)",
+        "release": "0.3",
+        "source_rpm": "oath-toolkit-2.6.14-0.3.src.rpm",
+        "version": "2.6.14"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-pass-tree-2.3.2-0.1.aarch64.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "GPL-2.0-or-later",
+        "name": "sailfish-pass-tree",
+        "pgp_signature": "(none)",
+        "release": "0.1",
+        "source_rpm": "sailfish-pass-tree-2.3.2-0.1.src.rpm",
+        "version": "2.3.2"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "oath-toolkit-2.6.14-0.3.src.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "GPL-3.0-or-later AND LGPL-2.1-or-later",
+        "name": "oath-toolkit",
+        "pgp_signature": "(none)",
+        "release": "0.3",
+        "source_rpm": "(none)",
+        "version": "2.6.14"
+      },
+      "rpm_digest_check_exit": 0
+    },
+    {
+      "filename": "sailfish-pass-tree-2.3.2-0.1.src.rpm",
+      "metadata": {
+        "arch": "aarch64",
+        "gpg_signature": "(none)",
+        "license": "GPL-2.0-or-later",
+        "name": "sailfish-pass-tree",
+        "pgp_signature": "(none)",
+        "release": "0.1",
+        "source_rpm": "(none)",
+        "version": "2.3.2"
+      },
+      "rpm_digest_check_exit": 0
+    }
+  ],
+  "separate_assistant_review": {
+    "checks": [
+      "Independently recomputed all11RPM SHA256 hashes and compared SHA256SUMS and both manifests",
+      "Checked6binary/5source mapping and recorded unsigned metadata",
+      "Reviewed pending scope and device/provider/liveupdate/trust/nativevendor gates",
+      "Reviewed THIRD_PARTY backport attribution/scope correction"
+    ],
+    "date": "2026-10-16",
+    "limits": "Separate assistant artifact/document review, not human security/legal audit, native acceptance or release/publication approval",
+    "result": "No blocker for presenting local candidate and corrected handoff for maintainer review"
+  },
+  "source_mapping": {
+    "gnupg": [
+      "sailfish-gnupg-private-2.5.24-0.6.src.rpm"
+    ],
+    "oath": [
+      "oath-toolkit-2.6.14-0.3.src.rpm"
+    ],
+    "otp": [
+      "sailfish-pass-otp-1.2.0-0.5.src.rpm"
+    ],
+    "pass": [
+      "sailfish-pass-1.7.4-0.5.src.rpm"
+    ],
+    "tree": [
+      "sailfish-pass-tree-2.3.2-0.1.src.rpm"
+    ]
+  },
+  "source_reviews": {
+    "backports": "https://github.com/misja/sailfish-password-store/issues/4",
+    "pass_otp": "https://github.com/misja/sailfish-password-store/pull/8",
+    "runtime": "https://github.com/misja/sailfish-gnupg-runtime/pull/18"
+  },
+  "state": "local review candidate; not approved/signed/published"
+}
