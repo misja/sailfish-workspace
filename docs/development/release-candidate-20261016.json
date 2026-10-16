@@ -288,5 +288,90 @@
     "pass_otp": "https://github.com/misja/sailfish-password-store/pull/8",
     "runtime": "https://github.com/misja/sailfish-gnupg-runtime/pull/18"
   },
-  "state": "local review candidate; not approved/signed/published"
+  "state": "signed CLI draft releases; not published",
+  "signed_release_artifacts": {
+    "fingerprint": "F48588CC6061DAC0C4C09F8734370471919C29A5",
+    "format": "RPM V4 EdDSA/SHA256",
+    "artifacts": [
+      {
+        "release": "runtime",
+        "filename": "sailfish-gnupg-private-2.5.24-0.6.aarch64.rpm",
+        "unsigned_sha256": "332dadb7d8fd4a9202a29f45ec2af98620db1830382d2f48b5b4a040de588c00",
+        "signed_sha256": "0b59c27895d5a6a592a47fe4e01aced712bb640f7828b1cd7b3744c54fd222c7",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "runtime",
+        "filename": "sailfish-gnupg-private-2.5.24-0.6.src.rpm",
+        "unsigned_sha256": "d97765748b006d0f42dc30dfcc4737df4110493f480d209e15a9cb7165ba1329",
+        "signed_sha256": "a0fc8e43d56b8409c5abd612f2ecdf9496cbb8954799bb9a936afa61249f3b07",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "oath-toolkit-2.6.14-0.3.src.rpm",
+        "unsigned_sha256": "b045a50ff766c897b0d89162747bb1fc918742169b5f2f7d486022f78c1d983c",
+        "signed_sha256": "fe136e7225e5077c6c1a18dc0a0762a89dcb557c63fa261673680be4bad85798",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-liboath-2.6.14-0.3.aarch64.rpm",
+        "unsigned_sha256": "c0a3f951ae22e23e343579f8a91e187160accf1c9df75222d4ca0b8034cbb1e5",
+        "signed_sha256": "4c6fe99babbbb59616ab5d81e90e7008c9829095eb2a8591309340ec6847255a",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-oathtool-2.6.14-0.3.aarch64.rpm",
+        "unsigned_sha256": "cf70fe585b6feb35329bb8434b0c7e20999a467a10e5c6175e16240d42dedfbe",
+        "signed_sha256": "9ec97430765d447b5b7b105f3fc85e8d858556127e16b7e8b1561aebed9b5ebe",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-pass-1.7.4-0.5.noarch.rpm",
+        "unsigned_sha256": "ecc2fe06c94b9bada934eccf994293e7c502895837a0fad513b87ca2bf9cf2ec",
+        "signed_sha256": "0960ff17c4c6d53c02ad680112d6186b000497aca31537b00f026ec20e310747",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-pass-1.7.4-0.5.src.rpm",
+        "unsigned_sha256": "0df7a3f3f8671544cb11b044e317438ab6f71703e157ec61b84806a99f562e94",
+        "signed_sha256": "c237e3da8f552d68c6810b80ec09e2fa8a6b85d49e5e6861c519b3f87562a8f3",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-pass-otp-1.2.0-0.5.noarch.rpm",
+        "unsigned_sha256": "51abc1fdbbae3b53eddeb043b29f488d3e17e25811dc11405395d911598eaca4",
+        "signed_sha256": "5c9f7863c9c975449664b50e493e0f5409325e09365217c1053d85d0954323e0",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-pass-otp-1.2.0-0.5.src.rpm",
+        "unsigned_sha256": "8a9dac6a306c84bf5c451178676d987de18c7fd585d122ce7070f1313f9f547f",
+        "signed_sha256": "3bc9ebebbb59c0dc20af7d7746d5766e8e24c3e8a15431b60a5ffc9d24ca9f61",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-pass-tree-2.3.2-0.1.aarch64.rpm",
+        "unsigned_sha256": "4d83ceffd0326545e5e7c30d988ebed39ea5fd084138f037b50931dd16a88a12",
+        "signed_sha256": "f85ec45316345490e06fb3badea41912a4321834ce09b48d36a5cab07a8fe6c2",
+        "main_header_payload_unchanged": true
+      },
+      {
+        "release": "password-store",
+        "filename": "sailfish-pass-tree-2.3.2-0.1.src.rpm",
+        "unsigned_sha256": "0b4ac811ed36dd08567f48f7b79ea595d20466f50ee93a1d34897586abb8074e",
+        "signed_sha256": "262f62203f817d6596c86b78d1804d45b7677072e9354c11a33917b1183ad768",
+        "main_header_payload_unchanged": true
+      }
+    ],
+    "verification": "All eleven checked by SDK RPM4.16.1.3; main header/payload byte-identical to reviewed unsigned builds",
+    "build_records": "Existing artifacts hashes above refer to unsigned build outputs; signed_sha256 identifies release copies"
+  }
 }

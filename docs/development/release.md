@@ -16,19 +16,13 @@ not on the download page. Preserve material compatibility and safety limitations
 
 ## Existing candidate
 
-The [artifact manifest](release-candidate-20261016.json) identifies six binary
-RPMs and five matching source RPMs, copied locally with SHA256SUMS. Runtime
-2.5.24-0.6, pass 1.7.4-0.5 and OTP 1.2.0-0.5 use their reviewed build outputs;
-tree 2.3.2-0.1 and OATH 2.6.14-0.3 are unchanged. All eleven hashes match the
-existing records; RPM digest checks pass and binary SOURCERPM links match the
-included source packages. The RPM files are unsigned. SHA256SUMS has since been signed locally with
-Misja's Ed25519 key `F48588CC6061DAC0C4C09F8734370471919C29A5`; a separate
-reviewer verified it using only the public certificate and rechecked all eleven
-hashes. This authenticates the checksum file against that key, not the separately
-mutable README/JSON or an independently established publisher identity. It does
-not add signatures inside the RPMs. The existing SDK signing route cannot use
-this key (GnuPG 2.0.4; upstream RPM 4.16 signer accepts RSA/DSA only). No key was
-copied and no package/tool was installed. Digests alone do not authenticate a publisher.
+The [artifact manifest](release-candidate-20261016.json) records six binary and
+five matching source RPMs. Runtime 2.5.24-0.6 and pass/OTP 0.5 use the reviewed
+build outputs; tree and OATH are unchanged. Release copies now carry V4
+EdDSA/SHA256 RPM signatures from key
+`F48588CC6061DAC0C4C09F8734370471919C29A5`, plus signed checksum lists.
+All main headers and payloads remain byte-identical to the unsigned build
+outputs. SDK RPM verifies all eleven signatures and package digests.
 
 Existing static inspections cover private payload/library paths, source inputs,
 patches and bundled notices. Their scope and separate assistant review remain
@@ -54,13 +48,13 @@ Misja selected CLI-first draft preparation. Native integration remains separate 
 - Resolve the claimed upgrade/removal policy under runtime #3; current source
   has no enforced live update exclusion. Do not turn withdrawn PR #17 into work.
 - Select signing/trust and delivery. Chum builds from source through OBS and
-  requires avoiding interference with Jolla packages; local unsigned RPMs are
+  requires avoiding interference with Jolla packages; local RPMs are
   not a completed Chum submission. Its documented route is OBS build followed
   by submission to Testing, then maintainer promotion
   ([official developer guide](https://github.com/sailfishos-chum/main#developers-guide)).
 - Obtain separate release-evidence assessment and Misja's approval of the exact
-  artifacts, target and publication action. No key operation, OBS write, external
-  request, device change or binary publication has been performed here.
+  artifacts, target and publication action. Signing and draft asset replacement are authorized; OBS writes, device changes
+  and actual publication are not.
 
 Do not rebuild the candidate or repeat historical lifecycle/algorithm trials
 merely to regenerate a record. The next executable experiment needs a named target,
@@ -70,31 +64,23 @@ A separate reviewer recomputed all eleven local RPM hashes and checked the
 source mapping, handoff and explicit open gates. No blocker was found for
 maintainer review of this candidate; this is not release authorization.
 
-## Signing decision
+## Signing and maintenance
 
-Signed checksums authenticate downloaded RPM bytes against the trusted signing
-key; they do not supply RPM signatures checked by the package manager. This is
-a fallback, not completion of package signing. Existing SDK signing cannot use
-the selected Ed25519 key. Before choosing another signer, establish whether the
-target RPM verifier supports that algorithm. If supported, a modern host signer
-could sign copies of the reviewed RPMs using the local agent, without rebuilding
-or copying private keys. Tool installation and replacement release assets need
-scoped authorization and review. No signing bridge or new key is proposed.
+The SDK's old signer cannot use the selected Ed25519 key, but its RPM verifier
+can. Ubuntu RPM 6.1.0, temporarily downloaded and extracted locally, signed the
+release copies using the existing local GPG agent and `rpmsign --rpmv4` with the
+explicit signing fingerprint. No rebuild, private-key copy or system package
+installation was needed. SDK RPM 4.16.1.3 verified all eleven signatures; the
+initial missing-key control returned NOKEY. This establishes SDK verifier
+compatibility, not a new device test.
 
-Current CLI drafts are on GitHub with eleven RPMs, per-release signed checksums
-and the public certificate. They remain drafts; signing and publication decisions
-are tracked in workspace #2.
+Signed checksums additionally authenticate downloaded files; they do not replace
+RPM signing. Preserve build hashes separately from signed release hashes.
+Temporary signer packages, extracted libraries and proof/test files are removed
+after delivery verification; keep evidence in the existing manifest and issue.
+No signing bridge, permanent helper or additional test suite is maintained.
 
-### SDK RPM signing proof
-
-A copy of pass 1.7.4-0.5 was signed with the selected Ed25519 key using Ubuntu
-RPM 6.1.0, downloaded and extracted locally without system installation. SDK
-RPM 4.16.1.3+git20-1.13.2.jolla verified its V4 EdDSA/SHA256 signature and all
-header/payload digests (exit 0). An isolated database without the public key
-reported NOKEY (exit 1). The main header and payload remained byte-identical to
-the reviewed unsigned RPM; only the signature area changed.
-
-This proves the signing route against the existing 5.1 SDK verifier; it does not
-check the 5.2 device verifier. Original artifacts and GitHub draft assets remain
-unchanged. Next step is the maintainer's decision on applying this route to the
-release set and replacing draft assets/checksums, not rebuilding the packages.
+A fallback that changes the requested outcome requires Misja's agreement.
+Record the obstacle, investigate the smallest practical alternative, and ask
+before treating it as completion. In particular, signing checksums must not be
+substituted for requested RPM signatures without that agreement.

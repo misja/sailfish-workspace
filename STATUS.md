@@ -56,26 +56,19 @@ backports are complete (password-store #4).
 No new SDK/dependency/target installation, deployment, real-secret inspection,
 device/OBS action or upstream submission occurred or was authorized by this audit.
 
-Local release review delivery: six binary/five matching source RPMs assembled
-with exact hashes; all unsigned. See [release handoff](docs/development/release.md).
-No publication or release acceptance is implied; maintainer scope/target and
-existing provider, lifecycle and trust gates remain.
+Current release delivery: six binary and five matching source RPMs now have
+V4 EdDSA/SHA256 signatures from the selected Ed25519 key. All main headers and
+payloads match the reviewed unsigned builds. SDK RPM verified all eleven
+signatures and digests; the missing-key control returned NOKEY. Separate review
+recomputed hashes, compared payload bytes and verified both checksum signatures.
 
-Checksum signing: SHA256SUMS is signed by the selected Ed25519 fingerprint;
-separate public-key-only verification and all11hash checks passed. RPMs remain
-unsigned; see the release record for SDK compatibility limits. No key copy or
-local package installation occurred.
+Distinct Release Manager owns the user-facing notes. Existing Xperia checks
+remain valid within scope; package revisions alone do not require full retesting.
+Both GitHub drafts are updated with signed assets and checksums; publication
+and existing target/provider/lifecycle decisions remain with Misja.
 
-Release-flow update: distinct Release Manager owns user-facing notes; prior Xperia
-checks remain valid within scope and revision changes alone do not trigger full
-retesting. Both GitHub drafts are being updated with that agent's wording.
-Signed checksums are a fallback, not embedded RPM signing; target Ed25519 verifier
-compatibility must be established before selecting a replacement signing route.
-Workflow/docs changes extend existing PR #13; no Spec Kit artifacts added.
-
-RPM signing probe succeeded: a copied pass RPM signed by locally extracted host
-RPM 6.1.0 was verified by SDK RPM as V4 EdDSA/SHA256 OK, with NOKEY negative
-control. Main header/payload unchanged; originals and drafts untouched. No system
-package installation occurred. Evidence is in release issue #2 and the local
-.local-artifacts/signing-probe/result.json. Applying signing to the release set
-remains the next maintainer decision.
+Temporary signer downloads, extracted tools and local/SDK signing probes are
+removed after upload verification. No system package was installed. Evidence
+and unsigned/signed hash mapping remain in the release manifest and issue #2.
+Workflow, signing and fallback-agreement changes extend existing PR #13;
+no Spec Kit artifacts or permanent signing/test infrastructure were added.

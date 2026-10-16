@@ -39,7 +39,9 @@ also fill that role for the same release. Misja reviews and authorizes publicati
 
 Reuse prior device tests with their recorded scope. A new package revision does
 not automatically require another complete device test: any additional check
-must address a named changed behavior or uncovered risk. The Release Manager
+must address a named changed behavior or uncovered risk. An alternative that changes the requested outcome needs maintainer agreement;
+reviewers must flag that mismatch rather than accept it as completion.
+The Release Manager
 cannot waive technical findings or create new test requirements without such a
 reason. Keep review/approval history in the existing release issue.
 
