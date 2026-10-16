@@ -6,6 +6,14 @@ Misja decides scope, target and publication. Live work is tracked by
 [pass #1](https://github.com/misja/sailfish-password-store/issues/1) and the linked
 runtime gates. This page describes the concrete candidate, not a second backlog.
 
+## Release notes style
+
+Write for people using the release: contents, relevant changes, source access,
+verification and concrete usage limitations. Keep wording brief and factual;
+avoid promotional language, repetitive disclaimers and process narration.
+Review evidence, role handoffs and approval history belong in the release issue,
+not on the download page. Preserve material compatibility and safety limitations.
+
 ## Existing candidate
 
 The [artifact manifest](release-candidate-20261016.json) identifies six binary
