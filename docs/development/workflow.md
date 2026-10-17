@@ -65,3 +65,17 @@ tool; it does not add authority or replace the maintainer's judgment.
 
 References checked 2026-10-14: [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow),
 [project default repository](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/adding-your-project-to-a-repository).
+
+## Writing for readers
+
+Apply the same reader perspective to READMEs, documentation and release notes
+across related repositories. Explain the purpose, component relationships, what
+changes for the user, where to start and concrete limitations without assuming
+knowledge of our issues or earlier discussions. Expand project-specific terms
+before using them. Keep internal review and approval history in issues.
+
+State each component's actual boundaries: the separate GnuPG namespace does not
+imply that pass or native integration has the same package coexistence behavior.
+The distinct Release Manager reviews public-facing entry documentation as well
+as releases; technical review checks the underlying claims. Preserve upstream
+fork documentation and pins; explain adaptation roles in the existing source map.

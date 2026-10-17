@@ -1,5 +1,10 @@
 # Documentation
 
+For a new checkout, start with [getting started](development/getting-started.md).
+For package purpose and usage constraints, start with the component READMEs
+linked in the [repository overview](../README.md). The remaining pages describe
+development, sources and shared decisions.
+
 - [Export scope](EXPORT_SCOPE.md)
 - [License scope](../THIRD_PARTY.md)
 - [agent-governance](development/agent-governance.md)
