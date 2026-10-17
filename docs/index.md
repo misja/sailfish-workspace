@@ -13,7 +13,7 @@ development, sources and shared decisions.
 - [workflow](development/workflow.md)
 - [Original-work license](../LICENSING.md)
 
-[Upstream forks and source map](development/upstream-forks.md).
+- [Component source branches and pinned revisions](development/upstream-forks.md)
 
 - [Getting started on another machine](development/getting-started.md)
 - [Architecture](adr/0001-workspace.md)

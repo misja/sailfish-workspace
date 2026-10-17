@@ -11,9 +11,9 @@ READMEs describe the upstream projects; this page explains our adaptations.
 
 | Upstream | Fork | Adaptation |
 | --- | --- | --- |
-| Sailfish Secrets | [misja/sailfish-secrets](https://github.com/misja/sailfish-secrets) | Native pinentry compatibility; separate cache-free prototype |
-| password-store | [misja/sailfish-pass](https://github.com/misja/sailfish-pass) | Private GnuPG binding and BusyBox-compatible listing |
-| pass-otp | [misja/pass-otp](https://github.com/misja/pass-otp) | Standard-input secret handling and packaged OATH backend |
+| Sailfish Secrets | [misja/sailfish-secrets](https://github.com/misja/sailfish-secrets/tree/sailfish/native-pinentry-compat) | Native pinentry compatibility; separate cache-free prototype |
+| password-store | [misja/sailfish-pass](https://github.com/misja/sailfish-pass/tree/sailfish/private-gpg) | Private GnuPG binding and BusyBox-compatible listing |
+| pass-otp | [misja/pass-otp](https://github.com/misja/pass-otp/tree/sailfish/stdin-private-backend) | Standard-input secret handling and packaged OATH backend |
 
 Each adaptation branch starts from a pinned upstream commit and preserves the
 upstream history. [The source map](upstream-forks.json) records exact bases,

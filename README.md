@@ -17,7 +17,8 @@ start with [GnuPG runtime](https://github.com/misja/sailfish-gnupg-runtime) or
 
 Our GnuPG runtime uses separate commands, libraries, keys and an agent. Pass
 uses that runtime but installs the public `pass` command. Integration with
-Jolla’s graphical password prompts is separate work. Source changes are maintained
+Jolla’s graphical password prompts is separate work in the
+[Sailfish Secrets compatibility branch](https://github.com/misja/sailfish-secrets/tree/sailfish/native-pinentry-compat). Source changes are maintained
 in [upstream forks](docs/development/upstream-forks.md); packaging and shared
 tooling live in the repositories above.
 
