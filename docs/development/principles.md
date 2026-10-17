@@ -11,3 +11,19 @@ Version: 1.0.0. Adopted 2026-10-10. Source: accepted Phase A constitution propos
 7. **Clear ownership, minimal process.** One accountable task owner; role activation must add value. One blocker clarification round-trip, then decision-owner escalation. Concise artifact handoffs; one shared spec/plan/task set.
 8. **Sparse firm human gates.** Follow the approved scope; do reversible routine work autonomously. Architecture bootstrap, exceptional security/system/destructive changes, device changes and external publication require explicit scoped authorization.
 9. **Independent projects.** Apps/packages own their histories, tests and releases. Shared infrastructure serves unrelated Sailfish projects; create common runtime/UI libraries only after demonstrated reuse.
+
+## Platform conventions
+
+Use existing Sailfish, RPM and upstream lifecycle facilities before adding
+project-specific mechanisms. Normal users must not inspect or kill processes to
+install, update or remove packages. Check the actual target versions and macro
+implementations: a familiar macro name is not proof it performs the required
+action. Any departure from maintained platform/upstream practice needs a concrete
+justification and maintainer agreement before implementation.
+
+Research is a prerequisite to introducing new constraints, not an optional check
+after a maintainer questions them. Record the relevant upstream/platform behavior,
+the actual unsolved problem and the simpler alternatives in the existing issue.
+Independent reviewers must question the necessity of the requirements themselves.
+Apply this to the primary assistant and delegated agents; AGENTS baseline 1.3.0
+makes it a persistent instruction in each project checkout.
