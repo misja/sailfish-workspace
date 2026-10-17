@@ -1,6 +1,6 @@
 # Staged roles and handoffs
 
-Adopted: 2026-10-10. Updated: 2026-10-16. Baseline: 1.2.0. Scope: every real project; synthetic trial uses the same rules.
+Adopted: 2026-10-10. Updated: 2026-10-17. Baseline: 1.3.0. Scope: every real project; synthetic trial uses the same rules.
 
 ## Role activation
 
@@ -44,6 +44,15 @@ reviewers must flag that mismatch rather than accept it as completion.
 The Release Manager
 cannot waive technical findings or create new test requirements without such a
 reason. Keep review/approval history in the existing release issue.
+
+## Research before proposing new mechanisms
+
+All roles, including delegated agents, follow AGENTS baseline 1.3.0: inspect
+maintained upstream behavior and actual platform facilities before adding a
+requirement or custom mechanism. The scope/design reviewer must ask whether the
+problem comes from an unnecessary project restriction. Record evidence and the
+remaining gap in the existing issue. A custom service/lifecycle framework or
+other departure needs concrete justification and maintainer agreement.
 
 ## One shared artifact set
 
