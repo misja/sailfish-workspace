@@ -3,6 +3,12 @@
 We adapt upstream code in forks and keep the package recipes, runtime wrappers
 and integration tests in the Sailfish packaging repositories.
 
+For Sailfish packages and usage constraints, start with the
+[pass/OTP overview](https://github.com/misja/sailfish-password-store) or
+[GnuPG overview](https://github.com/misja/sailfish-gnupg-runtime). The forks below
+are source development repositories, not additional packages to install. Their
+READMEs describe the upstream projects; this page explains our adaptations.
+
 | Upstream | Fork | Adaptation |
 | --- | --- | --- |
 | Sailfish Secrets | [misja/sailfish-secrets](https://github.com/misja/sailfish-secrets) | Native pinentry compatibility; separate cache-free prototype |
