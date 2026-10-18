@@ -1,7 +1,7 @@
 # Release delivery
 
 Updated: 2026-10-17. Owner: separate Release Manager for presentation;
-primary assistant for packaging. Misja authorizes publication.
+Builder/Packager for packaging. Misja authorizes publication.
 Live delivery work: [workspace #2](https://github.com/misja/sailfish-workspace/issues/2).
 
 ## Release notes style

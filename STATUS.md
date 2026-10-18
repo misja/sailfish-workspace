@@ -1,6 +1,6 @@
 # Session handoff
 
-Updated: 2026-10-17. Decision owner: Misja Hoebe (@misja).
+Updated: 2026-10-18. Decision owner: Misja Hoebe (@misja).
 Live work: [release delivery #2](https://github.com/misja/sailfish-workspace/issues/2)
 and the [Sailfish project board](https://github.com/users/misja/projects/2).
 
@@ -25,15 +25,24 @@ Artifact/signature review of all eleven new RPMs, including source RPMs, is
 complete: SDK signature verification and separate cryptographic assistant review
 passed with fingerprint `F48588CC6061DAC0C4C09F8734370471919C29A5`. Nothing is published.
 
-Next: Builder records the compact 2026-10-17 candidate manifest from existing
-evidence; the independent reviewer assesses it before branches/commits/PRs and
-the coordinated draft refresh. Acceptance: preserve existing changes and source
+Builder has written the compact [2026-10-17 candidate manifest](docs/development/release-candidate-20261017.json)
+from existing evidence. Separate assistant manifest review on 2026-10-17 found
+no blocker for PR/draft preparation: artifact identities, eleven RPMs, both spec
+hashes, public-key hashes, source pins and planned 3/10 assets match the evidence.
+This is not a human audit or publication approval. Acceptance: preserve existing changes and source
 pins, signed RPM/SRPM plus public-key assets only (3 runtime, 10 password-store),
 verify all thirteen downloads, and independently check draft metadata. No merge,
 publication, rebuild, new installation or device change is authorized.
 The coordinated runtime/pass/OTP transition passed an isolated SDK RPM database
 check; it was not an installed-device package transaction. The Release Manager
 owns the updated documentation and notes, including related-component links.
+The Release Manager updated release.md to identify the current manifest and
+completed signature review, preserving the historical manifest and existing notes.
+Workspace commit `6a665c4` records the manifest and documentation. PR creation
+and the coordinated draft refresh remain pending; final draft-metadata and
+download-evidence review will follow.
+The next owner must finish the authorized delivery steps and record PR/draft links in workspace #2 and runtime #3. Temporary
+tool cleanup and thirteen-download hash verification are still pending.
 No full Xperia retest, upstream update, tool framework or automatic publication.
 
 ## Maintained decisions and earlier evidence
