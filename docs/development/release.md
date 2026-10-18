@@ -23,9 +23,14 @@ pass/OTP must update all three packages in the same package transaction. An
 isolated SDK RPM database check passed for that coordinated transition.
 SDK signature verification and separate cryptographic assistant review of all
 eleven signed RPMs, including source RPMs, are complete. These checks are not
-a human security audit or authorization to publish. The draft refresh, download
-verification and separate draft-metadata review are tracked in the live delivery
-issue and STATUS.md.
+a human security audit or authorization to publish. Both unpublished drafts were refreshed on 2026-10-18. All thirteen downloads
+match local signed delivery hashes; separate technical assistant review of draft
+metadata, exact source/spec identities, texts and download evidence found no
+blocker. Runtime offers three assets and password-store ten: signed binary/source
+RPMs and public certificates only. Replaced RPMs and checksum/signature files were
+removed. The specified temporary tool directories were removed while preserving
+delivery files and evidence. PR/draft links and the maintainer handoff are in
+STATUS.md and the live delivery issue. No merge or publication is authorized.
 
 Earlier synthetic Xperia checks remain evidence within their recorded scope.
 The final-removal hook was also checked on the dev Xperia 5.2.0.20, using copied

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-17",
-  "state": "signed CLI candidate; existing GitHub drafts await refresh; not published",
+  "state": "signed CLI draft releases refreshed and independently reviewed; not published",
   "local_bundle": ".local-artifacts/release-20261017-cli",
   "coordinated_versions": {
     "runtime": "2.5.24-0.7",
@@ -12,12 +12,13 @@
   "sources": {
     "runtime_commit": "58dde123489134a67e92306ce46d6c097ce1b8f7",
     "password_store_base_commit": "573060d975987b118708253a6fc2fad04089696a",
-    "password_store_metadata": "Built from this base plus the existing Summary/Description changes in rpm/sailfish-pass.spec and rpm/sailfish-pass-otp.spec; draft target must be the new PR head containing these exact spec bytes, not the base alone.",
+    "password_store_metadata": "PR #12 head includes the exact built Summary/Description spec metadata; spec hashes below are unchanged.",
     "password_store_spec_sha256": {
       "sailfish-password-store/rpm/sailfish-pass.spec": "141c870d4dbf6a2d511fd13823ade3d9659448a295b7df0a78741931ec9b68e7",
       "sailfish-password-store/rpm/sailfish-pass-otp.spec": "7906d0d3fcf8f517355641dc3ee5e59f29d0490c57f33f6599642633f341e1da"
     },
-    "upstream_pins": "Unchanged; retained in component source locks and earlier build/backport records."
+    "upstream_pins": "Unchanged; retained in component source locks and earlier build/backport records.",
+    "password_store_delivery_commit": "a3b6b03d0340f12c4c7d5062c118357cc2bdcfb9"
   },
   "signing": {
     "fingerprint": "F48588CC6061DAC0C4C09F8734370471919C29A5",
@@ -148,10 +149,49 @@
     "Historical 2026-10-16 manifest and original source pins retained."
   ],
   "pending": [
-    "Independent review of this compact manifest.",
-    "Commit documentation/build records/spec metadata in targeted PRs without merge.",
-    "Refresh both existing release drafts, remove replaced RPMs and SHA256SUMS/signature, verify all thirteen downloads against local hashes, and obtain separate draft-metadata review.",
-    "Retain delivery/evidence files; remove only authorized temporary tools and SDK signature-review directory.",
-    "Release Manager records final PR/draft links and delivery state in workspace issue #2 and runtime issue #3."
+    "Maintainer review of the three PRs; no merge performed.",
+    "Maintainer publication decision; both releases remain unpublished drafts."
+  ],
+  "delivery_date": "2026-10-18",
+  "pull_requests": {
+    "workspace": "https://github.com/misja/sailfish-workspace/pull/16",
+    "runtime": "https://github.com/misja/sailfish-gnupg-runtime/pull/22",
+    "password-store": "https://github.com/misja/sailfish-password-store/pull/12"
+  },
+  "drafts": {
+    "runtime": {
+      "id": 415273291,
+      "html_url": "https://github.com/misja/sailfish-gnupg-runtime/releases/tag/untagged-8a6ad3eb9eb59c1e39d0",
+      "tag_name": "v2.5.24-0.7",
+      "target_commitish": "58dde123489134a67e92306ce46d6c097ce1b8f7",
+      "draft": true,
+      "prerelease": true,
+      "published_at": null,
+      "asset_count": 3
+    },
+    "password-store": {
+      "id": 415273322,
+      "html_url": "https://github.com/misja/sailfish-password-store/releases/tag/untagged-a89114055f9e9007f236",
+      "tag_name": "v1.7.4-0.6",
+      "target_commitish": "a3b6b03d0340f12c4c7d5062c118357cc2bdcfb9",
+      "draft": true,
+      "prerelease": true,
+      "published_at": null,
+      "asset_count": 10
+    }
+  },
+  "verification": {
+    "manifest_review": "Separate assistant review found no blockers, 2026-10-17.",
+    "draft_metadata_review": "Separate assistant review found no blockers, 2026-10-18.",
+    "download_verification": ".local-artifacts/release-20261017-cli/download-verification.json",
+    "download_count": 13,
+    "all_download_hashes_match": true,
+    "cleanup_verification": ".local-artifacts/release-20261017-cli/cleanup-verification.json",
+    "temporary_directories_removed": true,
+    "limits": "Assistant review is not a human audit, merge approval or publication authorization."
+  },
+  "issue_handoffs": [
+    "https://github.com/misja/sailfish-workspace/issues/2#issuecomment-6248423595",
+    "https://github.com/misja/sailfish-gnupg-runtime/issues/3#issuecomment-6248424901"
   ]
 }

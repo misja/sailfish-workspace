@@ -18,32 +18,40 @@ code until they exit. Final removal checks for private CLI clients before
 requesting agent shutdown. The exact hook passed a bounded synthetic native
 Xperia 5.2.0.20 check; this was not installation/removal of the new RPM.
 
-The new candidate has been built and inspected in the existing SDK, reusing
-unchanged tree/OATH outputs and pinned upstream sources. Current GitHub drafts
-still contain the signed 0.6 runtime / 0.5 pass/OTP candidate pending refresh.
-Artifact/signature review of all eleven new RPMs, including source RPMs, is
-complete: SDK signature verification and separate cryptographic assistant review
-passed with fingerprint `F48588CC6061DAC0C4C09F8734370471919C29A5`. Nothing is published.
+The candidate is built, signed and delivered to the existing unpublished GitHub
+drafts: runtime 2.5.24-0.7, pass 1.7.4-0.6 and OTP 1.2.0-0.6, reusing tree/OATH.
+SDK signature verification and separate cryptographic assistant review passed
+for all eleven RPMs with fingerprint `F48588CC6061DAC0C4C09F8734370471919C29A5`.
+The compact [candidate manifest](docs/development/release-candidate-20261017.json)
+also passed separate assistant review. Historical records and source pins remain.
 
-Builder has written the compact [2026-10-17 candidate manifest](docs/development/release-candidate-20261017.json)
-from existing evidence. Separate assistant manifest review on 2026-10-17 found
-no blocker for PR/draft preparation: artifact identities, eleven RPMs, both spec
-hashes, public-key hashes, source pins and planned 3/10 assets match the evidence.
-This is not a human audit or publication approval. Acceptance: preserve existing changes and source
-pins, signed RPM/SRPM plus public-key assets only (3 runtime, 10 password-store),
-verify all thirteen downloads, and independently check draft metadata. No merge,
-publication, rebuild, new installation or device change is authorized.
+Prepared PRs, all awaiting maintainer review (none merged):
+- [Workspace #16](https://github.com/misja/sailfish-workspace/pull/16)
+- [Runtime #22](https://github.com/misja/sailfish-gnupg-runtime/pull/22)
+- [Password store #12](https://github.com/misja/sailfish-password-store/pull/12)
+
+Unpublished drafts, with the Release Manager's existing texts:
+- [Runtime draft](https://github.com/misja/sailfish-gnupg-runtime/releases/tag/untagged-8a6ad3eb9eb59c1e39d0), source `58dde123489134a67e92306ce46d6c097ce1b8f7`, three assets.
+- [Password-store draft](https://github.com/misja/sailfish-password-store/releases/tag/untagged-a89114055f9e9007f236), source `a3b6b03d0340f12c4c7d5062c118357cc2bdcfb9` (reviewed source commit in PR #12), ten assets.
+
+Only signed binary/source RPMs and public certificates are offered; replaced RPMs
+and checksum/signature files are removed. All thirteen downloaded assets match
+local delivery hashes. Separate technical assistant review on 2026-10-18 found
+no blocker in draft metadata, exact source/spec identities, texts, assets or
+independently recomputed download hashes. This is not a human security audit or
+publication approval. Evidence and delivery files remain in
+`.local-artifacts/release-20261017-cli/`, including `download-verification.json`,
+`*-draft-after.json` and `cleanup-verification.json`. Both specified temporary
+tool directories have been removed; delivery files and evidence are preserved.
+
+The Release Manager owns the final delivery handoff in workspace #2 and runtime
+#3. Next owner: Misja for PR review and any later explicit publication decision.
+Nothing is merged or published; no new installation, device change, rebuild or
+repetition of completed tests was performed in this completion round.
 The coordinated runtime/pass/OTP transition passed an isolated SDK RPM database
-check; it was not an installed-device package transaction. The Release Manager
-owns the updated documentation and notes, including related-component links.
-The Release Manager updated release.md to identify the current manifest and
-completed signature review, preserving the historical manifest and existing notes.
-Workspace commit `6a665c4` records the manifest and documentation. PR creation
-and the coordinated draft refresh remain pending; final draft-metadata and
-download-evidence review will follow.
-The next owner must finish the authorized delivery steps and record PR/draft links in workspace #2 and runtime #3. Temporary
-tool cleanup and thirteen-download hash verification are still pending.
-No full Xperia retest, upstream update, tool framework or automatic publication.
+check; it was not an installed-device package transaction. Earlier synthetic
+Xperia evidence retains its bounded scope. Runtime/pass/OTP must be upgraded
+together; public pass ownership and GNU Bash/provider constraints remain.
 
 ## Maintained decisions and earlier evidence
 
