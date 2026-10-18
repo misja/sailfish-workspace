@@ -1,86 +1,71 @@
-# Release delivery preparation
+# Release delivery
 
-Updated: 2026-10-16. Owner: separate Release Manager agent; primary assistant integrates artifacts.
-Misja decides scope, target and publication. Live work is tracked by
-[workspace #2](https://github.com/misja/sailfish-workspace/issues/2),
-[pass #1](https://github.com/misja/sailfish-password-store/issues/1) and the linked
-runtime gates. This page describes the concrete candidate, not a second backlog.
+Updated: 2026-10-17. Owner: separate Release Manager for presentation;
+Builder/Packager for packaging. Misja authorizes publication.
+Live delivery work: [workspace #2](https://github.com/misja/sailfish-workspace/issues/2).
 
 ## Release notes style
 
-Write for people using the release: contents, relevant changes, source access,
-verification and concrete usage limitations. Keep wording brief and factual;
-avoid promotional language, repetitive disclaimers and process narration.
-Review evidence, role handoffs and approval history belong in the release issue,
-not on the download page. Preserve material compatibility and safety limitations.
+Write for people using the release: purpose, contents, relevant changes, source
+access and concrete usage limits. Explain component boundaries without assuming
+our earlier conversations. Keep review/approval history in issues. The same rule
+applies to READMEs and documentation across related repositories.
 
-## Existing candidate
+## Candidate and evidence
 
-The [artifact manifest](release-candidate-20261016.json) records six binary and
-five matching source RPMs. Runtime 2.5.24-0.6 and pass/OTP 0.5 use the reviewed
-build outputs; tree and OATH are unchanged. Release copies now carry V4
-EdDSA/SHA256 RPM signatures from key
-`F48588CC6061DAC0C4C09F8734370471919C29A5`, plus signed checksum lists.
-All main headers and payloads remain byte-identical to the unsigned build
-outputs. SDK RPM verifies all eleven signatures and package digests.
+The [2026-10-17 candidate](release-candidate-20261017.json) contains
+`sailfish-gnupg-runtime` 2.5.24-0.7, pass 1.7.4-0.6 and OTP 1.2.0-0.6.
+The [2026-10-16 manifest](release-candidate-20261016.json) retains the identities
+of the earlier runtime 0.6 and pass/OTP 0.5 draft assets. Tree 2.3.2-0.1 and OATH 2.6.14-0.3 remain unchanged.
+It was built and inspected with SDK 3.13.5 / SailfishOS-5.1.0.11-aarch64.
+Existing pass has an exact dependency on the previous runtime: users upgrading
+pass/OTP must update all three packages in the same package transaction. An
+isolated SDK RPM database check passed for that coordinated transition.
+SDK signature verification and separate cryptographic assistant review of all
+eleven signed RPMs, including source RPMs, are complete. These checks are not
+a human security audit or authorization to publish. Both unpublished drafts were refreshed on 2026-10-18. All thirteen downloads
+match local signed delivery hashes; separate technical assistant review of draft
+metadata, exact source/spec identities, texts and download evidence found no
+blocker. Runtime offers three assets and password-store ten: signed binary/source
+RPMs and public certificates only. Replaced RPMs and checksum/signature files were
+removed. The specified temporary tool directories were removed while preserving
+delivery files and evidence. PR/draft links and the maintainer handoff are in
+STATUS.md and the live delivery issue. No merge or publication is authorized.
 
-Existing static inspections cover private payload/library paths, source inputs,
-patches and bundled notices. Their scope and separate assistant review remain
-as recorded; assembling the files is not a new native test or blanket legal
-clearance. The full source packages accompany the binaries in the candidate;
-retain clear adjacent source access when selecting the actual distribution route
-([GNU source-delivery explanation](https://www.gnu.org/licenses/gpl-faq.en.html#SourceAndBinaryOnDifferentSites)).
-Auxiliary debug RPMs are not part of this candidate and remain unvalidated.
+Earlier synthetic Xperia checks remain evidence within their recorded scope.
+The final-removal hook was also checked on the dev Xperia 5.2.0.20, using copied
+GnuPG 2.5.24 binaries, empty synthetic homes and the exact proposed hook with a
+temporary prefix. That confirms native selection/shutdown behavior; it does not
+claim an installed new-package transaction or full new device acceptance.
+Additional testing must address a named changed behavior, not recreate history.
 
-The native Jolla compatibility plugin is not in this CLI artifact set. Its exact
-vendor-source mapping, static-Assuan source/relink delivery, provider/OS-upgrade
-selection and same-name distribution route remain separate unresolved work.
-Misja selected CLI-first draft preparation. Native integration remains separate work.
+The runtime starts agents on demand. Updates leave verified old agents running;
+new agent fixes become active after those agents exit. The removal hook refuses
+detected private clients before requesting shutdown. It does not enforce global
+start exclusion or promise completion of every arbitrary agent session. See
+[the maintenance notes](https://github.com/misja/sailfish-gnupg-runtime/blob/main/docs/lifecycle-contract.md).
 
-## Before publication
+## Signing and delivery
 
-- Reuse the earlier synthetic Xperia tests on Sailfish OS 5.2.0.18 and the
-  recorded package-preservation check after updating to 5.2.0.20. Current runtime
-  0.6 and pass/OTP 0.5 revisions have SDK build/regression evidence. Assess changes
-  against that evidence; require an additional target check only for a named
-  uncovered risk, including unresolved provider/command ownership. Do not require
-  a complete new device test merely because package revisions changed.
-- Resolve the claimed upgrade/removal policy under runtime #3; current source
-  has no enforced live update exclusion. Do not turn withdrawn PR #17 into work.
-- Select signing/trust and delivery. Chum builds from source through OBS and
-  requires avoiding interference with Jolla packages; local RPMs are
-  not a completed Chum submission. Its documented route is OBS build followed
-  by submission to Testing, then maintainer promotion
-  ([official developer guide](https://github.com/sailfishos-chum/main#developers-guide)).
-- Obtain separate release-evidence assessment and Misja's approval of the exact
-  artifacts, target and publication action. Signing and draft asset replacement are authorized; OBS writes, device changes
-  and actual publication are not.
+All distributed binary and source RPMs carry V4 EdDSA/SHA256 signatures from
+`F48588CC6061DAC0C4C09F8734370471919C29A5`. The delivery consists of those RPMs
+and the public certificate; separate checksum/signature files are unnecessary
+for this release workflow. Keep unsigned build and signed release hashes in
+the evidence record. The existing SDK RPM verified this signature format.
+A modern distribution signer is used locally with the existing GPG agent; no
+private key is copied. Temporary downloaded/extracted tools are removed afterwards.
 
-Do not rebuild the candidate or repeat historical lifecycle/algorithm trials
-merely to regenerate a record. The next executable experiment needs a named target,
-exact inputs/paths and authorization; no general installer is proposed here.
+Matching source RPMs accompany every binary. Existing notices/source inspections
+remain valid within scope; this is not blanket legal clearance. Native graphical
+integration and auxiliary debug RPMs are outside this CLI delivery.
 
-A separate reviewer recomputed all eleven local RPM hashes and checked the
-source mapping, handoff and explicit open gates. No blocker was found for
-maintainer review of this candidate; this is not release authorization.
+Public command ownership and compatible GNU Bash/provider selection remain
+component installation considerations. GitHub drafts are not a Chum/OBS
+submission; that route has separate platform policy and trust requirements.
+Before publication, check exact reviewed assets, current user-facing limitations
+and Misja's explicit authorization. Do not invent a service framework to support
+an unreviewed extra lifecycle guarantee.
 
-## Signing and maintenance
-
-The SDK's old signer cannot use the selected Ed25519 key, but its RPM verifier
-can. Ubuntu RPM 6.1.0, temporarily downloaded and extracted locally, signed the
-release copies using the existing local GPG agent and `rpmsign --rpmv4` with the
-explicit signing fingerprint. No rebuild, private-key copy or system package
-installation was needed. SDK RPM 4.16.1.3 verified all eleven signatures; the
-initial missing-key control returned NOKEY. This establishes SDK verifier
-compatibility, not a new device test.
-
-Signed checksums additionally authenticate downloaded files; they do not replace
-RPM signing. Preserve build hashes separately from signed release hashes.
-Temporary signer packages, extracted libraries and proof/test files are removed
-after delivery verification; keep evidence in the existing manifest and issue.
-No signing bridge, permanent helper or additional test suite is maintained.
-
-A fallback that changes the requested outcome requires Misja's agreement.
-Record the obstacle, investigate the smallest practical alternative, and ask
-before treating it as completion. In particular, signing checksums must not be
-substituted for requested RPM signatures without that agreement.
+A fallback changing the requested outcome needs maintainer agreement: signing
+checksums must not silently replace requested RPM signatures. Use existing
+upstream/platform behavior before designing additional requirements.

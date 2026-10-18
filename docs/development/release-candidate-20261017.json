@@ -1,0 +1,197 @@
+{
+  "date": "2026-10-17",
+  "state": "signed CLI draft releases refreshed and independently reviewed; not published",
+  "local_bundle": ".local-artifacts/release-20261017-cli",
+  "coordinated_versions": {
+    "runtime": "2.5.24-0.7",
+    "pass": "1.7.4-0.6",
+    "otp": "1.2.0-0.6",
+    "tree": "2.3.2-0.1 (reused)",
+    "oath": "2.6.14-0.3 (reused)"
+  },
+  "sources": {
+    "runtime_commit": "58dde123489134a67e92306ce46d6c097ce1b8f7",
+    "password_store_base_commit": "573060d975987b118708253a6fc2fad04089696a",
+    "password_store_metadata": "PR #12 head includes the exact built Summary/Description spec metadata; spec hashes below are unchanged.",
+    "password_store_spec_sha256": {
+      "sailfish-password-store/rpm/sailfish-pass.spec": "141c870d4dbf6a2d511fd13823ade3d9659448a295b7df0a78741931ec9b68e7",
+      "sailfish-password-store/rpm/sailfish-pass-otp.spec": "7906d0d3fcf8f517355641dc3ee5e59f29d0490c57f33f6599642633f341e1da"
+    },
+    "upstream_pins": "Unchanged; retained in component source locks and earlier build/backport records.",
+    "password_store_delivery_commit": "a3b6b03d0340f12c4c7d5062c118357cc2bdcfb9"
+  },
+  "signing": {
+    "fingerprint": "F48588CC6061DAC0C4C09F8734370471919C29A5",
+    "format": "RPM V4 EdDSA/SHA256",
+    "public_certificate": "release-signing-key.asc",
+    "public_certificate_sha256": "921ad9371a6fc6c4ef7d190c97e0a8766e3b7f9ccd92c59e9820ab11b1eddd4b",
+    "verification": "All eleven RPMs passed existing SDK signature/digest verification; independent cryptographic assistant review completed (maintainer session handoff, 2026-10-17). Signing preserved main headers and payloads."
+  },
+  "artifacts": [
+    {
+      "component": "runtime",
+      "filename": "sailfish-gnupg-runtime-2.5.24-0.7.aarch64.rpm",
+      "unsigned_sha256": "af0437be52f2eb529770af033064ab461fa0a1dda339cfbf18f2e09372f5a0be",
+      "signed_sha256": "09d773f6d6ecd56989bcc2d631c9c731e9244c9c568a18d8cb0689f4663c1c74",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "runtime",
+      "filename": "sailfish-gnupg-runtime-2.5.24-0.7.src.rpm",
+      "unsigned_sha256": "3f83b90617baf646a5b0c97642506e243f7dd2f8c26610f11a5c1d9ff31f1d2a",
+      "signed_sha256": "0f7d7e9975ca79290095c20f0a34dc1a45ebb33f6806a2c963c5ec0b83126db1",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "oath-toolkit-2.6.14-0.3.src.rpm",
+      "unsigned_sha256": "b045a50ff766c897b0d89162747bb1fc918742169b5f2f7d486022f78c1d983c",
+      "signed_sha256": "82f78f15a16a74542758bbac3fbce303d9336a6db5377cb689fb66c66eb88a27",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-liboath-2.6.14-0.3.aarch64.rpm",
+      "unsigned_sha256": "c0a3f951ae22e23e343579f8a91e187160accf1c9df75222d4ca0b8034cbb1e5",
+      "signed_sha256": "cdec9a174b1d7ba5cb392b16115eb9ba124b73969017c61f76ea6fc936ac4e86",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-oathtool-2.6.14-0.3.aarch64.rpm",
+      "unsigned_sha256": "cf70fe585b6feb35329bb8434b0c7e20999a467a10e5c6175e16240d42dedfbe",
+      "signed_sha256": "2a4a1a7a23898dc0c965fb3220ca59a52f1ed2ca108c501ebc0700a832051e7f",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-pass-1.7.4-0.6.noarch.rpm",
+      "unsigned_sha256": "531ce3d7565546f83b8a34f70e1f15696d12b519aae14717dce0f31f3ae9bd76",
+      "signed_sha256": "e0fa856bf2142618175f26b8c21cc150d3e738185bf36780ca8b8dd1ef3b542f",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-pass-1.7.4-0.6.src.rpm",
+      "unsigned_sha256": "fb2f8d7d1091a95b7e9c9b88e93d6a4f6049c197e8a488988cf9fbeb6e223439",
+      "signed_sha256": "1f52946f99ec1c8274605eb5eb3d03c2dfbdab1f7e0fe8bc071fc78fe860df9e",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-pass-otp-1.2.0-0.6.noarch.rpm",
+      "unsigned_sha256": "09cc9fcceca71bdb91295619e5cb157c2d12e1f0633f3e7ec5a0979d3aa32c4d",
+      "signed_sha256": "08c340e1090d1af06786464995e8e7ca858d4c223b6801f3b77ceca1436b9196",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-pass-otp-1.2.0-0.6.src.rpm",
+      "unsigned_sha256": "1e4df9148544635ce547f3d0de02725559fe876969ed999c8b4544905e90dfd1",
+      "signed_sha256": "ba53863f6d9c0d08179ffe7183aac5d50bdfb52fcba8ec0664fad6493576049e",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-pass-tree-2.3.2-0.1.aarch64.rpm",
+      "unsigned_sha256": "4d83ceffd0326545e5e7c30d988ebed39ea5fd084138f037b50931dd16a88a12",
+      "signed_sha256": "e5f8e5a8aae815e81a776b249db1b5590c08cd4abb9042aeed9785f86d9935db",
+      "main_header_payload_unchanged_by_signing": true
+    },
+    {
+      "component": "password-store",
+      "filename": "sailfish-pass-tree-2.3.2-0.1.src.rpm",
+      "unsigned_sha256": "0b4ac811ed36dd08567f48f7b79ea595d20466f50ee93a1d34897586abb8074e",
+      "signed_sha256": "e5b1fd429518991ae7393e5dc76ff6e1e3dc2436f64665ff950b3dde2486dbea",
+      "main_header_payload_unchanged_by_signing": true
+    }
+  ],
+  "expected_release_assets": {
+    "runtime": {
+      "tag": "v2.5.24-0.7",
+      "count": 3,
+      "files": [
+        "sailfish-gnupg-runtime-2.5.24-0.7.aarch64.rpm",
+        "sailfish-gnupg-runtime-2.5.24-0.7.src.rpm",
+        "release-signing-key.asc"
+      ]
+    },
+    "password-store": {
+      "tag": "v1.7.4-0.6",
+      "count": 10,
+      "files": [
+        "oath-toolkit-2.6.14-0.3.src.rpm",
+        "sailfish-liboath-2.6.14-0.3.aarch64.rpm",
+        "sailfish-oathtool-2.6.14-0.3.aarch64.rpm",
+        "sailfish-pass-1.7.4-0.6.noarch.rpm",
+        "sailfish-pass-1.7.4-0.6.src.rpm",
+        "sailfish-pass-otp-1.2.0-0.6.noarch.rpm",
+        "sailfish-pass-otp-1.2.0-0.6.src.rpm",
+        "sailfish-pass-tree-2.3.2-0.1.aarch64.rpm",
+        "sailfish-pass-tree-2.3.2-0.1.src.rpm",
+        "release-signing-key.asc"
+      ]
+    }
+  },
+  "evidence": [
+    "sailfish-gnupg-runtime/docs/build-records/runtime-07-20261017.json",
+    "sailfish-password-store/docs/packaging-06-20261017.json",
+    "sailfish-gnupg-runtime/docs/lifecycle-confirmation-20261017.json",
+    ".local-artifacts/release-20261017-cli/artifacts.json",
+    ".local-artifacts/release-20261017-cli/sdk-signature-verification.log",
+    ".local-artifacts/release-20261017-cli/rename-metadata-07.json"
+  ],
+  "limits": [
+    "SDK 3.13.5 / SailfishOS-5.1.0.11-aarch64 build and inspection; coordinated upgrade checked only in isolated SDK RPM database copy with --test/--justdb, no payload or scriptlet installed/executed.",
+    "Focused synthetic Xperia/Sailfish 5.2.0.20 removal-hook check reused; no new RPM installation or full pass/OTP device retest.",
+    "Independent assistant review is not a human security audit or publication approval.",
+    "Native graphical integration and auxiliary debug RPMs excluded.",
+    "Historical 2026-10-16 manifest and original source pins retained."
+  ],
+  "pending": [
+    "Maintainer review of the three PRs; no merge performed.",
+    "Maintainer publication decision; both releases remain unpublished drafts."
+  ],
+  "delivery_date": "2026-10-18",
+  "pull_requests": {
+    "workspace": "https://github.com/misja/sailfish-workspace/pull/16",
+    "runtime": "https://github.com/misja/sailfish-gnupg-runtime/pull/22",
+    "password-store": "https://github.com/misja/sailfish-password-store/pull/12"
+  },
+  "drafts": {
+    "runtime": {
+      "id": 415273291,
+      "html_url": "https://github.com/misja/sailfish-gnupg-runtime/releases/tag/untagged-8a6ad3eb9eb59c1e39d0",
+      "tag_name": "v2.5.24-0.7",
+      "target_commitish": "58dde123489134a67e92306ce46d6c097ce1b8f7",
+      "draft": true,
+      "prerelease": true,
+      "published_at": null,
+      "asset_count": 3
+    },
+    "password-store": {
+      "id": 415273322,
+      "html_url": "https://github.com/misja/sailfish-password-store/releases/tag/untagged-a89114055f9e9007f236",
+      "tag_name": "v1.7.4-0.6",
+      "target_commitish": "a3b6b03d0340f12c4c7d5062c118357cc2bdcfb9",
+      "draft": true,
+      "prerelease": true,
+      "published_at": null,
+      "asset_count": 10
+    }
+  },
+  "verification": {
+    "manifest_review": "Separate assistant review found no blockers, 2026-10-17.",
+    "draft_metadata_review": "Separate assistant review found no blockers, 2026-10-18.",
+    "download_verification": ".local-artifacts/release-20261017-cli/download-verification.json",
+    "download_count": 13,
+    "all_download_hashes_match": true,
+    "cleanup_verification": ".local-artifacts/release-20261017-cli/cleanup-verification.json",
+    "temporary_directories_removed": true,
+    "limits": "Assistant review is not a human audit, merge approval or publication authorization."
+  },
+  "issue_handoffs": [
+    "https://github.com/misja/sailfish-workspace/issues/2#issuecomment-6248423595",
+    "https://github.com/misja/sailfish-gnupg-runtime/issues/3#issuecomment-6248424901"
+  ]
+}

@@ -79,3 +79,8 @@ imply that pass or native integration has the same package coexistence behavior.
 The distinct Release Manager reviews public-facing entry documentation as well
 as releases; technical review checks the underlying claims. Preserve upstream
 fork documentation and pins; explain adaptation roles in the existing source map.
+
+Link a named related component at its first substantive mention, using the
+relevant adaptation branch when pointing to downstream source work. Keep README,
+documentation-index and source-map references consistent; verify changed link
+targets rather than assuming a repository's default branch contains our work.
