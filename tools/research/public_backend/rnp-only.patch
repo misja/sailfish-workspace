@@ -1,0 +1,78 @@
+--- a/libpgpfactory/CMakeLists.txt
++++ b/libpgpfactory/CMakeLists.txt
+@@ -1,4 +1,6 @@
+ include(FeatureSummary)
++
++option(LIBPGPFACTORY_RNP_ONLY "Build only the existing RNP backend" OFF)
+ 
+ set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+@@ -19,7 +21,7 @@
+ 
+ add_subdirectory(RnpCore)
+ 
+-if(UNIX)
++if(UNIX AND NOT LIBPGPFACTORY_RNP_ONLY)
+     # LibGpgError bug must include_directories on root, but can be linked in subdirectory
+     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+     find_package(LibGpgError REQUIRED)
+@@ -66,7 +68,7 @@
+     # hygen srcs 
+ )
+ 
+-if(UNIX)
++if(UNIX AND NOT LIBPGPFACTORY_RNP_ONLY)
+     set(libpgpfactory_SRCS 
+     ${libpgpfactory_SRCS}
+     libpgpfactory.h
+@@ -85,9 +87,13 @@
+ 
+ 
+ 
++if(LIBPGPFACTORY_RNP_ONLY)
++    target_compile_definitions(libpgpfactory PRIVATE LIBPGPFACTORY_RNP_ONLY=1)
++endif()
++
+ set (target_link_list RnpCore)
+ 
+-if(UNIX)
++if(UNIX AND NOT LIBPGPFACTORY_RNP_ONLY)
+     set (target_link_list ${target_link_list} Gpgmepp  ${LibGpgError_LIBRARIES} )    
+ endif()
+ 
+--- a/libpgpfactory/InterfacePassHelper.cpp
++++ b/libpgpfactory/InterfacePassHelper.cpp
+@@ -1,7 +1,8 @@
+ #include "InterfacePassHelper.h"
+ #include "RnpHelper.h"
+ #include "RnpLoginRequestException.h"
+-#if defined(__APPLE__) || defined(__linux__)
++#include <stdexcept>
++#if (defined(__APPLE__) || defined(__linux__)) && !defined(LIBPGPFACTORY_RNP_ONLY)
+ #include "libpasshelper.h"
+ #endif
+ #include <regex>
+@@ -22,7 +23,10 @@
+       std::string rnpHomePath,std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt )
+     {
+         if (helper == nullptr) {
+-#if defined(__APPLE__) || defined(__linux__)
++#if defined(LIBPGPFACTORY_RNP_ONLY)
++            helper = std::make_unique<RnpHelper>(rnpHomePath);
++            helper->rnpPasswdPrompt = rnpPasswdPrompt;
++#elif defined(__APPLE__) || defined(__linux__)
+             if (isRnPgp) {
+                 helper = std::make_unique<RnpHelper>(rnpHomePath);
+                 helper->rnpPasswdPrompt = rnpPasswdPrompt;
+@@ -48,6 +52,11 @@
+ InterfaceLibgpgfactory *getInterfacePassHelper(bool isRnPgp, std::string rnpHomePath,
+                                                std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt )
+ {
++#if defined(LIBPGPFACTORY_RNP_ONLY)
++    if (!isRnPgp) {
++        throw std::invalid_argument("GnuPG backend is disabled in this RNP-only build");
++    }
++#endif
+     Singleton &s = Singleton::getInstance();
+     return s.getHelper(isRnPgp, rnpHomePath,rnpPasswdPrompt);
+ }

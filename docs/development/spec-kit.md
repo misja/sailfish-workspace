@@ -26,6 +26,11 @@ record; it is a curated handoff, not a copy of generated Spec Kit state.
 AGENTS.md is optional assistant guidance. Human contributors start at
 CONTRIBUTING.md.
 
+Use the shared [bounded execution workflow](agent-governance.md#bounded-execution-and-evidence).
+Specs define behavior and completion, while plans select focused checks, evidence
+reuse and review triggers. Do not generate a new spec or role round for each
+routine fix, or rewrite historical specs to add new process requirements.
+
 ## Optional pinned Spec Kit setup
 
 Use the [official pinned source](https://github.com/github/spec-kit/tree/0282d03eb6fc3091b3deaa3a855d4030dc40cd6c)
@@ -47,6 +52,7 @@ integration/script flags documented by that pinned version. Review them before
 bringing assets into an existing project; preserve its constitution, AGENTS.md,
 feature documents and branch. No trial sibling path is required by this repo.
 Do not regenerate over an existing project merely to continue its documents.
+
 Follow your assistant's current project-skill discovery instructions if used.
 
 Spec Kit prompts, role names and parallel task markers do not authorize

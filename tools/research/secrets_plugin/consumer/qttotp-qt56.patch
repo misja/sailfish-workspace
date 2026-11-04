@@ -1,0 +1,12 @@
+--- a/Clock.cpp
++++ b/Clock.cpp
+@@ -30,8 +30,7 @@
+ 
+ uint Clock::currentSecondsSinceEpoch()
+ {
+-    // TODO: change to toSecsSinceEpoch() when min Qt >= 5.8
+-    return instance().currentDateTimeImpl().toSecsSinceEpoch();
++    return instance().currentDateTimeImpl().toTime_t();
+ }
+ 
+ qint64 Clock::currentMilliSecondsSinceEpoch()
