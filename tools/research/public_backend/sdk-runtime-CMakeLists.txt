@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.18)
+project(sdk_runtime_fixture LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(BACKEND_BUILD "/home/ubuntu/pass-rnp-only-sdk-probe-20261101-r2/BUILD/pass-rnp-only-sdk-probe-0.18.1")
+# Actual separately built artifacts; no replacement dependency or vendor rebuild.
+add_library(existing_factory STATIC IMPORTED)
+set_target_properties(existing_factory PROPERTIES
+    IMPORTED_LOCATION "${BACKEND_BUILD}/factory-build/liblibpgpfactory.a"
+    INTERFACE_INCLUDE_DIRECTORIES "${BACKEND_BUILD}/factory/libpgpfactory/export;${BACKEND_BUILD}/factory/libpgpfactory/RnpCore/export")
+add_library(existing_rnp_core SHARED IMPORTED)
+set_target_properties(existing_rnp_core PROPERTIES
+    IMPORTED_LOCATION "${BACKEND_BUILD}/factory-build/RnpCore/libRnpCore.so")
+add_executable(public_backend_sdk_probe probe.cpp)
+target_link_libraries(public_backend_sdk_probe PRIVATE existing_factory existing_rnp_core)
+target_link_options(public_backend_sdk_probe PRIVATE
+    "-Wl,-rpath-link,${BACKEND_BUILD}/_deps/rnp-build/src/lib")

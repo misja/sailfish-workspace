@@ -1,0 +1,53 @@
+--- a/libpgpfactory/InterfacePassFile.cpp
++++ b/libpgpfactory/InterfacePassFile.cpp
+@@ -4,6 +4,8 @@
+ 
+ #include <numeric>
+ #include <sstream>
++#include <stdexcept>
++#include <system_error>
+ #include <thread>
+ 
+ bool InterfacePassFile::isGpgFile()
+@@ -25,15 +27,27 @@
+ {
+     std::string tmpName = fullPath + uuid::generate_uuid_v4();
+ 
+-    decrypted = s;
++    const std::filesystem::path tmpPath(tmpName);
++    std::error_code statusError;
++    const auto tmpStatus = std::filesystem::symlink_status(tmpPath, statusError);
++    if (statusError && statusError != std::errc::no_such_file_or_directory) {
++        throw std::filesystem::filesystem_error("Cannot inspect temporary ciphertext path",
++                                                tmpPath, statusError);
++    }
++    if (tmpStatus.type() != std::filesystem::file_type::not_found) {
++        throw std::runtime_error("Temporary ciphertext path already exists");
++    }
++
+     try {
+         encryptStringToFile(s, tmpName, encryptTo, doSign);
++        std::filesystem::rename(tmpPath, fullPath);
+     } catch (...) {
+-        std::filesystem::remove(tmpName);
++        std::error_code cleanupError;
++        std::filesystem::remove(tmpPath, cleanupError);
+         throw;
+     }
+ 
+-    std::filesystem::rename(tmpName, fullPath);
++    decrypted.swap(s);
+ }
+ 
+ InterfaceWatchWaitAndNoneWaitRunCmdItem *InterfacePassFile::openExternalEncryptNoWait(
+--- a/libpgpfactory/RnpCore/RnpCoreBal.cpp
++++ b/libpgpfactory/RnpCore/RnpCoreBal.cpp
+@@ -485,6 +485,7 @@
+         gk.foundUsingPattern = pattern;
+         gk.can_encrypt = secret_only;
+         gk.validity = 0;
+-        if (gk.getKeyStr().find(pattern) != std::string::npos) {
++        if (gk.getKeyStr().find(pattern) != std::string::npos ||
++            (keyfp && std::string(keyfp).find(pattern) != std::string::npos)) {
+             retKeys.push_back(gk);
+         }

@@ -1,0 +1,19 @@
+--- a/daemon/main.cpp
++++ b/daemon/main.cpp
+@@ -25,11 +25,12 @@
+ 
+ Q_DECL_EXPORT int main(int argc, char *argv[])
+ {
+-    const QString secretsPluginDir = QLatin1String(PLUGIN_DIRECTORY_SECRETS);
+-    const QString cryptoPluginDir = QLatin1String(PLUGIN_DIRECTORY_CRYPTO);
+-    QCoreApplication::addLibraryPath(secretsPluginDir);
+-    QCoreApplication::addLibraryPath(cryptoPluginDir);
+     QCoreApplication app(argc, argv);
++    // SDK fixture only: do not instantiate plugins from any system/default path.
++    const QString fixturePlugins = QString::fromLocal8Bit(qgetenv("SAILFISH_RNP_FIXTURE_PLUGINS"));
++    if (fixturePlugins.isEmpty() || !QDir::isAbsolutePath(fixturePlugins))
++        return 2;
++    QCoreApplication::setLibraryPaths(QStringList() << fixturePlugins);
+ 
+     bool autotestMode = false;
+     QStringList args = app.arguments();

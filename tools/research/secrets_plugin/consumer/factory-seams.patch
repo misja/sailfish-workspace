@@ -1,0 +1,248 @@
+--- a/libpgpfactory/CMakeLists.txt
++++ b/libpgpfactory/CMakeLists.txt
+@@ -38,6 +38,7 @@
+ set(libpgpfactory_SRCS    
+     export/InterfacePassHelper.h
+     InterfacePassHelper.cpp
++    InterfacePassHelperFactory.cpp
+     export/InterfacePassFile.h
+     InterfacePassFile.cpp
+     export/GpgKeys.h
+--- a/libpgpfactory/GpgIdManage.cpp
++++ b/libpgpfactory/GpgIdManage.cpp
+@@ -4,9 +4,11 @@
+ 
+ void GpgIdManage::init(std::string _currentPath, std::string _stopPath,
+                        bool _isRnPgp, std::string _rnpHomePath,
+-                       std::function<bool(RnpLoginRequestException &)> _rnpPasswdPrompt)
++                       std::function<bool(RnpLoginRequestException &)> _rnpPasswdPrompt,
++                       InterfaceLibgpgfactory &helper, bool listPrivateKeys)
+ {
+-    ph=getInterfacePassHelper(_isRnPgp, _rnpHomePath, _rnpPasswdPrompt);
++    ph = &helper;
++    m_listPrivateKeys = listPrivateKeys;
+ 
+     currentPath = _currentPath;
+     stopPath = _stopPath;
+@@ -21,8 +23,11 @@
+     encryptTo.clear();
+ 
+     allKeys = ph->listKeys("");
+-    allPrivateKeys = ph->listKeys("", true);
++    if (m_listPrivateKeys)
++        allPrivateKeys = ph->listKeys("", true);
+     nearestGpgIdFolder = ph->getNearestGpgId(currentPath, stopPath);
++    if (nearestGpgIdFolder.empty())
++        throw std::runtime_error("No recipient policy found inside store");
+     gpgPubKeysFolder = nearestGpgIdFolder + "/.public-keys";
+     nearestGpgIdFile = nearestGpgIdFolder + "/.gpg-id";
+     gpgPubKeysFolderExists = std::filesystem::exists(gpgPubKeysFolder);
+@@ -46,7 +51,8 @@
+ 
+     ph->importPublicKey(filePath, true);
+ 
+-    init(currentPath, stopPath, isRnPgp, rnpHomePath, ph->rnpPasswdPrompt);
++    init(currentPath, stopPath, isRnPgp, rnpHomePath, ph->rnpPasswdPrompt,
++         *ph, m_listPrivateKeys);
+ }
+ 
+ void GpgIdManage::ensureValidGpgIdFile()
+@@ -56,6 +62,9 @@
+         std::throw_with_nested(std::runtime_error("Class not initialized"));
+     }
+     
++    if (keysFoundInGpgIdFile.empty())
++        throw std::runtime_error("Recipient policy is empty");
++
+     if (keysNotFoundInGpgIdFile.size() > 0)
+     {
+         std::throw_with_nested(std::runtime_error("Can not save back GpgIdFile with bad records in"));
+@@ -101,7 +110,8 @@
+         ph->importPublicKey(entry.path().u8string(), true);
+     }
+ 
+-    init(currentPath, stopPath, isRnPgp, rnpHomePath, ph->rnpPasswdPrompt);
++    init(currentPath, stopPath, isRnPgp, rnpHomePath, ph->rnpPasswdPrompt,
++         *ph, m_listPrivateKeys);
+ }
+ 
+ void GpgIdManage::reEncryptFile(std::string pathFileToReEncrypt, bool doSign)
+@@ -139,11 +149,15 @@
+ void GpgIdManage::populateKeysParsedInGpgIdFile()
+ {
+     std::ifstream infile(nearestGpgIdFile);
++    if (!infile.is_open())
++        throw std::runtime_error("Cannot read recipient policy");
+     std::string line;
+     while (std::getline(infile, line))
+     {
+         populateKeyFromString(line);
+     }
++    if (infile.bad())
++        throw std::runtime_error("Cannot read complete recipient policy");
+ }
+ 
+ std::string GpgIdManage::split(std::string str)
+--- a/libpgpfactory/InterfacePassHelper.cpp
++++ b/libpgpfactory/InterfacePassHelper.cpp
+@@ -1,56 +1,6 @@
+ #include "InterfacePassHelper.h"
+-#include "RnpHelper.h"
+ #include "RnpLoginRequestException.h"
+-#if defined(__APPLE__) || defined(__linux__)
+-#include "libpasshelper.h"
+-#endif
+ #include <regex>
+-
+-class Singleton
+-{
+-public:
+-    Singleton(const Singleton &) = delete;
+-    Singleton &operator=(const Singleton &) = delete;
+-    static Singleton &getInstance()
+-    {
+-        // Static local variable that holds the singleton object
+-        static Singleton instance;
+-        return instance;
+-    }
+-
+-    InterfaceLibgpgfactory *getHelper(bool isRnPgp,
+-      std::string rnpHomePath,std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt )
+-    {
+-        if (helper == nullptr) {
+-#if defined(__APPLE__) || defined(__linux__)
+-            if (isRnPgp) {
+-                helper = std::make_unique<RnpHelper>(rnpHomePath);
+-                helper->rnpPasswdPrompt = rnpPasswdPrompt;
+-            } else {
+-                helper = std::make_unique<PassHelper>();
+-            }
+-#else
+-            helper = std::make_unique<RnpHelper>(rnpHomePath);
+-#endif
+-        }
+-        return helper.get();
+-    }
+-
+-private:
+-    // Private constructor
+-    std::unique_ptr<InterfaceLibgpgfactory> helper = nullptr;
+-    Singleton() {}
+-
+-    // Private destructor
+-    ~Singleton() {}
+-};
+-
+-InterfaceLibgpgfactory *getInterfacePassHelper(bool isRnPgp, std::string rnpHomePath,
+-                                               std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt )
+-{
+-    Singleton &s = Singleton::getInstance();
+-    return s.getHelper(isRnPgp, rnpHomePath,rnpPasswdPrompt);
+-}
+ 
+ bool InterfaceLibgpgfactory::isGpgFile(std::string pathToFile)
+ {
+--- /dev/null
++++ b/libpgpfactory/InterfacePassHelperFactory.cpp
+@@ -0,0 +1,53 @@
++#include "InterfacePassHelper.h"
++#include "RnpHelper.h"
++#include "RnpLoginRequestException.h"
++#if defined(__APPLE__) || defined(__linux__)
++#include "libpasshelper.h"
++#endif
++
++class Singleton
++{
++public:
++    Singleton(const Singleton &) = delete;
++    Singleton &operator=(const Singleton &) = delete;
++    static Singleton &getInstance()
++    {
++        // Static local variable that holds the singleton object
++        static Singleton instance;
++        return instance;
++    }
++
++    InterfaceLibgpgfactory *getHelper(bool isRnPgp,
++      std::string rnpHomePath,std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt )
++    {
++        if (helper == nullptr) {
++#if defined(__APPLE__) || defined(__linux__)
++            if (isRnPgp) {
++                helper = std::make_unique<RnpHelper>(rnpHomePath);
++                helper->rnpPasswdPrompt = rnpPasswdPrompt;
++            } else {
++                helper = std::make_unique<PassHelper>();
++            }
++#else
++            helper = std::make_unique<RnpHelper>(rnpHomePath);
++#endif
++        }
++        return helper.get();
++    }
++
++private:
++    // Private constructor
++    std::unique_ptr<InterfaceLibgpgfactory> helper = nullptr;
++    Singleton() {}
++
++    // Private destructor
++    ~Singleton() {}
++};
++
++InterfaceLibgpgfactory *getInterfacePassHelper(bool isRnPgp, std::string rnpHomePath,
++                                               std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt )
++{
++    Singleton &s = Singleton::getInstance();
++    return s.getHelper(isRnPgp, rnpHomePath,rnpPasswdPrompt);
++}
++
+--- a/libpgpfactory/export/GpgIdManage.h
++++ b/libpgpfactory/export/GpgIdManage.h
+@@ -9,7 +9,16 @@
+                 std::string _stopPath, bool _isRnPgp, std::string _rnpHomePath,
+                 std::function<bool(RnpLoginRequestException &e)> rnpPasswdPrompt)
+     {
+-        init(_currentPath, _stopPath, _isRnPgp, _rnpHomePath, rnpPasswdPrompt);
++        init(_currentPath, _stopPath, _isRnPgp, _rnpHomePath, rnpPasswdPrompt,
++             *getInterfacePassHelper(_isRnPgp, _rnpHomePath, rnpPasswdPrompt), true);
++    }
++
++    // Policy-only borrowed helper. The helper must outlive this object.
++    // Private-key availability is not needed for recipient policy resolution.
++    GpgIdManage(std::string currentPath, std::string stopPath,
++                InterfaceLibgpgfactory &helper)
++    {
++        init(currentPath, stopPath, false, "", {}, helper, false);
+     }
+ 
+     GpgIdManage(GpgIdManage const &) = delete;
+@@ -62,13 +71,15 @@
+               std::string _stopPath,
+               bool _isRnPgp,
+               std::string _rnpHomePath,
+-              std::function<bool(RnpLoginRequestException &e)> _rnpPasswdPrompt );
++              std::function<bool(RnpLoginRequestException &e)> _rnpPasswdPrompt,
++              InterfaceLibgpgfactory &helper, bool listPrivateKeys);
+ 
+     void populateKeysParsedInGpgIdFile();
+ 
+     std::string split(std::string s);
+ 
+     InterfaceLibgpgfactory *ph = nullptr;
++    bool m_listPrivateKeys = true;
+ 
+     // trim from start (in place)
+     static inline void ltrim(std::string &s)
+--- a/libpgpfactory/export/InterfacePassFile.h
++++ b/libpgpfactory/export/InterfacePassFile.h
+@@ -19,7 +19,7 @@
+ 
+     std::string const getFullPathFolder();
+ 
+-    void encrypt(std::string s, std::vector<std::string> encryptTo, bool doSign);
++    virtual void encrypt(std::string s, std::vector<std::string> encryptTo, bool doSign);
+ 
+     InterfaceWatchWaitAndNoneWaitRunCmdItem *openExternalEncryptNoWait(
+         InterfaceWatchWaitAndNoneWaitRunCmd *watchWaitAndNoneWaitRunCmd,

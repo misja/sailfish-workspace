@@ -1,0 +1,1012 @@
+--- a/rnp/rnp.cpp
++++ b/rnp/rnp.cpp
+@@ -14,6 +14,8 @@
+ #include <QJsonDocument>
+ #include <QJsonObject>
+ #include <QJsonArray>
++#include <memory>
++#include <utility>
+ 
+ #include <Crypto/Plugins/extensionplugins.h>
+ #include <Secrets/secretmanager.h>
+@@ -84,10 +86,13 @@
+     request.waitForFinished();
+     if (request.result().code() == Sailfish::Secrets::Result::Succeeded) {
+         QByteArray passphrase = request.userInput();
+-        if ((size_t)passphrase.length() < buf_len) {
+-            memcpy(buf, passphrase.data(), passphrase.length() + 1);
+-        }
+-        passphrase.fill('x'); // Erase the passphrase from memory.
++        if ((size_t)passphrase.length() >= buf_len) {
++            rnp_buffer_clear(passphrase.data(), passphrase.size());
++            return false;
++        }
++        memcpy(buf, passphrase.constData(), passphrase.length() + 1);
++        // Clear this local buffer; this does not prove erasure of request/Qt copies.
++        rnp_buffer_clear(passphrase.data(), passphrase.size());
+         // if (useCache && cacheId.isValid() && ensureCacheCollection()) {
+         //     Sailfish::Secrets::StoreSecretRequest store;
+         //     // store.setInteractionParameters(uiParams);
+@@ -113,21 +118,35 @@
+     return request.result().code() == Sailfish::Secrets::Result::Succeeded;
+ }
+ 
+-Rnp::Rnp(Rnp::Format format)
++Rnp::Rnp(Rnp::Format format, const QString &keyringPath)
+     : m_format(format)
+ {
+-    if (format == Rnp::GPG_COMPAT) {
+-        rnp_ffi_create(&m_ffi, RNP_KEYSTORE_GPG, RNP_KEYSTORE_GPG);
+-        m_keyringPath = QDir::home().absoluteFilePath(".gnupg");
+-        m_publicKeyPath = QDir::home().absoluteFilePath(".gnupg/pubring.gpg");
+-        m_secretKeyPath = QDir::home().absoluteFilePath(".gnupg/secring.gpg");
+-    } else {
+-        rnp_ffi_create(&m_ffi, RNP_KEYSTORE_KBX, RNP_KEYSTORE_KBX);
+-        m_keyringPath = QDir::home().absoluteFilePath(".rnp");
+-        m_publicKeyPath = QDir::home().absoluteFilePath(".gnupg/pubring.kbx");
+-        m_secretKeyPath = QDir::home().absoluteFilePath(".gnupg/secring.kbx");
+-    }
+-    rnp_ffi_set_pass_provider(m_ffi, unlock, this);
++    const char *nativeFormat = format == GPG_COMPAT ? RNP_KEYSTORE_GPG : RNP_KEYSTORE_KBX;
++    if (rnp_ffi_create(&m_ffi, nativeFormat, nativeFormat) != RNP_SUCCESS) {
++        m_ffi = nullptr;
++        return;
++    }
++    const QDir directory(keyringPath.isEmpty()
++                         ? QDir::home().absoluteFilePath(format == GPG_COMPAT ? ".gnupg" : ".rnp")
++                         : keyringPath);
++    m_keyringPath = directory.absolutePath();
++    m_publicKeyPath = directory.absoluteFilePath(format == GPG_COMPAT ? "pubring.gpg" : "pubring.kbx");
++    m_secretKeyPath = directory.absoluteFilePath(format == GPG_COMPAT ? "secring.gpg" : "secring.kbx");
++    if (!setPasswordProvider(unlock, this)) {
++        rnp_ffi_destroy(m_ffi);
++        m_ffi = nullptr;
++    }
++}
++
++bool Rnp::setPasswordProvider(rnp_password_cb provider, void *context)
++{
++    if (!m_ffi || !provider
++        || rnp_ffi_set_pass_provider(m_ffi, provider, context) != RNP_SUCCESS) {
++        return false;
++    }
++    m_passwordProvider = provider;
++    m_passwordContext = context;
++    return true;
+ }
+ 
+ Rnp::~Rnp()
+@@ -153,35 +172,9 @@
+ 
+ QStringList Rnp::importKeys(const QByteArray &data)
+ {
+-    if (!m_publicKeyring)
+-        m_publicKeyring = new Keyring(this, Keyring::PUBLIC);
+-    if (!m_secretKeyring)
+-        m_secretKeyring = new Keyring(this, Keyring::SECRET);
+-
+-    QStringList ret;
+-    rnp_result_t res;
+-    rnp_input_t in = nullptr;
+-    char *json = nullptr;
+-    QJsonDocument keys;
+-    if ((res = rnp_input_from_memory(&in, (const uint8_t*)data.data(), data.length(), false))) {
+-        qCWarning(lcRnp) << "cannot create memory buffer from data." << res;
+-        goto out;
+-    }
+-    if ((res = rnp_import_keys(m_ffi, in, RNP_LOAD_SAVE_PERMISSIVE, &json))) {
+-        qCWarning(lcRnp) << "cannot import keys from data." << res;
+-        goto out;
+-    }
+-    keys = QJsonDocument::fromJson(json);
+-    for (const QJsonValue &key : keys.object()["keys"].toArray()) {
+-        
+-        qCDebug(lcRnp) << "import" << key.toObject()["fingerprint"];
+-    }
+- out:
+-    if (in)
+-        rnp_input_destroy(in);
+-    if (json)
+-        rnp_buffer_destroy(json);
+-    return ret;    
++    Q_UNUSED(data);
++    // Key provisioning is deliberately unsupported in this bounded slice.
++    return QStringList();
+ }
+ 
+ QByteArray Rnp::sign(const QByteArray &data, const Rnp::Key key[], bool armor) const
+@@ -506,52 +499,82 @@
+ }
+ 
+ Rnp::Key::Key(const Rnp *rnp, const char *key, const QString &value)
+-{
+-    qCDebug(lcRnp) << "loading key" << key << value;
+-    rnp_result_t res;
+-    if ((res = rnp_locate_key(rnp->m_ffi, key, value.toLatin1().data(), &m_key)) != RNP_SUCCESS) {
+-        qCWarning(lcRnp) << "key not available." << res;
+-    }
++    : m_ffi(rnp->m_ffi)
++{
++    if (!m_ffi || rnp_locate_key(m_ffi, key, value.toLatin1().constData(), &m_key) != RNP_SUCCESS || !m_key)
++        return;
+     bool primary = false;
++    if (rnp_key_is_primary(m_key, &primary) != RNP_SUCCESS) {
++        reset();
++        return;
++    }
++    if (primary) {
++        m_primary = m_key; // One owning handle, aliased only inside this object.
++    } else {
++        char *fp = nullptr;
++        if (rnp_key_get_primary_fprint(m_key, &fp) != RNP_SUCCESS || !fp) {
++            reset();
++            return;
++        }
++        const rnp_result_t status = rnp_locate_key(m_ffi, "fingerprint", fp, &m_primary);
++        rnp_buffer_destroy(fp);
++        if (status != RNP_SUCCESS || !m_primary)
++            reset();
++    }
++}
++
++Rnp::Key::Key(const Rnp::Key &key, size_t isub)
++    : m_ffi(key.m_ffi)
++{
++    if (!key.m_primary || rnp_key_get_subkey_at(key.m_primary, isub, &m_key) != RNP_SUCCESS)
++        return;
+     char *fp = nullptr;
+-    if (m_key && rnp_key_is_primary(m_key, &primary) == RNP_SUCCESS && primary) {
+-        m_primary = m_key;
+-    } else if (m_key && rnp_key_get_primary_fprint(m_key, &fp) == RNP_SUCCESS) {
+-        rnp_locate_key(rnp->m_ffi, "fingerprint", fp, &m_primary);
+-        rnp_buffer_destroy(fp);
+-    }
+-}
+-
+-Rnp::Key::Key(const Rnp::Key &key, size_t isub)
+-{
+-    qCDebug(lcRnp) << "loading subkey" << isub;
+-    if (key.m_primary) {
+-        rnp_key_get_subkey_at(key.m_primary, isub, &m_key);
+-        m_primary = key.m_primary;
+-    }
+-}
+-
+-Rnp::Key::Key(Rnp::Key &&other)
+-{
+-    m_key = other.m_key;
+-    m_primary = other.m_primary;
++    if (rnp_key_get_fprint(key.m_primary, &fp) != RNP_SUCCESS || !fp) {
++        reset();
++        return;
++    }
++    const rnp_result_t status = rnp_locate_key(m_ffi, "fingerprint", fp, &m_primary);
++    rnp_buffer_destroy(fp);
++    if (status != RNP_SUCCESS || !m_primary)
++        reset();
++}
++
++Rnp::Key::Key(Rnp::Key &&other) noexcept
++    : m_ffi(other.m_ffi), m_key(other.m_key), m_primary(other.m_primary)
++{
++    other.m_ffi = nullptr;
+     other.m_key = nullptr;
+     other.m_primary = nullptr;
+ }
+ 
+-Rnp::Key& Rnp::Key::operator=(Rnp::Key &&other)
+-{
+-    m_key = other.m_key;
+-    m_primary = other.m_primary;
+-    other.m_key = nullptr;
+-    other.m_primary = nullptr;
++Rnp::Key& Rnp::Key::operator=(Rnp::Key &&other) noexcept
++{
++    if (this != &other) {
++        reset();
++        m_ffi = other.m_ffi;
++        m_key = other.m_key;
++        m_primary = other.m_primary;
++        other.m_ffi = nullptr;
++        other.m_key = nullptr;
++        other.m_primary = nullptr;
++    }
+     return *this;
+ }
+ 
+ Rnp::Key::~Key()
+ {
++    reset();
++}
++
++void Rnp::Key::reset() noexcept
++{
++    if (m_primary && m_primary != m_key)
++        rnp_key_handle_destroy(m_primary);
+     if (m_key)
+         rnp_key_handle_destroy(m_key);
++    m_primary = nullptr;
++    m_key = nullptr;
++    m_ffi = nullptr;
+ }
+ 
+ bool Rnp::Key::isValid() const
+@@ -622,22 +645,8 @@
+ 
+ bool Rnp::Key::remove()
+ {
+-    int flags = RNP_KEY_REMOVE_PUBLIC;
+-    bool secret = false;
+-    if (rnp_key_have_secret(m_key, &secret) == RNP_SUCCESS && secret) {
+-        flags |= RNP_KEY_REMOVE_SECRET;
+-    }
+-    bool primary = false;
+-    if (rnp_key_is_primary(m_key, &primary) == RNP_SUCCESS && primary) {
+-        flags |= RNP_KEY_REMOVE_SUBKEYS;
+-    }
+-
+-    if (rnp_key_remove(m_key, flags) == RNP_SUCCESS) {
+-        rnp_key_handle_destroy(m_key);
+-        m_key = nullptr;
+-    }
+-
+-    return !isValid();
++    // No mutation without a reviewed explicit persistence implementation.
++    return false;
+ }
+ 
+ Sailfish::Crypto::Key Rnp::Key::toCryptoKey(const QString &pluginName) const
+@@ -651,8 +660,7 @@
+     output.setName(fingerprint());
+     output.setCollectionName(keyid());
+     output.setStoragePluginName(pluginName);
+-    output.setPublicKey(fingerprint().toLatin1());
+-    output.setPrivateKey("Rnp");
++    // A stored-key reference contains identifiers, never fabricated key bytes.
+ 
+     QStringList emails;
+     size_t n;
+@@ -669,6 +677,7 @@
+                     emails << QString::fromUtf8(data);
+                     rnp_buffer_destroy(data);
+                 }
++                rnp_uid_handle_destroy(uid);
+             }
+         }
+     }
+@@ -750,24 +759,9 @@
+ 
+ Rnp::Keyring::~Keyring()
+ {
+-    if (m_modified) {
+-        const char *format = RNP_KEYSTORE_KBX;
+-        if (m_rnp->m_format == GPG_COMPAT) {
+-            format = RNP_KEYSTORE_GPG;
+-        }
+-
+-        uint32_t flags = m_level == PUBLIC ? RNP_LOAD_SAVE_PUBLIC_KEYS : RNP_LOAD_SAVE_SECRET_KEYS;
+-        rnp_output_t keyout = nullptr;
+-        if ((m_level == PUBLIC
+-             && rnp_output_to_path(&keyout, m_rnp->m_publicKeyPath.toUtf8().data()) == RNP_SUCCESS)
+-            || (m_level == SECRET
+-                && rnp_output_to_path(&keyout, m_rnp->m_secretKeyPath.toUtf8().data()) == RNP_SUCCESS)) {
+-            rnp_save_keys(m_rnp->m_ffi, format, keyout, flags);
+-            rnp_output_destroy(keyout);
+-        }
+-    }
++    // Provisioned keyrings are read-only; destructors never persist changes.
+     if (m_valid) {
+-        uint32_t flags = m_level == PUBLIC ? RNP_KEY_UNLOAD_PUBLIC : RNP_KEY_UNLOAD_SECRET;
++        const uint32_t flags = m_level == PUBLIC ? RNP_KEY_UNLOAD_PUBLIC : RNP_KEY_UNLOAD_SECRET;
+         rnp_unload_keys(m_rnp->m_ffi, flags);
+     }
+ }
+@@ -818,11 +812,12 @@
+ 
+ Rnp::Key Rnp::Keyring::key(const Sailfish::Crypto::Key &key)
+ {
+-    Key k(m_rnp, "keyid", key.collectionName().toUpper());
+-    if (k.fingerprint() == key.name().toUpper())
+-        return k;
+-    else
+-        return k.subkey(key.name().toUpper());
++    Key primary(m_rnp, "keyid", key.collectionName().toUpper());
++    if (!primary.isValid() || primary.keyid() != key.collectionName().toUpper())
++        return Key();
++    if (primary.fingerprint() == key.name().toUpper())
++        return primary;
++    return primary.subkey(key.name().toUpper());
+ }
+ 
+ Rnp::Key Rnp::Keyring::fromFingerprint(const QString &fp)
+@@ -832,8 +827,211 @@
+ 
+ bool Rnp::Keyring::remove(Rnp::Key &key)
+ {
+-    bool res = key.remove();
+-    m_modified = res || m_modified;
+-
+-    return res;
+-}
++    Q_UNUSED(key);
++    return false;
++}
++
++
++namespace {
++bool appendPlaintext(void *context, const void *bytes, size_t length)
++{
++    auto *output = static_cast<QByteArray *>(context);
++    const size_t limit = 1024U * 1024U * 1024U;
++    const size_t current = static_cast<size_t>(output->size());
++    if (current > limit || length > limit - current || (length && !bytes))
++        return false;
++    if (length)
++        output->append(static_cast<const char *>(bytes), static_cast<int>(length));
++    return true;
++}
++
++using FfiOwner = std::unique_ptr<rnp_ffi_st, decltype(&rnp_ffi_destroy)>;
++using InputOwner = std::unique_ptr<rnp_input_st, decltype(&rnp_input_destroy)>;
++using OutputOwner = std::unique_ptr<rnp_output_st, decltype(&rnp_output_destroy)>;
++using KeyOwner = std::unique_ptr<rnp_key_handle_st, decltype(&rnp_key_handle_destroy)>;
++using VerifyOwner = std::unique_ptr<rnp_op_verify_st, decltype(&rnp_op_verify_destroy)>;
++using SignOwner = std::unique_ptr<rnp_op_sign_st, decltype(&rnp_op_sign_destroy)>;
++}
++
++// This private context contains exactly one selected secret key. Public primary
++// packets are retained for validation, without alternative secret siblings.
++rnp_ffi_t Rnp::requestContext(const Key &key, rnp_result_t *status) const
++{
++    *status = RNP_ERROR_BAD_PARAMETERS;
++    if (!m_ffi || key.m_ffi != m_ffi || !key.isValid() || !m_passwordProvider)
++        return nullptr;
++    rnp_ffi_t raw = nullptr;
++    *status = rnp_ffi_create(&raw, RNP_KEYSTORE_GPG, RNP_KEYSTORE_GPG);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++    FfiOwner context(raw, rnp_ffi_destroy);
++
++    rnp_output_t serialized = nullptr;
++    *status = rnp_output_to_memory(&serialized, 0);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++    const auto clearExport = [](rnp_output_st *output) {
++        uint8_t *bytes = nullptr;
++        size_t length = 0;
++        if (rnp_output_memory_get_buf(output, &bytes, &length, false) == RNP_SUCCESS && bytes)
++            rnp_buffer_clear(bytes, length);
++        rnp_output_destroy(output);
++    };
++    std::unique_ptr<rnp_output_st, decltype(clearExport)> exported(serialized, clearExport);
++    *status = rnp_key_export(key, serialized, RNP_KEY_EXPORT_SECRET);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++
++    uint8_t *bytes = nullptr;
++    size_t length = 0;
++    *status = rnp_output_memory_get_buf(serialized, &bytes, &length, false);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++    rnp_input_t inputRaw = nullptr;
++    *status = rnp_input_from_memory(&inputRaw, bytes, length, false);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++    InputOwner input(inputRaw, rnp_input_destroy);
++    *status = rnp_load_keys(raw, RNP_KEYSTORE_GPG, inputRaw,
++                           RNP_LOAD_SAVE_PUBLIC_KEYS | RNP_LOAD_SAVE_SECRET_KEYS);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++
++    bool primary = false;
++    *status = rnp_key_is_primary(key, &primary);
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++    if (!primary) {
++        // Native subkey export includes its primary secret. Remove only that
++        // secret packet; retain primary public metadata and selected subkey.
++        rnp_key_handle_t primaryRaw = nullptr;
++        char *primaryFp = nullptr;
++        *status = rnp_key_get_fprint(key.m_primary, &primaryFp);
++        if (*status != RNP_SUCCESS || !primaryFp)
++            return nullptr;
++        const QByteArray fp(primaryFp);
++        rnp_buffer_destroy(primaryFp);
++        *status = rnp_locate_key(raw, "fingerprint", fp.constData(), &primaryRaw);
++        KeyOwner selectedPrimary(primaryRaw, rnp_key_handle_destroy);
++        if (*status != RNP_SUCCESS || !primaryRaw) {
++            *status = RNP_ERROR_KEY_NOT_FOUND;
++            return nullptr;
++        }
++        *status = rnp_key_remove(primaryRaw, RNP_KEY_REMOVE_SECRET);
++        if (*status != RNP_SUCCESS)
++            return nullptr;
++    }
++    size_t secretCount = 0;
++    *status = rnp_get_secret_key_count(raw, &secretCount);
++    if (*status != RNP_SUCCESS || secretCount != 1) {
++        *status = RNP_ERROR_BAD_PARAMETERS;
++        return nullptr;
++    }
++    const auto keyedPassword = [](rnp_ffi_t ffi, void *context, rnp_key_handle_t key,
++                                   const char *operation, char buffer[], size_t length) -> bool {
++        const auto *owner = static_cast<const Rnp *>(context);
++        // A stored-key request must never fall back to a symmetric password.
++        return key && owner->m_passwordProvider
++            && owner->m_passwordProvider(ffi, owner->m_passwordContext, key, operation, buffer, length);
++    };
++    *status = rnp_ffi_set_pass_provider(raw, keyedPassword, const_cast<Rnp *>(this));
++    if (*status != RNP_SUCCESS)
++        return nullptr;
++    return context.release();
++}
++
++QByteArray Rnp::decrypt(const QByteArray &data, const Key &key,
++                       rnp_result_t *status, QList<Signature> *signers) const
++{
++    if (!status)
++        return QByteArray();
++    FfiOwner context(requestContext(key, status), rnp_ffi_destroy);
++    if (!context)
++        return QByteArray();
++    rnp_input_t inputRaw = nullptr;
++    *status = rnp_input_from_memory(&inputRaw, reinterpret_cast<const uint8_t *>(data.constData()), data.size(), false);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    InputOwner input(inputRaw, rnp_input_destroy);
++    QByteArray result;
++    rnp_output_t outputRaw = nullptr;
++    *status = rnp_output_to_callback(&outputRaw, appendPlaintext, nullptr, &result);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    OutputOwner output(outputRaw, rnp_output_destroy);
++    rnp_op_verify_t opRaw = nullptr;
++    *status = rnp_op_verify_create(&opRaw, context.get(), inputRaw, outputRaw);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    VerifyOwner operation(opRaw, rnp_op_verify_destroy);
++    *status = rnp_op_verify_execute(opRaw);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    rnp_recipient_handle_t usedRecipient = nullptr;
++    *status = rnp_op_verify_get_used_recipient(opRaw, &usedRecipient);
++    if (*status != RNP_SUCCESS || !usedRecipient) {
++        *status = RNP_ERROR_NO_SUITABLE_KEY;
++        return QByteArray();
++    }
++    if (signers) {
++        signers->clear();
++        size_t count = 0;
++        *status = rnp_op_verify_get_signature_count(opRaw, &count);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++        for (size_t i = 0; i < count; ++i) {
++            rnp_op_verify_signature_t signature = nullptr;
++            *status = rnp_op_verify_get_signature_at(opRaw, i, &signature);
++            if (*status != RNP_SUCCESS)
++                return QByteArray();
++            signers->append(toSignature(context.get(), signature));
++        }
++    }
++    return result;
++}
++
++QByteArray Rnp::sign(const QByteArray &data, const Key &key, bool armor,
++                    rnp_result_t *status) const
++{
++    if (!status)
++        return QByteArray();
++    FfiOwner context(requestContext(key, status), rnp_ffi_destroy);
++    if (!context)
++        return QByteArray();
++    rnp_key_handle_t keyRaw = nullptr;
++    const QByteArray fingerprint = key.fingerprint().toLatin1();
++    *status = rnp_locate_key(context.get(), "fingerprint", fingerprint.constData(), &keyRaw);
++    KeyOwner selected(keyRaw, rnp_key_handle_destroy);
++    if (*status != RNP_SUCCESS || !keyRaw) {
++        *status = RNP_ERROR_KEY_NOT_FOUND;
++        return QByteArray();
++    }
++    rnp_input_t inputRaw = nullptr;
++    *status = rnp_input_from_memory(&inputRaw, reinterpret_cast<const uint8_t *>(data.constData()), data.size(), false);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    InputOwner input(inputRaw, rnp_input_destroy);
++    rnp_output_t outputRaw = nullptr;
++    *status = rnp_output_to_memory(&outputRaw, 1024 * 1024);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    OutputOwner output(outputRaw, rnp_output_destroy);
++    rnp_op_sign_t opRaw = nullptr;
++    *status = rnp_op_sign_detached_create(&opRaw, context.get(), inputRaw, outputRaw);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    SignOwner operation(opRaw, rnp_op_sign_destroy);
++    *status = rnp_op_sign_set_armor(opRaw, armor);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    *status = rnp_op_sign_add_signature(opRaw, keyRaw, nullptr);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    *status = rnp_op_sign_execute(opRaw);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    uint8_t *bytes = nullptr;
++    size_t length = 0;
++    *status = rnp_output_memory_get_buf(outputRaw, &bytes, &length, false);
++    return *status == RNP_SUCCESS ? QByteArray(reinterpret_cast<const char *>(bytes), length) : QByteArray();
++}
+--- a/rnp/rnp_p.h
++++ b/rnp/rnp_p.h
+@@ -23,7 +23,11 @@
+         GPG_COMPAT
+     };
+ 
+-    Rnp(Format format = RNP_NATIVE);
++    Rnp(Format format = RNP_NATIVE, const QString &keyringPath = QString());
++    Rnp(const Rnp &) = delete;
++    Rnp &operator=(const Rnp &) = delete;
++    bool isValid() const { return m_ffi != nullptr; }
++    bool setPasswordProvider(rnp_password_cb provider, void *context);
+     ~Rnp();
+ 
+     class Key
+@@ -33,9 +37,9 @@
+         Key(const Rnp *rnp, const char *key, const QString &value);
+         Key(const Key &key, size_t isub);
+         Key(const Key &) = delete;
+-        Key(Key &&other);
++        Key(Key &&other) noexcept;
+         Key& operator=(const Key &) = delete;
+-        Key& operator=(Key &&other);
++        Key& operator=(Key &&other) noexcept;
+         operator rnp_key_handle_t() const
+         {
+             return m_key;
+@@ -50,6 +54,9 @@
+         bool remove();
+         Sailfish::Crypto::Key toCryptoKey(const QString &pluginName) const;
+     private:
++        friend class Rnp;
++        void reset() noexcept;
++        rnp_ffi_t m_ffi = nullptr;
+         rnp_key_handle_t m_key = nullptr;
+         rnp_key_handle_t m_primary = nullptr;
+     };
+@@ -73,7 +80,6 @@
+         bool remove(Key &key);
+     private:
+         bool m_valid = false;
+-        bool m_modified = false;
+         Level m_level;
+         const Rnp *m_rnp;
+     };
+@@ -104,8 +110,16 @@
+     QByteArray encrypt(const QByteArray &data, const Key recipients[],
+                        const Key signers[], bool armor) const;
+     QByteArray decrypt(const QByteArray &data, QList<Signature> *signers = nullptr) const;
++    // Exact selected private key; no sibling or primary-secret fallback.
++    QByteArray decrypt(const QByteArray &data, const Key &key,
++                       rnp_result_t *status, QList<Signature> *signers = nullptr) const;
++    QByteArray sign(const QByteArray &data, const Key &key, bool armor,
++                    rnp_result_t *status) const;
+ 
+  private:
++    rnp_ffi_t requestContext(const Key &key, rnp_result_t *status) const;
++    rnp_password_cb m_passwordProvider = nullptr;
++    void *m_passwordContext = nullptr;
+     Format m_format;
+     rnp_ffi_t m_ffi = nullptr;
+     QString m_keyringPath;
+--- a/secrets/rnp/rnpffi.cpp
++++ b/secrets/rnp/rnpffi.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include "rnp_p.h"
+ #include "rnpffi.h"
++#include <rnp/rnp_err.h>
+ 
+ #include <QTemporaryDir>
+ 
+@@ -273,29 +274,13 @@
+                            const QVariantMap &customParameters,
+                            Key *key)
+ {
++    Q_UNUSED(keyTemplate);
++    Q_UNUSED(kpgParams);
+     Q_UNUSED(skdfParams);
+     Q_UNUSED(customParameters);
+-
+-    if (keyTemplate.collectionName().isEmpty()) {
+-        QTemporaryDir tmp;
+-        if (!tmp.isValid()) {
+-            return Result(Result::CryptoPluginKeyGenerationError,
+-                          QStringLiteral("cannot create temporary directory: %1.").arg(tmp.errorString()));
+-        }
+-        Result result; // = generateKey(keyTemplate, kpgParams, key, tmp.path());
+-        if (result.code() == Result::Succeeded) {
+-            tmp.setAutoRemove(false);
+-        }
+-        return result;
+-    } else {
+-        if (keyTemplate.filterData("Ephemeral-Home").isEmpty()) {
+-            return Result(Result::CryptoPluginKeyGenerationError,
+-                          QStringLiteral("cannot create subkey for %1: no home in template.").arg(keyTemplate.collectionName()));
+-        }
+-        // return generateSubkey(keyTemplate, kpgParams,
+-        //                       key, keyTemplate.filterData("Ephemeral-Home"));
+-        return Result();
+-    }
++    Q_UNUSED(key);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key provisioning is not supported by this implementation slice."));
+ }
+ 
+ Result RnpFfi::generateAndStoreKey(const Key &keyTemplate,
+@@ -304,16 +289,13 @@
+                                    const QVariantMap &customParameters,
+                                    Key *keyMetadata)
+ {
++    Q_UNUSED(keyTemplate);
++    Q_UNUSED(kpgParams);
+     Q_UNUSED(skdfParams);
+     Q_UNUSED(customParameters);
+-
+-    // if (keyTemplate.collectionName().isEmpty()
+-    //     || keyTemplate.collectionName().compare("import") == 0) {
+-    //     return generateKey(keyTemplate, kpgParams, keyMetadata, QString());
+-    // } else {
+-    //     return generateSubkey(keyTemplate, kpgParams, keyMetadata, QString());
+-    // }
+-    return Result();
++    Q_UNUSED(keyMetadata);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key provisioning is not supported by this implementation slice."));
+ }
+ 
+ // Result RnpFfi::downloadKey(const QString &fingerprint,
+@@ -444,17 +426,12 @@
+                          const QVariantMap &customParameters,
+                          Key *importedKey)
+ {
+-    QTemporaryDir tmp;
+-    if (!tmp.isValid()) {
+-        return Result(Result::CryptoPluginKeyImportError,
+-                      QStringLiteral("cannot create temporary directory: %1.").arg(tmp.errorString()));
+-    }
+-    // Result result = importKey(data, passphrase, customParameters, importedKey, tmp.path());
+-    // if (result.code() == Result::Succeeded) {
+-    //     tmp.setAutoRemove(false);
+-    // }
+-    // return result;
+-    return Result();
++    Q_UNUSED(data);
++    Q_UNUSED(passphrase);
++    Q_UNUSED(customParameters);
++    Q_UNUSED(importedKey);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key provisioning is not supported by this implementation slice."));
+ }
+ 
+ Result RnpFfi::importAndStoreKey(const QByteArray &data,
+@@ -463,10 +440,13 @@
+                                  const QVariantMap &customParameters,
+                                  Key *keyMetadata)
+ {
++    Q_UNUSED(data);
+     Q_UNUSED(keyTemplate);
+-
+-    // return importKey(data, passphrase, customParameters, keyMetadata, QString());
+-    return Result();
++    Q_UNUSED(passphrase);
++    Q_UNUSED(customParameters);
++    Q_UNUSED(keyMetadata);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key provisioning is not supported by this implementation slice."));
+ }
+ 
+ Result RnpFfi::storedKey(const Key::Identifier &identifier,
+@@ -474,22 +454,22 @@
+                          const QVariantMap &customParameters,
+                          Key *key)
+ {
+-    // GPGmeContext ctx(m_protocol, customParameters.value("Ephemeral-Home",
+-    //                                                     QVariant(QString())).toString());
+-    // if (!ctx) {
+-    //     return Result(Result::StorageError, ctx.error());
+-    // }
+-
+-    // GPGmeKey gkey(ctx, identifier.name(),
+-    //               (keyComponents & Key::SecretKeyData)
+-    //               ? GPGmeKey::Secret : GPGmeKey::Public);
+-    // if (!gkey) {
+-    //     return Result(Result::InvalidKeyIdentifier,
+-    //                   Sailfish::Secrets::Result::InvalidSecretError,
+-    //                   QStringLiteral("cannot retrieve key %1: %2.").arg(identifier.name()).arg(gkey.error()));
+-    // }
+-    // gkey.toKey(key, name());
+-
++    Q_UNUSED(customParameters);
++    if (!key)
++        return Result(Result::InvalidKeyIdentifier, QStringLiteral("Missing metadata output."));
++    *key = Key();
++    if (keyComponents & (Key::PrivateKeyData | Key::PublicKeyData))
++        return Result(Result::OperationNotSupportedError, QStringLiteral("Only key reference metadata is available."));
++    if (identifier.storagePluginName() != name() || identifier.name().isEmpty() || identifier.collectionName().isEmpty())
++        return Result(Result::InvalidKeyIdentifier, QStringLiteral("Invalid key identifier."));
++    if (!m_rnp->isValid() || !m_rnp->publicKeyring().isValid())
++        return Result(Result::StorageError, QStringLiteral("Cannot load provisioned public keyring."));
++    Key reference;
++    reference.setIdentifier(identifier);
++    Rnp::Key selected = m_rnp->publicKeyring().key(reference);
++    if (!selected.isValid())
++        return Result(Result::InvalidKeyIdentifier, QStringLiteral("Key was not found."));
++    *key = selected.toCryptoKey(name());
+     return Result();
+ }
+ 
+@@ -530,51 +510,55 @@
+                   QStringLiteral("The RNP plugin doesn't support diggest."));
+ }
+ 
++static Result storedReference(const Key &key, const QString &plugin)
++{
++    if (!key.privateKey().isEmpty() || !key.secretKey().isEmpty() || !key.publicKey().isEmpty())
++        return Result(Result::OperationNotSupportedError, QStringLiteral("Only stored key references are supported."));
++    if (key.storagePluginName() != plugin || key.name().isEmpty() || key.collectionName().isEmpty())
++        return Result(Result::InvalidKeyIdentifier, QStringLiteral("Invalid stored key reference."));
++    return Result();
++}
++
+ Result RnpFfi::operation(CryptoManager::Operation operation,
+                          const Key &key,
+                          const QByteArray &data,
+                          const QVariantMap &customParameters,
+                          QByteArray *output)
+ {
+-    Result::ErrorCode errCode;
++    if (!output)
++        return Result(Result::CryptoPluginEncryptionError, QStringLiteral("Missing output."));
++    output->clear();
++    const Result reference = storedReference(key, name());
++    if (reference.code() != Result::Succeeded)
++        return reference;
++    if (!m_rnp->isValid())
++        return Result(Result::StorageError, QStringLiteral("RNP is unavailable."));
++    const bool armor = customParameters.value("With-Armor", QVariant(true)).toBool();
+     if (operation == CryptoManager::OperationSign) {
+-        errCode = Result::CryptoPluginSigningError;
++        if (!m_rnp->secretKeyring().isValid())
++            return Result(Result::StorageError, QStringLiteral("Cannot load provisioned secret keyring."));
++        Rnp::Key selected = m_rnp->secretKeyring().key(key);
++        if (!selected.isValid())
++            return Result(Result::InvalidKeyIdentifier, QStringLiteral("Key was not found."));
++        rnp_result_t status = RNP_SUCCESS;
++        *output = m_rnp->sign(data, selected, armor, &status);
++        if (status != RNP_SUCCESS)
++            return Result(Result::CryptoPluginSigningError, QStringLiteral("RNP signing failed."));
+     } else if (operation == CryptoManager::OperationEncrypt) {
+-        errCode = Result::CryptoPluginEncryptionError;
++        if (!m_rnp->publicKeyring().isValid())
++            return Result(Result::StorageError, QStringLiteral("Cannot load provisioned public keyring."));
++        Rnp::Key recipients[2];
++        recipients[0] = m_rnp->publicKeyring().key(key);
++        if (!recipients[0].isValid())
++            return Result(Result::InvalidKeyIdentifier, QStringLiteral("Key was not found."));
++        Rnp::Key noSigners[1];
++        // Public encryption retains RNP's documented suitable-subkey semantics.
++        *output = m_rnp->encrypt(data, recipients, noSigners, armor);
++        if (output->isEmpty())
++            return Result(Result::CryptoPluginEncryptionError, QStringLiteral("RNP encryption failed."));
+     } else {
+-        return Result(Result::OperationNotSupportedError,
+-                      QStringLiteral("Operation not supported by RNP plugin."));
+-    }
+-
+-    if (!output) {
+-        return Result(errCode, QStringLiteral("missing output argument."));
+-    }
+-    output->clear();
+-
+-    if (key.storagePluginName() != name()) {
+-        return Result(errCode, QStringLiteral("cannot use a non RNP key."));
+-    }
+-
+-    Rnp::Key keys[2];
+-    if (operation == CryptoManager::OperationSign) {
+-        keys[0] = m_rnp->secretKeyring().key(key);
+-        *output = m_rnp->sign(data, keys,
+-                              customParameters.value("With-Armor",
+-                                                     QVariant(true)).toBool());
+-        if (output->isEmpty()) {
+-            return Result(errCode, QStringLiteral("cannot sign data."));
+-        }
+-    } else if (operation == CryptoManager::OperationEncrypt) {
+-        Rnp::Key signers;
+-        keys[0] = m_rnp->publicKeyring().key(key);
+-        *output = m_rnp->encrypt(data, keys, &signers,
+-                                 customParameters.value("With-Armor",
+-                                                        QVariant(true)).toBool());
+-        if (output->isEmpty()) {
+-            return Result(errCode, QStringLiteral("cannot encrypt data."));
+-        }
+-    }
+-
++        return Result(Result::OperationNotSupportedError, QStringLiteral("Operation is not supported."));
++    }
+     return Result();
+ }
+ 
+@@ -609,6 +593,11 @@
+                       QStringLiteral("missing verificationStatus argument."));
+     }
+     *verificationStatus = CryptoManager::VerificationStatusUnknown;
++    const Result reference = storedReference(key, name());
++    if (reference.code() != Result::Succeeded)
++        return reference;
++    if (!m_rnp->isValid() || !m_rnp->publicKeyring().isValid())
++        return Result(Result::StorageError, QStringLiteral("Cannot load provisioned public keyring."));
+ 
+     if (key.storagePluginName() != name()) {
+         return Result(Result::CryptoPluginVerificationError,
+@@ -654,8 +643,7 @@
+ }
+ 
+ Result RnpFfi::decrypt(const QByteArray &data,
+-                       const QByteArray &iv,
+-                       const Key &key, // or keyreference, i.e. Key(keyName)
++                       const QByteArray &iv, const Key &key,
+                        CryptoManager::BlockMode blockMode,
+                        CryptoManager::EncryptionPadding padding,
+                        const QByteArray &authenticationData,
+@@ -664,42 +652,36 @@
+                        QByteArray *decrypted,
+                        CryptoManager::VerificationStatus *verificationStatus)
+ {
+-    Q_UNUSED(iv);
+-    Q_UNUSED(blockMode);
+-    Q_UNUSED(padding);
+-    Q_UNUSED(authenticationData);
+-    Q_UNUSED(authenticationTag);
+-    Q_UNUSED(customParameters);
+-
+-    if (!verificationStatus) {
+-        return Result(Result::CryptoPluginDecryptionError,
+-                      QStringLiteral("missing verificationStatus argument."));
+-    }
++    Q_UNUSED(iv); Q_UNUSED(blockMode); Q_UNUSED(padding);
++    Q_UNUSED(authenticationData); Q_UNUSED(authenticationTag); Q_UNUSED(customParameters);
++    if (!decrypted || !verificationStatus)
++        return Result(Result::CryptoPluginDecryptionError, QStringLiteral("Missing output."));
++    decrypted->clear();
+     *verificationStatus = CryptoManager::VerificationStatusUnknown;
+-
+-    if (key.storagePluginName() != name()) {
+-        return Result(Result::CryptoPluginDecryptionError,
+-                      QStringLiteral("cannot decrypt with a non RNP key."));
+-    }
+-
++    const Result reference = storedReference(key, name());
++    if (reference.code() != Result::Succeeded)
++        return reference;
++    if (!m_rnp->isValid() || !m_rnp->secretKeyring().isValid())
++        return Result(Result::StorageError, QStringLiteral("Cannot load provisioned secret keyring."));
++    Rnp::Key selected = m_rnp->secretKeyring().key(key);
++    if (!selected.isValid())
++        return Result(Result::InvalidKeyIdentifier, QStringLiteral("Key was not found."));
++    rnp_result_t status = RNP_SUCCESS;
+     QList<Rnp::Signature> signers;
+-    *decrypted = m_rnp->decrypt(data, &signers);
+-    if (decrypted->isEmpty()) {
+-        return Result(Result::CryptoPluginDecryptionError,
+-                      QStringLiteral("cannot decrypt data."));
+-    }
++    *decrypted = m_rnp->decrypt(data, selected, &status, &signers);
++    if (status != RNP_SUCCESS) {
++        decrypted->clear();
++        return Result(Result::CryptoPluginDecryptionError, QStringLiteral("RNP decryption failed."));
++    }
++    // Preserve status independently of bytes: valid empty plaintext is successful.
+     for (const Rnp::Signature &sig : signers) {
+-        if (key.collectionName() == sig.keyid &&
+-            key.name() == sig.fingerprint) {
++        if (key.collectionName() == sig.keyid && key.name() == sig.fingerprint) {
+             if (sig.status == Rnp::Signature::VALID)
+                 *verificationStatus = CryptoManager::VerificationSucceeded;
+             else if (sig.status == Rnp::Signature::EXPIRED)
+                 *verificationStatus = CryptoManager::VerificationKeyExpired;
+-            else if (sig.status == Rnp::Signature::KEY_NOT_FOUND)
+-                *verificationStatus = CryptoManager::VerificationKeyInvalid;
+-            else if (sig.status == Rnp::Signature::INVALID)
++            else
+                 *verificationStatus = CryptoManager::VerificationFailed;
+-            return Result();
+         }
+     }
+     return Result();
+--- a/secrets/rnp/rnpffi.h
++++ b/secrets/rnp/rnpffi.h
+@@ -24,7 +24,7 @@
+     }
+ 
+     Sailfish::Crypto::CryptoPlugin::EncryptionType encryptionType() const override {
+-        return Sailfish::Crypto::CryptoPlugin::TrustedExecutionSoftwareEncryption;
++        return Sailfish::Crypto::CryptoPlugin::SoftwareEncryption;
+     }
+ 
+     Sailfish::Crypto::Result generateRandomData(
+--- a/secrets/rnp/rnpkeys.cpp
++++ b/secrets/rnp/rnpkeys.cpp
+@@ -52,7 +52,9 @@
+ 
+ Result RnpKeys::removeCollection(const QString &collectionName)
+ {
+-    return removeSecret(collectionName, QString());
++    Q_UNUSED(collectionName);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key mutation is not supported by this implementation slice."));
+ }
+ 
+ Result RnpKeys::isCollectionLocked(const QString &collectionName,
+@@ -216,35 +218,10 @@
+ Result RnpKeys::removeSecret(const QString &collectionName,
+                              const QString &secretName)
+ {
+-    if (collectionName.compare("import") == 0) {
+-        // This is a fake collection to allow importation of new keys,
+-        // see collectionNames().
+-        return Result();
+-    }
+-
+-    if (!m_rnp->publicKeyring().isValid())
+-        return Result(Result::DatabaseError,
+-                      QStringLiteral("failed to open keyring at path '%1'.").arg(m_rnp->publicKeyring().path()));
+-
+-    Rnp::Key key = m_rnp->publicKeyring().key(collectionName);
+-    if (!key.isValid()) {
+-        return Result(Result::InvalidCollectionError,
+-                      QStringLiteral("no collection %1.").arg(collectionName));
+-    }
+-
+-    if (key.fingerprint() == secretName || secretName.isEmpty()) {
+-        if (!m_rnp->publicKeyring().remove(key)) {
+-            return Result(Result::DatabaseError,
+-                          QStringLiteral("cannot delete key %1.").arg(secretName));
+-        }
+-    } else {
+-        Rnp::Key sub = key.subkey(secretName);
+-        if (!m_rnp->publicKeyring().remove(sub)) {
+-            return Result(Result::DatabaseError,
+-                          QStringLiteral("cannot delete subkey %1.").arg(secretName));
+-        }
+-    }
+-    return Result();
++    Q_UNUSED(collectionName);
++    Q_UNUSED(secretName);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key mutation is not supported by this implementation slice."));
+ }
+ 
+ // standalone secret operations.
+@@ -277,7 +254,9 @@
+ 
+ Result RnpKeys::removeSecret(const QString &secretName)
+ {
+-    return removeSecret(QString(), secretName);
++    Q_UNUSED(secretName);
++    return Result(Result::OperationNotSupportedError,
++                  QStringLiteral("Key mutation is not supported by this implementation slice."));
+ }
+ 
+ Result RnpKeys::reencryptSecret(const QString &secretName,
+--- a/secrets/rnp/rnpkeys.h
++++ b/secrets/rnp/rnpkeys.h
+@@ -26,7 +26,7 @@
+ 
+     Sailfish::Secrets::EncryptionPlugin::EncryptionType encryptionType() const override
+     {
+-        return Sailfish::Secrets::EncryptionPlugin::TrustedExecutionSoftwareEncryption;
++        return Sailfish::Secrets::EncryptionPlugin::SoftwareEncryption;
+     }
+ 
+     Sailfish::Secrets::EncryptionPlugin::EncryptionAlgorithm encryptionAlgorithm() const override

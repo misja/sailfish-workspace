@@ -1,0 +1,277 @@
+--- a/rnp/rnp.cpp
++++ b/rnp/rnp.cpp
+@@ -1035,3 +1035,140 @@
+     *status = rnp_output_memory_get_buf(outputRaw, &bytes, &length, false);
+     return *status == RNP_SUCCESS ? QByteArray(reinterpret_cast<const char *>(bytes), length) : QByteArray();
+ }
++
++// Public export never includes secret packets. A primary needs its encryption
++// subkeys for ordinary OpenPGP recipient selection; an explicit subkey does not.
++QByteArray Rnp::publicKey(const Key &key, rnp_result_t *status) const
++{
++    if (!status)
++        return QByteArray();
++    *status = RNP_ERROR_BAD_PARAMETERS;
++    if (!m_ffi || key.m_ffi != m_ffi || !key.isValid())
++        return QByteArray();
++    bool primary = false;
++    *status = rnp_key_is_primary(key, &primary);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    rnp_output_t raw = nullptr;
++    *status = rnp_output_to_memory(&raw, 1024 * 1024 * 1024);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    OutputOwner output(raw, rnp_output_destroy);
++    *status = rnp_key_export(key, raw, RNP_KEY_EXPORT_PUBLIC
++                            | (primary ? RNP_KEY_EXPORT_SUBKEYS : 0));
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    uint8_t *bytes = nullptr;
++    size_t length = 0;
++    *status = rnp_output_memory_get_buf(raw, &bytes, &length, false);
++    return *status == RNP_SUCCESS
++        ? QByteArray(reinterpret_cast<const char *>(bytes), length) : QByteArray();
++}
++
++QByteArray Rnp::encryptPublic(const QByteArray &data,
++                              const QList<QPair<QString, QByteArray>> &recipients,
++                              bool armor, rnp_result_t *status)
++{
++    if (!status)
++        return QByteArray();
++    *status = RNP_ERROR_BAD_PARAMETERS;
++    if (recipients.isEmpty())
++        return QByteArray();
++    rnp_ffi_t raw = nullptr;
++    *status = rnp_ffi_create(&raw, RNP_KEYSTORE_GPG, RNP_KEYSTORE_GPG);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    FfiOwner context(raw, rnp_ffi_destroy);
++    for (const auto &recipient : recipients) {
++        if (recipient.first.isEmpty() || recipient.second.isEmpty()) {
++            *status = RNP_ERROR_BAD_PARAMETERS;
++            return QByteArray();
++        }
++        // Validate each payload independently: another payload must not satisfy
++        // its fingerprint. Loading both kinds detects secret packets instead of
++        // silently discarding them with a public-only import.
++        rnp_ffi_t checkRaw = nullptr;
++        *status = rnp_ffi_create(&checkRaw, RNP_KEYSTORE_GPG, RNP_KEYSTORE_GPG);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++        FfiOwner check(checkRaw, rnp_ffi_destroy);
++        rnp_input_t inputRaw = nullptr;
++        *status = rnp_input_from_memory(&inputRaw,
++                    reinterpret_cast<const uint8_t *>(recipient.second.constData()),
++                    recipient.second.size(), false);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++        InputOwner input(inputRaw, rnp_input_destroy);
++        *status = rnp_load_keys(checkRaw, RNP_KEYSTORE_GPG, inputRaw,
++                               RNP_LOAD_SAVE_PUBLIC_KEYS | RNP_LOAD_SAVE_SECRET_KEYS);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++        size_t secrets = 0;
++        *status = rnp_get_secret_key_count(checkRaw, &secrets);
++        if (*status != RNP_SUCCESS || secrets) {
++            *status = RNP_ERROR_BAD_PARAMETERS;
++            return QByteArray();
++        }
++        const QByteArray fp = recipient.first.toUpper().toLatin1();
++        rnp_key_handle_t keyRaw = nullptr;
++        *status = rnp_locate_key(checkRaw, "fingerprint", fp.constData(), &keyRaw);
++        KeyOwner selected(keyRaw, rnp_key_handle_destroy);
++        if (*status != RNP_SUCCESS || !keyRaw) {
++            *status = RNP_ERROR_KEY_NOT_FOUND;
++            return QByteArray();
++        }
++        rnp_input_t aggregateRaw = nullptr;
++        *status = rnp_input_from_memory(&aggregateRaw,
++                    reinterpret_cast<const uint8_t *>(recipient.second.constData()),
++                    recipient.second.size(), false);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++        InputOwner aggregate(aggregateRaw, rnp_input_destroy);
++        *status = rnp_load_keys(raw, RNP_KEYSTORE_GPG, aggregateRaw, RNP_LOAD_SAVE_PUBLIC_KEYS);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++    }
++    rnp_input_t inputRaw = nullptr;
++    *status = rnp_input_from_memory(&inputRaw, reinterpret_cast<const uint8_t *>(data.constData()),
++                                    data.size(), false);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    InputOwner input(inputRaw, rnp_input_destroy);
++    rnp_output_t outputRaw = nullptr;
++    *status = rnp_output_to_memory(&outputRaw, 1024 * 1024 * 1024);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    OutputOwner output(outputRaw, rnp_output_destroy);
++    rnp_op_encrypt_t opRaw = nullptr;
++    *status = rnp_op_encrypt_create(&opRaw, raw, inputRaw, outputRaw);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    std::unique_ptr<rnp_op_encrypt_st, decltype(&rnp_op_encrypt_destroy)>
++        operation(opRaw, rnp_op_encrypt_destroy);
++    *status = rnp_op_encrypt_set_armor(opRaw, armor);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    for (const auto &recipient : recipients) {
++        const QByteArray fp = recipient.first.toUpper().toLatin1();
++        rnp_key_handle_t keyRaw = nullptr;
++        *status = rnp_locate_key(raw, "fingerprint", fp.constData(), &keyRaw);
++        KeyOwner key(keyRaw, rnp_key_handle_destroy);
++        if (*status != RNP_SUCCESS || !keyRaw) {
++            *status = RNP_ERROR_KEY_NOT_FOUND;
++            return QByteArray();
++        }
++        // Native selection supports cert/sign-only primaries with encryption
++        // subkeys; a primary's own encrypt flag is not a prerequisite.
++        *status = rnp_op_encrypt_add_recipient(opRaw, keyRaw);
++        if (*status != RNP_SUCCESS)
++            return QByteArray();
++    }
++    *status = rnp_op_encrypt_execute(opRaw);
++    if (*status != RNP_SUCCESS)
++        return QByteArray();
++    uint8_t *bytes = nullptr;
++    size_t length = 0;
++    *status = rnp_output_memory_get_buf(outputRaw, &bytes, &length, false);
++    return *status == RNP_SUCCESS
++        ? QByteArray(reinterpret_cast<const char *>(bytes), length) : QByteArray();
++}
+--- a/rnp/rnp_p.h
++++ b/rnp/rnp_p.h
+@@ -104,6 +104,11 @@
+     Keyring& secretKeyring() const;
+ 
+     QStringList importKeys(const QByteArray &data);
++    QByteArray publicKey(const Key &key, rnp_result_t *status) const;
++    static QByteArray encryptPublic(const QByteArray &data,
++                                    const QList<QPair<QString, QByteArray>> &recipients,
++                                    bool armor, rnp_result_t *status);
++
+ 
+     QByteArray sign(const QByteArray &data, const Key key[], bool armor) const;
+     QList<Signature> verify(const QByteArray &data, const QByteArray &signature) const;
+--- a/secrets/rnp/rnpffi.cpp
++++ b/secrets/rnp/rnpffi.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include "rnp_p.h"
+ #include "rnpffi.h"
++#include <QtDBus/QDBusArgument>
+ #include <rnp/rnp_err.h>
+ 
+ #include <QTemporaryDir>
+@@ -458,8 +459,8 @@
+     if (!key)
+         return Result(Result::InvalidKeyIdentifier, QStringLiteral("Missing metadata output."));
+     *key = Key();
+-    if (keyComponents & (Key::PrivateKeyData | Key::PublicKeyData))
+-        return Result(Result::OperationNotSupportedError, QStringLiteral("Only key reference metadata is available."));
++    if (keyComponents & Key::PrivateKeyData)
++        return Result(Result::OperationNotSupportedError, QStringLiteral("Private key export is unavailable."));
+     if (identifier.storagePluginName() != name() || identifier.name().isEmpty() || identifier.collectionName().isEmpty())
+         return Result(Result::InvalidKeyIdentifier, QStringLiteral("Invalid key identifier."));
+     if (!m_rnp->isValid() || !m_rnp->publicKeyring().isValid())
+@@ -470,6 +471,14 @@
+     if (!selected.isValid())
+         return Result(Result::InvalidKeyIdentifier, QStringLiteral("Key was not found."));
+     *key = selected.toCryptoKey(name());
++    if (keyComponents & Key::PublicKeyData) {
++        rnp_result_t status = RNP_SUCCESS;
++        key->setPublicKey(m_rnp->publicKey(selected, &status));
++        if (status != RNP_SUCCESS || key->publicKey().isEmpty()) {
++            *key = Key();
++            return Result(Result::StorageError, QStringLiteral("Public key export failed."));
++        }
++    }
+     return Result();
+ }
+ 
+@@ -622,6 +631,24 @@
+     return Result();
+ }
+ 
++// QVariant containers received over D-Bus can remain QDBusArgument values.
++// Accept only the declared container signature and use Qt's native decoder.
++template<typename T>
++static bool decodeRecipientContainer(const QVariant &value, const char *signature, T *output)
++{
++    if (value.userType() == qMetaTypeId<T>()) {
++        *output = value.value<T>();
++        return true;
++    }
++    if (value.userType() != qMetaTypeId<QDBusArgument>())
++        return false;
++    const QDBusArgument argument = value.value<QDBusArgument>();
++    if (argument.currentSignature() != QLatin1String(signature))
++        return false;
++    *output = qdbus_cast<T>(argument);
++    return true;
++}
++
+ Result RnpFfi::encrypt(const QByteArray &data,
+                        const QByteArray &iv,
+                        const Key &key,
+@@ -636,10 +663,54 @@
+     Q_UNUSED(blockMode);
+     Q_UNUSED(padding);
+     Q_UNUSED(authenticationData);
+-    Q_UNUSED(authenticationTag);
+-
+-    return operation(CryptoManager::OperationEncrypt,
+-                     key, data, customParameters, encrypted);
++    if (authenticationTag)
++        authenticationTag->clear();
++    if (!encrypted)
++        return Result(Result::CryptoPluginEncryptionError, QStringLiteral("Missing output."));
++    encrypted->clear();
++    if (!key.privateKey().isEmpty() || !key.secretKey().isEmpty())
++        return Result(Result::OperationNotSupportedError, QStringLiteral("Secret key material is not accepted."));
++    QList<QPair<QString, QByteArray>> recipients;
++    if (key.publicKey().isEmpty()) {
++        const Result reference = storedReference(key, name());
++        if (reference.code() != Result::Succeeded)
++            return reference;
++        if (!m_rnp->isValid() || !m_rnp->publicKeyring().isValid())
++            return Result(Result::StorageError, QStringLiteral("Cannot load public keyring."));
++        Rnp::Key selected = m_rnp->publicKeyring().key(key);
++        rnp_result_t status = RNP_SUCCESS;
++        const QByteArray packets = m_rnp->publicKey(selected, &status);
++        if (status != RNP_SUCCESS)
++            return Result(Result::InvalidKeyIdentifier, QStringLiteral("Public key was not found."));
++        recipients.append(qMakePair(selected.fingerprint(), packets));
++    } else {
++        // Caller-supplied public material grants no stored private authority.
++        recipients.append(qMakePair(key.identifier().name(), key.publicKey()));
++    }
++    const QString extraName = QStringLiteral("org.sailfishos.crypto.rnp.additionalRecipients");
++    if (customParameters.contains(extraName)) {
++        QVariantList extra;
++        if (!decodeRecipientContainer(customParameters.value(extraName), "av", &extra))
++            return Result(Result::InvalidKeyIdentifier, QStringLiteral("Recipients must be a list."));
++        for (const QVariant &value : extra) {
++            QVariantMap item;
++            if (!decodeRecipientContainer(value, "a{sv}", &item))
++                return Result(Result::InvalidKeyIdentifier, QStringLiteral("Invalid public recipient."));
++            if (item.size() != 2 || item.value("fingerprint").type() != QVariant::String
++                || item.value("publicKey").type() != QVariant::ByteArray)
++                return Result(Result::InvalidKeyIdentifier, QStringLiteral("Invalid public recipient fields."));
++            recipients.append(qMakePair(item.value("fingerprint").toString(),
++                                        item.value("publicKey").toByteArray()));
++        }
++    }
++    rnp_result_t status = RNP_SUCCESS;
++    *encrypted = Rnp::encryptPublic(data, recipients,
++                                    customParameters.value("With-Armor", true).toBool(), &status);
++    if (status != RNP_SUCCESS) {
++        encrypted->clear();
++        return Result(Result::CryptoPluginEncryptionError, QStringLiteral("Public-recipient encryption failed."));
++    }
++    return Result();
+ }
+ 
+ Result RnpFfi::decrypt(const QByteArray &data,
