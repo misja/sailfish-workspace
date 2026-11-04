@@ -1,6 +1,6 @@
 # Staged roles and handoffs
 
-Adopted: 2026-10-10. Updated: 2026-10-17. Baseline: 1.3.0. Scope: every real project; synthetic trial uses the same rules.
+Adopted: 2026-10-10. Updated: 2026-11-04. Baseline: 1.3.0. Scope: every real project; synthetic trial uses the same rules.
 
 ## Role activation
 
@@ -28,6 +28,42 @@ Spec Kit hooks and parallel markers do not supply it.
 | Builder/Packager | Reviewed plan/tasks, pinned inputs | Patch, package metadata, build/self-test evidence | Implementation within authorized scope |
 | Tester/Security Reviewer | Artifacts, criteria, threat/isolation claims | Independent findings and specific release blockers | Verification; cannot waive failed criteria |
 | Release Manager (separate agent) | Reviewed artifacts, changes and existing test evidence | User-facing release proposal: purpose, changes, sources and relevant limitations | Owns release presentation; maintainer authorizes publication |
+
+## Bounded execution and evidence
+
+Proposed workflow clarification, 2026-11-04: balance thoroughness with time and token cost.
+This refines how the existing gates are applied; it does not waive checks,
+independent review, approval boundaries or release roles.
+
+Before work, name the smallest useful increment and its completion condition in
+the existing issue/plan. Use the applicable scope/design gate once, implement and
+run targeted checks, then complete the required resulting-artifact review.
+Routine reversible fixes within that scope do not each start another role cycle.
+Reopen an intermediate review when architecture, scope, a security boundary or
+acceptance criteria change, or a material finding needs separate assessment.
+
+Reuse pinned sources, accepted artifacts and prior evidence where their identities
+and relevant target/behavior remain applicable. Build incrementally where valid;
+a fresh dependency or full-stack build needs a named reason such as an ABI change,
+changed input/toolchain or unresolved failure. Additional or repeated tests must
+address changed behavior, a failure or a specific evidence gap. Required coverage
+still has to pass; cost is not a reason to relabel an unexecuted check as passed.
+
+Keep one canonical conclusion and link its evidence. STATUS.md carries the current
+outcome, limits/blocker and next action; it is not a running transcript. Specs hold
+behavior and acceptance, plans hold the relevant checks/reuse/review triggers, and
+raw logs remain evidence rather than repeated prose in every document.
+Apply this to new work without rewriting historical acceptance records.
+
+Use focused reviewer handoffs with changed behavior, source/diff/evidence paths
+and a concrete question. Supply full conversation history only when needed;
+do not create a standing team or duplicate broad investigations.
+
+Stop the increment when its criteria and required reviews are met. Another
+research/build round needs a named remaining gap. Do not invent a fixed token
+quota; agree an explicit budget only when useful to the maintainer. When effort
+grows because the reviewed scope is insufficient, make that decision visible
+rather than silently extending the work or dropping acceptance criteria.
 
 ## Release handoff
 

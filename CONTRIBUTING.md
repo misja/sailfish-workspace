@@ -14,6 +14,10 @@ The maintainer reviews proposed changes before merge. Crypto behavior, runtime/p
 
 AI tools cannot approve their own changes, waive acceptance criteria or authorize installation or publication. Merge acceptance is separate from permission to change devices/systems, publish packages or send upstream contributions.
 
+Use the [bounded execution workflow](docs/development/agent-governance.md#bounded-execution-and-evidence)
+to keep increments, validation and review proportionate; existing approval and
+independent-review requirements still apply.
+
 ## Testing and licensing
 
 Engineering tools and test reports use synthetic data or published test vectors. Do not submit real keys, password stores, OTP material, credentials or recovery data in issues, PRs or test inputs. Preserve Jolla's packages and keep private runtime isolation explicit.
