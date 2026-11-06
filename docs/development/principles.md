@@ -47,6 +47,10 @@ points below are the ones checked against SDK 3.13.5 / Sailfish OS 5.1 on
   pulley menus as in the [navigation guideline](https://sailfishos.org/design/navigation)
   ("below five" pulley options). Pages default to portrait: set
   `allowedOrientations` on each page that should rotate.
+- **Agree the UI before building it:** before writing screens, agree the
+  whole-app structure and navigation with the maintainer using mockups,
+  covering later features as well as the current one. Record the agreed
+  structure in the feature spec. A changed structure is a scope change.
 - **UI quality:** use the [UI Definition of Done](https://docs.sailfishos.org/Develop/Apps/UI/Definition_of_Done/)
   as the checklist and the [Silica common pitfalls](https://sailfishos.org/develop/docs/silica/sailfish-application-pitfalls.html)
   as rules.
