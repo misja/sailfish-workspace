@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.0.0. Adopted 2026-10-10. Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.1.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -27,3 +27,36 @@ the actual unsolved problem and the simpler alternatives in the existing issue.
 Independent reviewers must question the necessity of the requirements themselves.
 Apply this to the primary assistant and delegated agents; AGENTS baseline 1.3.0
 makes it a persistent instruction in each project checkout.
+
+## Sailfish app conventions
+
+For native apps, follow the platform's published practice rather than project
+habits. Read the upstream page for each topic instead of copying it here; the
+points below are the ones checked against SDK 3.13.5 / Sailfish OS 5.1 on
+2026-11-06.
+
+- **Code style:** [Sailfish OS Coding Conventions](https://docs.sailfishos.org/Develop/Apps/Coding_Conventions/).
+  - QML: order the id, properties, signals, then bindings/functions/handlers,
+    then children; put braces on one-line conditionals; omit redundant default
+    values and unused ids; group properties (`anchors {}`); prefix private API
+    with `_`.
+  - C++: Qt5 connect syntax, ranged-for, CamelCase namespaces, Qt coding
+    style; the app stub is named after the app, not `main.cpp`.
+  - Tests: prefer compare over verify, and signal spies over fixed waits.
+- **Navigation and components:** Silica pages, page stack, attached pages and
+  pulley menus as in the [navigation guideline](https://sailfishos.org/design/navigation)
+  ("below five" pulley options). Pages default to portrait: set
+  `allowedOrientations` on each page that should rotate.
+- **Localisation:** use libsailfishapp's `sailfishapp_i18n` (`lupdate
+  -noobsolete`, `lrelease -nounfinished`, catalogues in
+  `/usr/share/<app>/translations`, loaded for the system locale at start). Do not
+  build an own translation loader. English is the source and fallback.
+  `qsTr` is the SDK template default; `qsTrId` with `//%`/`//:`
+  (`sailfishapp_i18n_idbased`) is what Jolla's own apps use. Choose per app and
+  record the choice. The community [L10n process](https://docs.sailfishos.org/Develop/L10n/)
+  (Pootle) covers platform strings, not third-party apps.
+- **Packaging:** start from the SDK's own app template. Run the SDK's Harbour
+  validator (`sfdk check -s harbour`) on every release RPM. It rejects files
+  outside `/usr/share/<app>` and the desktop/icon paths (including `%license`),
+  so tests and fixtures are never packaged.
+
