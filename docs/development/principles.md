@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.1.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.2.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -70,6 +70,19 @@ points below are the ones checked against SDK 3.13.5 / Sailfish OS 5.1 on
     network.
   - Transitions are smooth, and memory use is reasonable (measure on a device).
   - Develop and check on a real device.
+- **Sailfish UI check in reviews:** no separate UX role. The existing
+  separate reviews also check UI against the Sailfish guidelines and Silica
+  components above.
+  - **Design review:** the agreed mockups.
+  - **Result review:** the built pages.
+  - **What is checked:** navigation and attached pages; pulley, context-menu
+    and remorse use; empty, error and offline states; landscape; Theme sizes
+    and colours; and reuse of Silica components rather than own replacements.
+    Jolla's own apps (People, Media) serve as references where the guidelines
+    are silent.
+  - **Generic web UI/UX checklists and skills** do not know these conventions
+    and are not a substitute.
+  - **The maintainer's device check** remains the final UI judgement.
 - **Localisation:** use libsailfishapp's `sailfishapp_i18n` (`lupdate
   -noobsolete`, `lrelease -nounfinished`, catalogues in
   `/usr/share/<app>/translations`, loaded for the system locale at start). Do not
