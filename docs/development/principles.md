@@ -47,6 +47,25 @@ points below are the ones checked against SDK 3.13.5 / Sailfish OS 5.1 on
   pulley menus as in the [navigation guideline](https://sailfishos.org/design/navigation)
   ("below five" pulley options). Pages default to portrait: set
   `allowedOrientations` on each page that should rotate.
+- **UI quality:** use the [UI Definition of Done](https://docs.sailfishos.org/Develop/Apps/UI/Definition_of_Done/)
+  as the checklist and the [Silica common pitfalls](https://sailfishos.org/develop/docs/silica/sailfish-application-pitfalls.html)
+  as rules.
+  - Fonts, colours, margins and item sizes come from `Theme`: text margins
+    `Theme.horizontalPageMargin`, touch targets at least `Theme.itemSizeSmall`.
+  - Interactive items use the primary colour and turn highlight when pressed;
+    static labels and headers use the highlight colour.
+  - Images sit flush with the page edges.
+  - Every view that can overflow has a scroll decorator.
+  - Use gestures and pulley menus instead of toolbars or back/home buttons,
+    with no more than four pulley items, hidden when all are disabled.
+  - Dialogs accept and cancel through `DialogHeader`. Text fields have a
+    `label` and `placeholderText`, and an EnterKey that is enabled only for
+    valid input.
+  - The cover summarises state and offers shortcuts for common actions.
+  - No empty or unfinished states. The user can recover from errors such as no
+    network.
+  - Transitions are smooth, and memory use is reasonable (measure on a device).
+  - Develop and check on a real device.
 - **Localisation:** use libsailfishapp's `sailfishapp_i18n` (`lupdate
   -noobsolete`, `lrelease -nounfinished`, catalogues in
   `/usr/share/<app>/translations`, loaded for the system locale at start). Do not
