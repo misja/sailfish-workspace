@@ -9,6 +9,7 @@ development, sources and shared decisions.
 - [License scope](../THIRD_PARTY.md)
 - [agent-governance](development/agent-governance.md)
 - [principles](development/principles.md)
+- [App icon design](development/app-icons.md)
 - [release-targets](development/release-targets.md)
 - [workflow](development/workflow.md)
 - [Original-work license](../LICENSING.md)

@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.2.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.3.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -83,6 +83,10 @@ points below are the ones checked against SDK 3.13.5 / Sailfish OS 5.1 on
   - **Generic web UI/UX checklists and skills** do not know these conventions
     and are not a substitute.
   - **The maintainer's device check** remains the final UI judgement.
+- **App icons:** follow the [app icon guidance](app-icons.md): an official
+  base shape from the Sailfish icon template, one clear metaphor, and an
+  editable SVG as the single source from which the PNGs are rendered. The
+  maintainer chooses the design and checks it in the launcher on a device.
 - **Localisation:** use libsailfishapp's `sailfishapp_i18n` (`lupdate
   -noobsolete`, `lrelease -nounfinished`, catalogues in
   `/usr/share/<app>/translations`, loaded for the system locale at start). Do not
