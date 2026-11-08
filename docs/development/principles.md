@@ -115,7 +115,9 @@ points below are the ones checked against SDK 3.13.5 / Sailfish OS 5.1 on
 - **Localisation:** use libsailfishapp's `sailfishapp_i18n` (`lupdate
   -noobsolete`, `lrelease -nounfinished`, catalogues in
   `/usr/share/<app>/translations`, loaded for the system locale at start). Do not
-  build an own translation loader. English is the source and fallback.
+  build an own translation loader. English is the source. libsailfishapp
+  loads only the system locale's catalogue and has no English fallback
+  (sailfishapp_priv.cpp, checked 2026-11-08); apps do not add one.
   `qsTr` is the SDK template default; `qsTrId` with `//%`/`//:`
   (`sailfishapp_i18n_idbased`) is what Jolla's own apps use. Choose per app and
   record the choice. The community [L10n process](https://docs.sailfishos.org/Develop/L10n/)
