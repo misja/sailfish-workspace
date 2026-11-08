@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.3.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.4.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -27,6 +27,31 @@ the actual unsolved problem and the simpler alternatives in the existing issue.
 Independent reviewers must question the necessity of the requirements themselves.
 Apply this to the primary assistant and delegated agents; AGENTS baseline 1.3.0
 makes it a persistent instruction in each project checkout.
+
+## Platform mechanisms in code
+
+Code is written to be reviewed, maintained and learned from by people. Use the
+platform's own mechanisms instead of tricks or home-made replacements.
+
+- **Look first:** before writing a component, model, loader or workaround,
+  check the target SDK for the standard one and cite where it was found. The
+  `qmldir` of `Sailfish.Silica` and the Qt headers of the target version are
+  the evidence; the documentation alone is not.
+- **Prefer the standard mechanism:**
+  - Silica components (for example `ExpandingSection`) over look-alikes;
+  - Qt model classes (for example `QSortFilterProxyModel`) over hidden or
+    zero-height rows;
+  - properties with NOTIFY signals over binding tricks or counters that force
+    re-evaluation;
+  - explicit parameters over behaviour derived from string contents;
+  - reacting to the actual change (a height, a signal) over timers that guess
+    when layout is done.
+- **No standard mechanism?** State the gap and ask the maintainer before
+  building an own solution.
+- **Name what remains:** list any remaining own solutions in the pull request,
+  unprompted, with the reason.
+- **Reviews check this:** independent reviewers name tricks and own solutions
+  explicitly. Replacing them later costs more than avoiding them.
 
 ## Sailfish app conventions
 
