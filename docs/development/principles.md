@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.4.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.5.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -52,6 +52,70 @@ platform's own mechanisms instead of tricks or home-made replacements.
   unprompted, with the reason.
 - **Reviews check this:** independent reviewers name tricks and own solutions
   explicitly. Replacing them later costs more than avoiding them.
+
+## Personal information
+
+Repositories and everything published from them are public. The local
+machine is not. This boundary is firm: local facts stay local.
+
+- **What is public:** anything that leaves the machine. That covers:
+  - git objects: commits, tags, branch names and tag annotations;
+  - everything on GitHub: issues, pull requests, comments, reviews,
+    releases and their assets, and the project board;
+  - built packages and their metadata;
+  - OBS and Chum;
+  - any shared artifact or link.
+- **Roles, not people:** project artifacts name roles: "the maintainer", "a
+  contributor", "a reviewer". Decisions and quotes are attributed to "the
+  maintainer", with a date. No possessives or personal descriptions: write
+  "the test player", not "the maintainer's player", and use no gendered
+  pronouns.
+- **No third parties from our own process:** what we write ourselves never
+  names or identifies other people: helpers, account holders, household
+  members, other users. Use their role, for example "an OBS account". The
+  only names that appear are the ones in information that comes from
+  outside and is reproduced as it is: a licence or copyright notice, or a
+  cited upstream source (`owner/repo@commit`). Upstream projects,
+  organisations and trademarks (for example Jolla, Lenbrook, BluOS) may be
+  named.
+- **No local values:** never record a value observed on the maintainer's
+  network or devices. That covers:
+  - IP and MAC addresses;
+  - host, container-instance and share names;
+  - player and room names, and Wi-Fi names;
+  - account names on devices, and serial numbers;
+  - e-mail addresses.
+
+  Examples use reserved values: IPv4 from `192.0.2.0/24` (RFC 5737), MACs
+  such as `02:00:00:00:00:0A`, `example.invalid`. Otherwise use placeholders
+  such as `<player>`, `<phone>` or `<host>`.
+
+  These may be named, as reproducibility evidence: device models, OS and
+  firmware versions, and the SDK's own default users and paths (for example
+  `/home/ubuntu/...` in the SDK container). Aggregate counts are allowed;
+  titles from a library are not.
+
+  The real values live in a file outside every repository on the
+  maintainer's machine. Agents read it when they need it, and never quote it
+  into project artifacts or commit messages.
+- **Screenshots, logs and fixtures:** screenshots, logs and evidence are
+  published only after they have been checked for these details. Raw logs
+  stay local. Fixtures are synthetic or scrubbed captures.
+- **Required identity stays, and only there:**
+  - copyright and licence notices (LICENSE, LICENSING.md, THIRD_PARTY.md,
+    file headers);
+  - packaging metadata (`DeveloperName`, the changelog author);
+  - git author and committer identity;
+  - the account name in repository URLs, and in identifiers derived from it
+    (`io.github.<account>`).
+
+  Prose elsewhere (README, CONTRIBUTING, STATUS, specs, code comments) uses
+  "the maintainer". The git author e-mail is the maintainer's choice; agents
+  do not change it or copy it into files.
+- **Check before publishing:** check for names and local values before
+  every push, pull request, issue or release. If one was published anyway,
+  remove it from current files and texts at once, and report it to the
+  maintainer. Only the maintainer decides whether history is rewritten.
 
 ## Sailfish app conventions
 
