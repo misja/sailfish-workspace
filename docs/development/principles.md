@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.5.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.6.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09); 1.6.0 adds writing (2026-11-09). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -116,6 +116,71 @@ machine is not. This boundary is firm: local facts stay local.
   every push, pull request, issue or release. If one was published anyway,
   remove it from current files and texts at once, and report it to the
   maintainer. Only the maintainer decides whether history is rewritten.
+
+## Writing
+
+Text is written for its reader: short, concrete and true. AI tools tend to
+produce recognisable patterns ("AI tells"). They make text longer and vaguer,
+and readers trust it less. Fix the cause, which is usually an unclear purpose
+or missing facts, not only the surface: a text without the patterns can
+still say nothing.
+
+- **Only what the reader needs:** leave out what the title, the purpose or
+  the platform already makes clear. Avoid sections and sentences that state
+  the obvious:
+  - a "Requirements" list saying that a controller for network players
+    needs a phone and a player;
+  - a note that a network app uses the network;
+  - an explanation that permissions can be declined.
+
+  Test each sentence: would the reader miss it?
+- **Facts, not intentions or promotion:**
+  - state what is, not what is hoped or planned: no "not in a store yet"
+    and no "coming soon";
+  - no praise of the work itself ("powerful", "seamless", "robust",
+    "comprehensive");
+  - no inflated significance ("a pivotal step", "a testament to");
+  - no vague authorities ("experts say").
+- **Plain sentences:**
+  - write "is", not "serves as" or "stands as";
+  - no "not just X, but Y";
+  - no lists of three made for rhythm;
+  - no closing "-ing" clauses that add weight ("…, ensuring a smooth
+    experience");
+  - no stock words where a plain one exists, such as delve, leverage,
+    showcase, underscore, foster, streamline or utilize;
+  - no reassurance or hedging that adds nothing ("simply", "just",
+    "it is worth noting").
+- **No detail that goes stale:** outward text names no version numbers,
+  test notes ("tested on 5.2"), brand names or counts unless the reader
+  needs them to act. Every such detail is maintenance.
+- **Keep the audiences apart:** outward text says what the software does
+  for its user, and nothing about how we work:
+  - README, About pages, release notes and store or Chum descriptions;
+  - no reviews, agents, specs or internal decisions in them.
+
+  Process belongs in CONTRIBUTING, specs and the handoff. This complements
+  "Personal information".
+- **Formatting serves reading:**
+  - headings, lists and bold text only where they help someone scan;
+  - no bold for emphasis in running prose, no decorative emoji, and no
+    headings over a single sentence;
+  - UI text follows the platform: short labels, no ellipsis in menu items
+    or buttons, and status texts that say what is happening.
+- **No chat residue in artifacts:** no "Here is…", "I hope this helps" or
+  "Let me know", and no running commentary on what was done. Commit
+  messages, pull requests and handoffs give the change and its reason.
+  Claims of compliance ("follows best practices") are not evidence: cite
+  the check that was run instead.
+- **Project wording:** each project keeps its own word choices (UI terms,
+  languages, the platform's terminology) in its CONTRIBUTING. This principle
+  covers what is common to all of them.
+- **Reviews check outward text:** independent reviewers read README, About
+  and release texts for these patterns and for the audience boundary. A
+  catalogue of the patterns, which is descriptive rather than a set of rules,
+  is Wikipedia's "Signs of AI writing"
+  (https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing, read
+  2026-11-09).
 
 ## Sailfish app conventions
 
