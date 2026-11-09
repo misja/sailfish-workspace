@@ -119,68 +119,53 @@ machine is not. This boundary is firm: local facts stay local.
 
 ## Writing
 
-Text is written for its reader: short, concrete and true. AI tools tend to
-produce recognisable patterns ("AI tells"). They make text longer and vaguer,
-and readers trust it less. Fix the cause, which is usually an unclear purpose
-or missing facts, not only the surface: a text without the patterns can
-still say nothing.
+Text is written for its reader. AI tools produce recognisable patterns ("AI
+tells"), which make text longer and vaguer. Fix the cause, usually an unclear
+purpose or missing facts; a text free of the patterns can still say nothing.
+The test for every sentence: would the reader miss it?
 
-- **Only what the reader needs:** leave out what the title, the purpose or
-  the platform already makes clear. Avoid sections and sentences that state
-  the obvious:
-  - a "Requirements" list saying that a controller for network players
-    needs a phone and a player;
-  - a note that a network app uses the network;
-  - an explanation that permissions can be declined.
-
-  Test each sentence: would the reader miss it?
-- **Facts, not intentions or promotion:**
-  - state what is, not what is hoped or planned: no "not in a store yet"
-    and no "coming soon";
-  - no praise of the work itself ("powerful", "seamless", "robust",
-    "comprehensive");
-  - no inflated significance ("a pivotal step", "a testament to");
-  - no vague authorities ("experts say").
-- **Plain sentences:**
-  - write "is", not "serves as" or "stands as";
-  - no "not just X, but Y";
-  - no lists of three made for rhythm;
-  - no closing "-ing" clauses that add weight ("…, ensuring a smooth
-    experience");
-  - no stock words where a plain one exists, such as delve, leverage,
-    showcase, underscore, foster, streamline or utilize;
-  - no reassurance or hedging that adds nothing ("simply", "just",
-    "it is worth noting").
-- **No detail that goes stale:** outward text names no version numbers,
-  test notes ("tested on 5.2"), brand names or counts unless the reader
-  needs them to act. Every such detail is maintenance.
-- **Keep the audiences apart:** outward text says what the software does
-  for its user, and nothing about how we work:
-  - README, About pages, release notes and store or Chum descriptions;
-  - no reviews, agents, specs or internal decisions in them.
-
-  Process belongs in CONTRIBUTING, specs and the handoff. This complements
-  "Personal information".
-- **Formatting serves reading:**
-  - headings, lists and bold text only where they help someone scan;
-  - no bold for emphasis in running prose, no decorative emoji, and no
-    headings over a single sentence;
-  - UI text follows the platform: short labels, no ellipsis in menu items
-    or buttons, and status texts that say what is happening.
-- **No chat residue in artifacts:** no "Here is…", "I hope this helps" or
-  "Let me know", and no running commentary on what was done. Commit
-  messages, pull requests and handoffs give the change and its reason.
-  Claims of compliance ("follows best practices") are not evidence: cite
-  the check that was run instead.
-- **Project wording:** each project keeps its own word choices (UI terms,
-  languages, the platform's terminology) in its CONTRIBUTING. This principle
-  covers what is common to all of them.
-- **Reviews check outward text:** independent reviewers read README, About
-  and release texts for these patterns and for the audience boundary. A
-  catalogue of the patterns, which is descriptive rather than a set of rules,
-  is Wikipedia's "Signs of AI writing"
-  (https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing, read
-  2026-11-09).
+- **Leave out what the reader already knows:** what the title, the purpose
+  or the platform makes clear. For example, a "Requirements" list saying that
+  a controller for network players needs a phone and a player, a note that a
+  network app uses the network, or that permissions can be declined. Do not
+  open by restating the title or heading, and do not close by summarising
+  what was just said.
+- **Say what is:** no intentions or pre-announcements ("not in a store yet",
+  "coming soon"; outside release notes also "new", "now", "currently"), no
+  praise of the work itself ("powerful", "seamless", "robust"), no inflated
+  significance ("a pivotal step"). Write "is", not "serves as". Avoid "not
+  just X, but Y", closing "-ing" clauses that add weight ("…, ensuring a
+  smooth experience"), stock words where a plain one exists (delve, leverage,
+  showcase, utilize), reassurance ("simply", "easy") and filler ("it is worth
+  noting"). A list has as many items as there are things to say.
+- **No hand-maintained detail in user-facing text:** no version numbers, test
+  notes ("tested on 5.2") or third-party names unless the reader needs them.
+  Release notes and changelogs are versioned by nature; generated versions
+  and required notices are not stale detail. A limitation the reader must
+  know, with its reason, is a warning, not a test note: "the armv7hl build
+  is untested".
+- **Keep the audiences apart:** text for users (README of an app, About
+  pages, release notes, store or Chum descriptions) says what the software
+  does for them, and nothing about how we work. Developer-facing text
+  (CONTRIBUTING, the workspace README, specs and the handoff) may describe
+  process, and may be dense. Disclosures that the platform or the law
+  requires (licence, trademark, Chum's AIRating and AINote) say what they
+  must, in one line.
+- **Formatting serves reading:** headings in sentence case and never over a
+  single sentence; lists only for things a reader scans; no bold for
+  emphasis in running prose, and no decorative emoji. UI text follows the
+  platform: short labels, no ellipsis in menu items or buttons, and status
+  texts that say what is happening. Each project keeps its own word choices
+  in its CONTRIBUTING.
+- **No chat residue:** commit messages, pull requests and handoffs give the
+  change and its reason. No "Here is…" or "I hope this helps", no running
+  commentary, and no claims of compliance ("follows best practices") in place
+  of the check that was run.
+- **Reviews check user-facing text** for these patterns and for the audience
+  boundary. Formal or plain prose is not a tell; judge what the reader gets,
+  not pattern counts. A descriptive catalogue is Wikipedia's "Signs of AI
+  writing" (https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing,
+  read 2026-11-09).
 
 ## Sailfish app conventions
 
