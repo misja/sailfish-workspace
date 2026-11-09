@@ -70,13 +70,14 @@ machine is not. This boundary is firm: local facts stay local.
   maintainer", with a date. No possessives or personal descriptions: write
   "the test player", not "the maintainer's player", and use no gendered
   pronouns.
-- **No private third parties:** never name or identify people outside the
-  project who are not public authors of what is cited: helpers, account
-  holders, household members, other users. Use their role, for example "an
-  OBS account". Upstream projects, organisations and trademarks may be named
-  (for example Jolla, Lenbrook, BluOS). So may authors and repository paths,
-  exactly as the cited public source shows them (copyright notices,
-  `owner/repo@commit`), but only where a citation or a licence needs them.
+- **No third parties from our own process:** what we write ourselves never
+  names or identifies other people: helpers, account holders, household
+  members, other users. Use their role, for example "an OBS account". The
+  only names that appear are the ones in information that comes from
+  outside and is reproduced as it is: a licence or copyright notice, or a
+  cited upstream source (`owner/repo@commit`). Upstream projects,
+  organisations and trademarks (for example Jolla, Lenbrook, BluOS) may be
+  named.
 - **No local values:** never record a value observed on the maintainer's
   network or devices. That covers:
   - IP and MAC addresses;
