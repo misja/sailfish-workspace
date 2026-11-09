@@ -1,7 +1,7 @@
 # ADR 0001: a small multi-repository Sailfish workspace
 
 Status: accepted directions recorded 2026-10-10, refined 2026-10-14.
-Decision owner: Misja Hoebe (@misja).
+Decision owner: the maintainer.
 
 Use a non-Git parent directory with independent repositories. sailfish-workspace
 owns common working agreements, architecture and shared development infrastructure.
@@ -31,7 +31,7 @@ The initial CLI/runtime focus does not limit this workspace to those components:
 add other Sailfish work through an explicit scope and repository decision.
 
 Upstream-derived work retains upstream terms; independent original work uses
-GPL-3.0-or-later. Misja reviews merges and releases. Source review and package
+GPL-3.0-or-later. The maintainer reviews merges and releases. Source review and package
 release acceptance are distinct decisions.
 
 This document is a concise public record of the accepted local architecture.

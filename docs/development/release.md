@@ -1,7 +1,7 @@
 # Release delivery
 
 Updated: 2026-10-17. Owner: separate Release Manager for presentation;
-Builder/Packager for packaging. Misja authorizes publication.
+Builder/Packager for packaging. The maintainer authorizes publication.
 Live delivery work: [workspace #2](https://github.com/misja/sailfish-workspace/issues/2).
 
 ## Release notes style
@@ -63,7 +63,7 @@ Public command ownership and compatible GNU Bash/provider selection remain
 component installation considerations. GitHub drafts are not a Chum/OBS
 submission; that route has separate platform policy and trust requirements.
 Before publication, check exact reviewed assets, current user-facing limitations
-and Misja's explicit authorization. Do not invent a service framework to support
+and the maintainer's explicit authorization. Do not invent a service framework to support
 an unreviewed extra lifecycle guarantee.
 
 A fallback changing the requested outcome needs maintainer agreement: signing

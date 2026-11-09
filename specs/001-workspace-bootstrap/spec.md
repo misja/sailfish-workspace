@@ -1,6 +1,6 @@
 # Portable Sailfish workspace bootstrap
 
-Owner/decision owner: Misja Hoebe (@misja).
+Owner/decision owner: the maintainer.
 Related review: https://github.com/misja/sailfish-workspace/issues/4.
 Record: curated 2026-10-14 from the initial Spec Kit-assisted organization.
 

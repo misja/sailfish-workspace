@@ -4,7 +4,7 @@ Prepared 2026-10-25. This is a research client of unchanged upstream public APIs
 not an adopted backend, package or native OTP implementation. Primary coordinator
 owns the task; Builder prepares sources and a separate reviewer assesses source
 before execution and evidence afterwards. No build or execution is implied by
-this document. Installation needs Misja's explicit approval of the concrete plan.
+this document. Installation needs the maintainer's explicit approval of the concrete plan.
 
 Inputs are the complete immutable archives already retained in the existing
 feature's `source-research/full-sources/` directory:
@@ -136,7 +136,7 @@ dependency acceptance follows from this experiment.
 
 ## Bounded correction experiment — 2026-10-25
 
-Misja separately authorized a small correction proposal, independent review,
+The maintainer separately authorized a small correction proposal, independent review,
 implementation and synthetic tests. The coordinator checked current upstream:
 default HEAD still equals the pinned `e53cd22c365ce170ebeaed70984207a8206d00eb`;
 no newer merged fix on that HEAD was available. This local experiment is not an
