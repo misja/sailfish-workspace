@@ -1,6 +1,6 @@
 # Session handoff
 
-Updated: 2026-11-04. Decision owner: Misja Hoebe (@misja).
+Updated: 2026-11-04. Decision owner: the maintainer.
 
 
 
@@ -240,7 +240,7 @@ Engine feasibility remains closed; this is review of the proposed integration co
 ## Study closed — RNP alternative feasibility, 2026-11-01
 
 Owner: root; separate final source/reuse reviewer: runtime_review.
-Decision owner / next decision: Misja reviews the product implementation direction.
+Decision owner / next decision: the maintainer reviews the product implementation direction.
 Acceptance met: pinned-source/platform comparison, actual Sailfish AArch64 build,
 bounded SDK/LXC synthetic runtime and separate results/closing assessments.
 No unresolved research blocker; no further experiment automatically queued.
@@ -289,7 +289,7 @@ SDK fixture build/controller retained /home/ubuntu/rnp-sdk-runtime-20261101;
 723MiBfree. Evidence existing SDK readiness dir/sdk-runtime-*20261101*.
 Earlier active/preparation checkpoints below are historical.
 
-Next decision owner: Misja; accountable research owner remains root.
+Next decision owner: the maintainer; accountable research owner remains root.
 Build+bounded runtime feasibility now demonstrated. Before product adoption,
 separately scope native resource/error-lifetime gaps and OTP consumer slice.
 Historical runner default not rerun; no general safety/device/package acceptance.
@@ -369,7 +369,7 @@ is not the objective. Browserpass-like integration is future separate work.
 Keep pass as functional/implementation baseline; do not assume full Bash/GnuPG
 compatibility or design a new API/service in advance.
 
-Misja authorized the next thin vertical-slice experiment and explicitly reiterated:
+The maintainer authorized the next thin vertical-slice experiment and explicitly reiterated:
 keep researching known implementations; do not invent unnecessary mechanisms.
 Current owner: primary coordinator. Separate Builder implements; separate reviewer
 checks substantial scope, source/diffs before execution and results afterwards.
@@ -632,7 +632,7 @@ publication. Existing retained container is stopped; no reinstall is needed.
 
 ## Prior release handoff (separate from active research)
 
-WorkspacePR16, runtimePR22, password-storePR12 were merged with Misja's explicit
+WorkspacePR16, runtimePR22, password-storePR12 were merged with the maintainer's explicit
 permission2026-10-18; merged trees matched reviewed heads. Merge commits recorded
 as workspace185d8b5, runtime0b069fa, password-storefc095fb (squash policy).
 Runtime2.5.24-0.7/pass1.7.4-0.6/OTP1.2.0-0.6 signed release assets and13downloadchecks

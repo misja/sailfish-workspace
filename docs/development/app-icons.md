@@ -2,7 +2,7 @@
 
 Design guidance for launcher icons of workspace apps, so that they belong to
 the original Jolla/Sailfish OS icon family. Supplied by the maintainer
-(Misja Hoebe, 2026-11-08); referenced from the [principles](principles.md).
+(the maintainer, 2026-11-08); referenced from the [principles](principles.md).
 Links checked 2026-11-08. Section 10 adds packaging facts verified on Swell.
 
 ## 1. Objective

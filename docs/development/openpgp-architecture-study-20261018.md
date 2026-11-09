@@ -2,7 +2,7 @@
 
 Started: 2026-10-18. Feasibility study closed: 2026-11-01; separate final source/reuse assessment complete. No product architecture adopted.
 Owner: primary assistant. Separate architecture reviewer: reviewer agent.
-Decision owner: Misja Hoebe. Related existing work: [password-store #2](https://github.com/misja/sailfish-password-store/issues/2)
+Decision owner: the maintainer. Related existing work: [password-store #2](https://github.com/misja/sailfish-password-store/issues/2)
 and [runtime #4](https://github.com/misja/sailfish-gnupg-runtime/issues/4).
 No architecture or migration is accepted by this document.
 
@@ -30,7 +30,7 @@ not reopen engine feasibility or authorize real-key activation.
 
 ## Scope, preference and acceptance
 
-Misja's clarified objective (2026-10-18) is a clear reusable backend with
+The maintainer's clarified objective (2026-10-18) is a clear reusable backend with
 functionality comparable to pass, on which consumers can be built. A general
 password-store management GUI is not the goal. The first intended consumer is an
 app to use and manage OTP codes. Browser integration, possibly Browserpass-like,
@@ -171,7 +171,7 @@ not a security finding or a production password behavior claim.
 
 No checked source establishes write/re-encryption, pass-otp/HOTP parity or full
 CLI/extensions. Use as a read-path and architecture reference; adopting read-only
-as the product outcome would need Misja's agreement. Recent commit/non-archived
+as the product outcome would need the maintainer's agreement. Recent commit/non-archived
 status alone is not a support commitment or security assessment.
 
 ### pass-simple
@@ -199,7 +199,7 @@ found two relevant examples; it does not prove a complete ecosystem inventory.
 
 ## Focused pass/RNP follow-up — 2026-10-18
 
-Misja clarified that read-only access is unattractive and pass-simple is too broad
+The maintainer clarified that read-only access is unattractive and pass-simple is too broad
 for the intended use case, independently of its Qt requirement. Neither should
 be a leading whole-application adoption candidate on the current evidence;
 their backend code can still supply reference material. Actual pass remains baseline.
@@ -313,7 +313,7 @@ module is worthwhile before choosing process/API shape.
 
 No migration, new service, library repository, general gpg emulator, GUI port or
 browser integration is accepted. A substantial scope/design choice needs separate
-review and Misja's decision after evidence. Existing RNP client code is a reuse
+review and the maintainer's decision after evidence. Existing RNP client code is a reuse
 candidate; lack of a ready pass/RNP fork is not itself justification to build a
 framework or a replacement application.
 
@@ -364,7 +364,7 @@ No cache refresh, repository change, package installation or device query occurr
 
 ## Bounded feasibility probe — 2026-10-24
 
-Misja explicitly authorized exploring the proposed limited synthetic route.
+The maintainer explicitly authorized exploring the proposed limited synthetic route.
 Owner: primary coordinator; implementation: separate Builder; independent scope
 and resulting-script/results assessment: reviewer. This extends the historical
 2026-10-18 research-only scope without accepting a migration or backend design.
@@ -442,7 +442,7 @@ this first execution. Initial tool check returned exit 2/missing prerequisites
 
 The concrete sudo/apt installation attempt stopped at
 `sudo: interactive authentication is required` before apt ran. No package was
-installed or upgraded. Interactive authentication must be completed by Misja in
+installed or upgraded. Interactive authentication must be completed by the maintainer in
 a local terminal; no password is requested through this assistant. No workaround
 installation, key generation or interoperability execution was attempted.
 After prerequisites exist, Builder can run the already reviewed synthetic probe
@@ -451,7 +451,7 @@ implementation or migration is implied.
 
 ### Execution-location correction and host cleanup — 2026-10-24
 
-Following Misja's feedback, the proposed Ubuntu-host installation is withdrawn.
+Following the maintainer's feedback, the proposed Ubuntu-host installation is withdrawn.
 Use an explicitly scoped LXC environment for the synthetic Ubuntu interoperability
 probe; subsequent Sailfish toolchain compatibility remains a separate SDK check.
 No container creation or installation has yet been performed. The earlier host
@@ -540,7 +540,7 @@ pass/GnuPG operational; no migration, browser integration or new service accepte
 
 ## Vertical slice scope — 2026-10-24
 
-Misja authorized the proposed thin reusable-backend experiment, including
+The maintainer authorized the proposed thin reusable-backend experiment, including
 Curve25519, after the successful RSA engine probe. Accountable owner: primary
 coordinator; implementation: separate Builder; required independent scope, code
 and results reviewer. Scope review completed before implementation. Existing
@@ -580,7 +580,7 @@ Baseline sources exported from existing Git pins into
 
 ### Research-first refinement before vertical-slice implementation
 
-Misja reiterated the firm instruction to keep researching known implementations
+The maintainer reiterated the firm instruction to keep researching known implementations
 and avoid invented mechanisms. The provisional Python Store draft was paused
 and not written/executed. A separate reviewer challenged each proposed own
 recipient/list/write/OTP function before implementation proceeded.
@@ -811,7 +811,7 @@ existing feature under `source-research/independent-review.json`; no new backlog
 
 ## Executed native librnp output probe — 2026-10-25
 
-Misja authorized this bounded experiment after the source investigation. Owner:
+The maintainer authorized this bounded experiment after the source investigation. Owner:
 primary coordinator. Separate Builder `builder` implemented
 `tools/research/librnp_output_probe.py`; independent reviewer `reviewer` accepted
 the approach, reviewed the exact source before execution and checked results and
@@ -1032,7 +1032,7 @@ save safety, resource-lifetime, Sailfish build or human security audit accepted.
 
 ## Public backend: confirmed policy gap and completed key-ID subset — 2026-10-25
 
-After the checkpoint Misja instructed continuation. The already reviewed diagnostic
+After the checkpoint the maintainer instructed continuation. The already reviewed diagnostic
 was copied/hash-verified and rebuilt. Original full-fingerprint policy diagnostic
 returned exit1 at policy-validation: direct helper fingerprint lookup0, corresponding
 key-ID lookup1;2public/1private keys loaded,0resolved policy records,1unresolved,
@@ -1109,7 +1109,7 @@ crash/fsync guarantees, Sailfish build support or human security audit accepted.
 
 ## Bounded native-backend corrections executed — 2026-10-25
 
-Misja authorized the complete proposal/review/implementation/regression sequence.
+The maintainer authorized the complete proposal/review/implementation/regression sequence.
 Owner: primary coordinator; separate Builder `builder`; scope/source/results
 reviewer `save_review`. Current upstream default HEAD was queried first and remains
 e53cd22c365ce170ebeaed70984207a8206d00eb (2026-05-25); no newer merged default-
@@ -1241,7 +1241,7 @@ is imposed; do not delete prior evidence or install tooling merely for this draf
 
 Initial independent scope advice challenged treating Botan3 as mandatory and
 separated RNP engine readiness from public backend readiness. After an initial
-service usage limit, the reviewer resumed at Misja's explicit request and assessed
+service usage limit, the reviewer resumed at the maintainer's explicit request and assessed
 the inventory and plan. Inventory is supported; one material scope correction was
 identified and incorporated below: OpenSSL configuration builds AND RUNS a feature
 helper, so this is not a compile/link-only build. No execution has occurred.
@@ -1634,7 +1634,7 @@ Preserve all local uncommitted work.
 
 ## Closing assessment scope — 2026-11-01
 
-Owner: root; required separate reviewer: runtime_review; decision owner: Misja.
+Owner: root; required separate reviewer: runtime_review; decision owner: the maintainer.
 Maintainer asked to continue but bring this feasibility study to an end.
 Bounded objective: one source-based assessment of native ownership/error lifetime
 in the tested entry IO path and fit for the intended OTP consumer, then a concrete
@@ -1648,7 +1648,7 @@ Existing study and STATUS remain the single artifact/handoff set.
 ## Closing source assessment and reuse decision proposal — 2026-11-01
 
 Research owner: root. Separate closing reviewer: runtime_review. Decision owner:
-Misja. Feasibility-study acceptance is met; research is closed at this checkpoint.
+the maintainer. Feasibility-study acceptance is met; research is closed at this checkpoint.
 This is a recommendation for the next product decision, not architecture adoption,
 a human security audit or release approval. No new experiment or runtime change
 was necessary to establish this conclusion.
@@ -1731,7 +1731,7 @@ feasibility study; the findings above are implementation prerequisites before
 claiming product readiness. Source identities and reviewer disposition are retained
 beside existing evidence as study-closing-assessment-20261101.json.
 
-Next decision: Misja reviews this recommendation and chooses the bounded product
+Next decision: the maintainer reviews this recommendation and chooses the bounded product
 implementation scope. No additional research experiment is queued automatically.
 No new repository/API/service architecture, package install, device/system change,
 commit, push, merge or publication was performed/authorized by this closure.

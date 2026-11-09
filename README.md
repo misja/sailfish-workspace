@@ -27,6 +27,6 @@ Issues belong to the repository responsible for the work; the shared
 [Sailfish project board](https://github.com/users/misja/projects/2) provides an overview.
 SDK helpers are in infrastructure/sdk/.
 
-Development uses AI-assisted tools. Misja Hoebe (@misja) reviews changes and decides what is merged or released; [contribution guidelines](CONTRIBUTING.md) describe the review requirements.
+Development uses AI-assisted tools. The maintainer reviews changes and decides what is merged or released; [contribution guidelines](CONTRIBUTING.md) describe the review requirements.
 
 Original work is [GPL-3.0-or-later](LICENSING.md). [Upstream licenses](THIRD_PARTY.md) remain in force.

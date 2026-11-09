@@ -71,7 +71,7 @@ Builder/Packager supplies artifacts, changes and test evidence. A separate
 technical reviewer assesses claims and remaining risks. A distinct Release
 Manager agent then owns the outward-facing release proposal, reading it from
 the perspective of someone unfamiliar with the project. The builder must not
-also fill that role for the same release. Misja reviews and authorizes publication.
+also fill that role for the same release. The maintainer reviews and authorizes publication.
 
 Reuse prior device tests with their recorded scope. A new package revision does
 not automatically require another complete device test: any additional check

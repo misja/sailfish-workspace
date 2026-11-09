@@ -47,7 +47,7 @@ requirements rather than reproducing the maintainer's machine.
 
 ### Optional LXC/LXD variant
 
-Misja's setup is an outer LXC container, an Ubuntu image and Docker running the
+A working setup is an outer LXC container, an Ubuntu image and Docker running the
 SDK inside it. The outer container is optional. It needs extra nesting, storage,
 permissions and SDK image/device-node adaptation; it is not the baseline and
 must not become a prerequisite for contributors or reproducible package builds.
