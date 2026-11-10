@@ -60,7 +60,9 @@ and historical Markdown records do not override live issue or board state.
 
 Essential assistant/contribution instructions and templates are kept in each
 repository. Shared templates are maintained in workspace and copied after
-review; there is no automatic synchronization. Spec Kit is an optional drafting
+review; there is no automatic synchronization. The copies are the AGENTS.md
+baseline and `.github/` (the issue templates and the pull request template, with
+a version line); every child repository with issues carries the current ones. Spec Kit is an optional drafting
 tool; it does not add authority or replace the maintainer's judgment.
 
 References checked 2026-10-14: [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow),
@@ -68,11 +70,11 @@ References checked 2026-10-14: [GitHub Flow](https://docs.github.com/en/get-star
 
 ## Writing for readers
 
-Apply the same reader perspective to READMEs, documentation and release notes
-across related repositories. Explain the purpose, component relationships, what
-changes for the user, where to start and concrete limitations without assuming
-knowledge of our issues or earlier discussions. Expand project-specific terms
-before using them. Keep internal review and approval history in issues.
+The [Writing](principles.md#writing) principle applies to READMEs,
+documentation and release notes. In addition, across related repositories:
+explain component relationships and where to start, expand project-specific
+terms before using them, and keep internal review and approval history in
+issues.
 
 State each component's actual boundaries: the separate GnuPG namespace does not
 imply that pass or native integration has the same package coexistence behavior.
