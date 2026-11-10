@@ -7,18 +7,19 @@ about: Report a problem or propose a change
 
 ## Problem or proposed change
 
-What happens, and what should happen instead?
+What happens, what should happen instead, and how can it be reproduced?
 
 ## Environment
 
 The app or package version, the Sailfish OS version, and the device model and
 architecture. For hardware the app talks to, give the model and firmware
-version. Leave out addresses and the names of devices, rooms or networks.
+version. Leave out passwords, keys, OTP secrets, addresses, and the names of
+devices, rooms or networks, also in logs.
 
-## Completion and checks
+## Expected result
 
-What would resolve this? List useful checks or existing results.
+What would resolve this?
 
 ## Related work
 
-Link related issues, designs or reports. Use public or synthetic examples.
+Link related issues or reports.

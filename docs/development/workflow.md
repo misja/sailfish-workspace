@@ -61,8 +61,9 @@ and historical Markdown records do not override live issue or board state.
 Essential assistant/contribution instructions and templates are kept in each
 repository. Shared templates are maintained in workspace and copied after
 review; there is no automatic synchronization. The copies are the AGENTS.md
-baseline and `.github/` (the issue templates and the pull request template, with
-a version line); every child repository with issues carries the current ones. Spec Kit is an optional drafting
+baseline, in every child repository, and `.github/` (the issue templates and
+the pull request template, each with a version line), in every child
+repository with issues. Each copy is made from a reviewed diff. Spec Kit is an optional drafting
 tool; it does not add authority or replace the maintainer's judgment.
 
 References checked 2026-10-14: [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow),
@@ -73,8 +74,8 @@ References checked 2026-10-14: [GitHub Flow](https://docs.github.com/en/get-star
 The [Writing](principles.md#writing) principle applies to READMEs,
 documentation and release notes. In addition, across related repositories:
 explain component relationships and where to start, expand project-specific
-terms before using them, and keep internal review and approval history in
-issues.
+terms before using them, keep internal review and approval history in
+issues, and assume no knowledge of earlier discussions.
 
 State each component's actual boundaries: the separate GnuPG namespace does not
 imply that pass or native integration has the same package coexistence behavior.

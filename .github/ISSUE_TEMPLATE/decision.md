@@ -1,6 +1,6 @@
 ---
 name: Maintainer decision
-about: Record a decision on a concrete proposal
+about: For the maintainer: record a decision on a proposal
 ---
 
 <!-- Contribution template 1.2.0, 2026-11-10. -->

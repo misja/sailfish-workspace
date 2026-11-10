@@ -8,16 +8,17 @@ issue and the design where there is one.
 ## Validation
 
 Which checks ran, on which version and target? Include failures and gaps.
-Say for each check whether it was automated, an assistant review or a human
-review. For crypto, isolation or release-critical changes, link the separate
+Say which checks were automated, an assistant review or a human review. For crypto, isolation or release-critical changes, link the separate
 verification.
 
 ## Review
 
-- [ ] No names of people or local values (addresses, device, room or share
-      names) in files, commits or this text ([principles](https://github.com/misja/sailfish-workspace/blob/main/docs/development/principles.md#personal-information)).
+- [ ] No names of people outside the required identity places, and no local
+      values (addresses, device, room or share names) in files, commits or
+      this text ([principles](https://github.com/misja/sailfish-workspace/blob/main/docs/development/principles.md#personal-information)).
 - [ ] User-facing text follows [Writing](https://github.com/misja/sailfish-workspace/blob/main/docs/development/principles.md#writing).
-- [ ] Remaining own solutions or workarounds are named, with the reason.
+- [ ] Workarounds and custom mechanisms used instead of platform or upstream
+      facilities are named, with the reason.
 
 Note material AI assistance and how its output was checked. State any
 maintainer decision this revision needs. Merge acceptance does not authorize
