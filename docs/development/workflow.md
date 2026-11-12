@@ -55,7 +55,8 @@ adjusting these working agreements or preparing a release.
 
 Keep design and evidence with the responsible component, linking related issues
 and PRs across repositories. Record an enduring decision once and link back to
-its discussion. STATUS.md is a short session handoff, not a task/status database. Local task lists
+its discussion. The session handoff is local and short, not a task/status database
+(agent-governance.md). Local task lists
 and historical Markdown records do not override live issue or board state.
 
 Essential assistant/contribution instructions and templates are kept in each
