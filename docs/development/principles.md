@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.6.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09); 1.6.0 adds writing (2026-11-09). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.7.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09); 1.6.0 adds writing (2026-11-09); 1.7.0 keeps the session handoff local (2026-11-12). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -95,8 +95,8 @@ machine is not. This boundary is firm: local facts stay local.
   `/home/ubuntu/...` in the SDK container). Aggregate counts are allowed;
   titles from a library are not.
 
-  The real values live in a file outside every repository on the
-  maintainer's machine. Agents read it when they need it, and never quote it
+  The real values and the session handoff live in files outside every
+  repository on the maintainer's machine. Agents read it when they need it, and never quote it
   into project artifacts or commit messages.
 - **Screenshots, logs and fixtures:** screenshots, logs and evidence are
   published only after they have been checked for these details. Raw logs
@@ -109,7 +109,7 @@ machine is not. This boundary is firm: local facts stay local.
   - the account name in repository URLs, and in identifiers derived from it
     (`io.github.<account>`).
 
-  Prose elsewhere (README, CONTRIBUTING, STATUS, specs, code comments) uses
+  Prose elsewhere (README, CONTRIBUTING, specs, code comments) uses
   "the maintainer". The git author e-mail is the maintainer's choice; agents
   do not change it or copy it into files.
 - **Check before publishing:** check for names and local values before

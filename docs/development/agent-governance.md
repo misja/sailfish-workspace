@@ -1,12 +1,12 @@
 # Staged roles and handoffs
 
-Adopted: 2026-10-10. Updated: 2026-11-04. Baseline: 1.3.0. Scope: every real project; synthetic trial uses the same rules.
+Adopted: 2026-10-10. Updated: 2026-11-12. Baseline: 1.6.0. Scope: every real project; synthetic trial uses the same rules.
 
 ## Role activation
 
 Start each task with a bounded objective, acceptance criteria, accountable owner
-and required reviewer in the existing issue; STATUS.md carries a concise session
-handoff. Activate a role when its output is needed. Ordinary work within reviewed
+and required reviewer in the existing issue; a local handoff carries the session
+state (below). Activate a role when its output is needed. Ordinary work within reviewed
 scope remains autonomous; roles do not require a standing team.
 
 Substantial architecture/scope decisions require a separate agent review before
@@ -49,8 +49,8 @@ changed input/toolchain or unresolved failure. Additional or repeated tests must
 address changed behavior, a failure or a specific evidence gap. Required coverage
 still has to pass; cost is not a reason to relabel an unexecuted check as passed.
 
-Keep one canonical conclusion and link its evidence. STATUS.md carries the current
-outcome, limits/blocker and next action; it is not a running transcript. Specs hold
+Keep one canonical conclusion and link its evidence. The local handoff carries the
+current outcome, limits/blocker and next action; it is not a running transcript. Specs hold
 behavior and acceptance, plans hold the relevant checks/reuse/review triggers, and
 raw logs remain evidence rather than repeated prose in every document.
 Apply this to new work without rewriting historical acceptance records.
@@ -107,7 +107,13 @@ The owner investigates, supplies viable options and a recommendation, then consu
 role once for that unresolved blocker. If still unresolved, escalate to the decision owner.
 Reopen decisions only on new evidence. A consultation leaves accountability with the current owner.
 
-Use this STATUS.md handoff:
+The session handoff is internal. It is a local file outside every repository, in
+the directory that holds the checkouts: `handoff/<repo>-<issue-or-branch>.md`, one
+per line of work, so parallel sessions do not share one. It holds current state
+only: replace it rather than append, and delete it when the work closes. History
+stays in git, issues, pull requests, releases and evidence. Approvals and their
+scope are recorded in the issue, as before; the handoff holds local specifics and
+the next action. Use this template:
 
 ```text
 Current owner / next owner / decision owner:

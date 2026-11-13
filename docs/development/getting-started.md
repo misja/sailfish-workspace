@@ -25,9 +25,9 @@ Origin mismatches and repository symlinks stop the operation during preflight.
 Rerunning the helper is safe for an existing working directory.
 
 Read [working agreements](workflow.md), [architecture](../adr/0001-workspace.md)
-and the responsible repository's CONTRIBUTING.md and STATUS.md. Issues and the
-[project board](https://github.com/users/misja/projects/2) hold current work;
-STATUS is a concise handoff. Existing package work belongs in its own repository.
+and the responsible repository's CONTRIBUTING.md. Issues and the
+[project board](https://github.com/users/misja/projects/2) hold current work.
+Existing package work belongs in its own repository.
 For a new Sailfish component, first decide its boundary in a workspace issue,
 then add the approved repository to the manifest. Do not copy the workspace
 into each component.

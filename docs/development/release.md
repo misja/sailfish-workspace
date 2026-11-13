@@ -30,7 +30,7 @@ blocker. Runtime offers three assets and password-store ten: signed binary/sourc
 RPMs and public certificates only. Replaced RPMs and checksum/signature files were
 removed. The specified temporary tool directories were removed while preserving
 delivery files and evidence. PR/draft links and the maintainer handoff are in
-STATUS.md and the live delivery issue. No merge or publication is authorized.
+the live delivery issue. No merge or publication is authorized.
 
 Earlier synthetic Xperia checks remain evidence within their recorded scope.
 The final-removal hook was also checked on the dev Xperia 5.2.0.20, using copied
