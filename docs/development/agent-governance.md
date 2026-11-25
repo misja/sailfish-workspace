@@ -1,6 +1,6 @@
 # Staged roles and handoffs
 
-Adopted: 2026-10-10. Updated: 2026-11-12. Baseline: 1.6.0. Scope: every real project; synthetic trial uses the same rules.
+Adopted: 2026-10-10. Updated: 2026-11-25. Baseline: 1.7.0. Scope: every real project; synthetic trial uses the same rules.
 
 ## Role activation
 
@@ -56,7 +56,9 @@ raw logs remain evidence rather than repeated prose in every document.
 Apply this to new work without rewriting historical acceptance records.
 
 Use focused reviewer handoffs with changed behavior, source/diff/evidence paths
-and a concrete question. Supply full conversation history only when needed;
+and a concrete question. For work with a device or service, the handoff also
+asks which test behavior is measured and which assumed, and which state each
+end leaves (principles, "Measured behaviour"). Supply full conversation history only when needed;
 do not create a standing team or duplicate broad investigations.
 
 Stop the increment when its criteria and required reviews are met. Another

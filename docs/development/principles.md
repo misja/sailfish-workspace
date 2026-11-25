@@ -1,6 +1,6 @@
 # Engineering principles baseline
 
-Version: 1.7.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09); 1.6.0 adds writing (2026-11-09); 1.7.0 keeps the session handoff local (2026-11-12). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
+Version: 1.8.0. Adopted 2026-10-10; 1.1.0 adds Sailfish app conventions (2026-11-06); 1.2.0 adds the Sailfish UI check in reviews (2026-11-06); 1.3.0 adds the app icon guidance (2026-11-08); 1.4.0 adds platform mechanisms in code (2026-11-08); 1.5.0 adds personal information (2026-11-09); 1.6.0 adds writing (2026-11-09); 1.7.0 keeps the session handoff local (2026-11-12); 1.8.0 adds measured behaviour (2026-11-25). Source: accepted Phase A constitution proposal. This is a shared baseline, not a generated Spec Kit constitution.
 
 1. **Evidence before assertion.** Separate supplied observations, dated external facts, recommendations and unknowns. Pin build inputs; maintain source/patch/license provenance. Absence of search results is not proof of absence.
 2. **System coexistence.** Community packages must not replace Jolla components. Private runtime isolation covers loader paths, binaries/helpers, RPM resolution, configuration, IPC and upgrade/removal. Demonstrate it through independent evidence.
@@ -52,6 +52,44 @@ platform's own mechanisms instead of tricks or home-made replacements.
   unprompted, with the reason.
 - **Reviews check this:** independent reviewers name tricks and own solutions
   explicitly. Replacing them later costs more than avoiding them.
+
+## Measured behaviour
+
+A test double built from expectations passes while the real device does
+something else (Swell spec 006, 2026-11-25: an installed update stayed on
+offer). Assumptions are not evidence (principle 1).
+
+- **Measure first:** before a test double, demo or fixture models a device
+  or service, measure that behaviour on the real one where it can be
+  repeated. Read-only measurements come first; changes to the device need
+  the maintainer's approval (principle 8). Record it in the spec's evidence
+  with the date, model and version; the raw log stays local. The double
+  cites the measurement. What can only be seen once is marked invented until
+  the event has been watched (below).
+- **Measured is the default:** a double behaves as measured, including
+  delays, silences and requests that get no answer. Friendlier behaviour
+  (instant, complete answers) is an option for speed, never the default.
+- **Name what is invented:** behaviour that was not measured carries a
+  comment calling it invented, in the double, and an open-risk entry in the
+  spec, until a measurement replaces it. When a measurement contradicts a
+  double, correct every double, demo and fixture that shares the
+  assumption.
+- **Others' observations are sources, not measurements:** another project's
+  findings, often on another model, inform the spec. They become test
+  behaviour only once checked on the device in use, or are marked invented.
+- **End states are acceptance criteria:** for a feature with states (an
+  update, a sync, a connection), the spec has a table of every state,
+  including after it finished, failed or was done elsewhere: what the user
+  sees and which actions are possible. A value read from a device holds
+  only while what it depends on holds; the spec says when it lapses.
+- **Watch a one-time event whole:** when a device action cannot be repeated
+  (a firmware update, a migration), record both the device's answers and the
+  app's state, through to the state after the end.
+- **Say what was checked against what:** a result names what ran against the
+  real device and what only against a double. A test added for a fault is
+  seen to fail before the fix.
+- **Reviews ask:** which behaviour of a double is measured and which assumed,
+  and which state each end leaves.
 
 ## Personal information
 
